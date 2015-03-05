@@ -64,6 +64,8 @@
     CCEffectUniform* u_composite = [CCEffectUniform uniform:@"float" name:@"u_composite"
                                                           value:[NSNumber numberWithFloat:0.0f]];
     
+    
+    // Ignore 'shadowOffset' warning per http://forum.spritebuilder.com/t/shadowoffset-deprecated/2971
     CCEffectUniform* u_shadowOffset = [CCEffectUniform uniform:@"vec2" name:@"u_shadowOffset"
                                                          value:[NSValue valueWithGLKVector2:interface.shadowOffset]];
     
@@ -282,6 +284,7 @@
         passInputs.shaderUniforms[pass.uniformTranslationTable[@"u_blurDirection"]] = [NSValue valueWithGLKVector2:dur];
         passInputs.shaderUniforms[pass.uniformTranslationTable[@"u_composite"]] = [NSNumber numberWithFloat:1.0f];
         
+        // Ignore 'shadowOffset' warning per http://forum.spritebuilder.com/t/shadowoffset-deprecated/2971
         GLKVector2 offset = GLKVector2Make(weakInterface.shadowOffset.x / passInputs.previousPassTexture.contentSize.width, weakInterface.shadowOffset.y / passInputs.previousPassTexture.contentSize.height);
         
         passInputs.shaderUniforms[pass.uniformTranslationTable[@"u_shadowOffset"]] = [NSValue valueWithGLKVector2:offset];

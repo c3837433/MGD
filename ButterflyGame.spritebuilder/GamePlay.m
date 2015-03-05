@@ -10,37 +10,37 @@
 
 
 @implementation GamePlay {
-
+    // Set up the tappable sprites
     CCSprite* _spider;
     CCSprite* _rock;
-    CCSprite* _butterfly;
     CCSprite* _nectar;
 }
 
 - (void)didLoadFromCCB {
-    // start listening for taps
+    // start listening for user taps
     self.userInteractionEnabled = TRUE;
 
 }
 
-// called on every touch in this scene
+#pragma mark - USER TOUCH LISTENER
+// When the user touches the screen
 -(void) touchBegan:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     CCLOG(@"User tapped the screen");
+    // Prepare audio
     OALSimpleAudio *audio = [OALSimpleAudio sharedInstance];
+    
+    // Get the location of the touch
     CGPoint touchLocation = [touch locationInNode:self];
+    
+    // If the user touched within on of the audio sprites, play their specific sound effect
     if (CGRectContainsPoint([_spider boundingBox], touchLocation)) {
        CCLOG(@"The spider was touched");
-        // play sound effect
         [audio playEffect:@"enemy.mp3"];
     } else if (CGRectContainsPoint([_rock boundingBox], touchLocation)) {
         CCLOG(@"The rock was touched");
-        // play sound effect
         [audio playEffect:@"bounce.mp3"];
-    } else if (CGRectContainsPoint([_butterfly boundingBox], touchLocation)) {
-        CCLOG(@"The butterfly was touched");
     } else if (CGRectContainsPoint([_nectar boundingBox], touchLocation)) {
         CCLOG(@"The nectar was touched");
-        // play sound effect
         [audio playEffect:@"drop.mp3"];
     }
 }

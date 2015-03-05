@@ -1,16 +1,23 @@
 
-// Angela Smith 3/4/1977
+//  ButterflyGame
+//
+//  Created by Angela Smith on 3/4/15.
+//  Copyright (c) 2015 Apportable. All rights reserved.
+//
 
 #import "MainScene.h"
 
 @implementation MainScene
 
+//Once the game file loads, allow user interaction so the player can view the game scene
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
 }
 
-- (void)play {
+// When the user presses the play button
+- (void) startGame {
+    // Load the GamePlay scene
     CCScene* gameScene = [CCBReader loadAsScene:@"GamePlay"];
     [[CCDirector sharedDirector] replaceScene:gameScene];
 }
