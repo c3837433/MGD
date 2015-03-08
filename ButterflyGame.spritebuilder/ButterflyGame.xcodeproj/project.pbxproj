@@ -63,6 +63,7 @@
 		927F61B9196C771E000F43EF /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F590E188484E7003F4D28 /* iPhone@2x.png */; };
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
+		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
 		99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EC08131AA7B1AD0079AB8A /* GamePlay.m */; };
 		99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083E1AA7C5350079AB8A /* bounce.mp3 */; };
 		99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083F1AA7C5350079AB8A /* drop.mp3 */; };
@@ -177,6 +178,8 @@
 		7BF6AF9F1A425F9800FFF9BA /* JavaFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaFoundation.framework; path = "../../../../../../../Library/SBAndroid/Application Support/Developer/Shared/Xcode/Platforms/Android.platform/Developer/SDKs/SBAndroid.sdk/System/Library/Frameworks/JavaFoundation.framework"; sourceTree = "<group>"; };
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		99EC08121AA7B1AD0079AB8A /* GamePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlay.h; sourceTree = "<group>"; };
 		99EC08131AA7B1AD0079AB8A /* GamePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlay.m; sourceTree = "<group>"; };
 		99EC083E1AA7C5350079AB8A /* bounce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bounce.mp3; sourceTree = "<group>"; };
@@ -461,6 +464,8 @@
 				D352B48019EC608A00829775 /* MetalShaders */,
 				99EC08121AA7B1AD0079AB8A /* GamePlay.h */,
 				99EC08131AA7B1AD0079AB8A /* GamePlay.m */,
+				99A6E52C1AACD71D00D01C67 /* GameScene.h */,
+				99A6E52D1AACD71D00D01C67 /* GameScene.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -843,6 +848,7 @@
 			files = (
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */,
+				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 			);

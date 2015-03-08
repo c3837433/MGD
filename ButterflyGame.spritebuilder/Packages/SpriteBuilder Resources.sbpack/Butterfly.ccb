@@ -75,7 +75,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/3.png</string>
+								<string>butterflyAnnimation/12.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -376,6 +376,8 @@
 				<array/>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 		<key>seqExpanded</key>
 		<true/>
 	</dict>

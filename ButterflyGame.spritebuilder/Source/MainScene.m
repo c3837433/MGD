@@ -18,8 +18,11 @@
 // When the user presses the play button
 - (void) startGame {
     // Load the GamePlay scene
-    CCScene* gameScene = [CCBReader loadAsScene:@"GamePlay"];
-    [[CCDirector sharedDirector] replaceScene:gameScene];
+    //CCScene* gameScene = [CCBReader loadAsScene:@"GamePlay"];
+    //[[CCDirector sharedDirector] replaceScene:gameScene];
+    CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
 
 
