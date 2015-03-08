@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>10</integer>
+	<integer>14</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -362,8 +362,6 @@
 						<array/>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -469,8 +467,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>180.00006103515625</real>
-									<real>150.00003051757812</real>
+									<real>183.00006103515625</real>
+									<real>83</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -498,6 +496,8 @@
 								<string>Butterfly.ccb</string>
 							</dict>
 						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 					<dict>
 						<key>UUID</key>
