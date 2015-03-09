@@ -13,13 +13,13 @@
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
+    // Preload the music
+    [[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
 
 // When the user presses the play button
 - (void) startGame {
-    // Load the GamePlay scene
-    //CCScene* gameScene = [CCBReader loadAsScene:@"GamePlay"];
-    //[[CCDirector sharedDirector] replaceScene:gameScene];
+    // Switch to the game scene
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];

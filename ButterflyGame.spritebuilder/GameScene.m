@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     CCNode* _floor2;
     NSArray* _forestFloors;
     
+    CCNode* _endFlower;
+    
     CCNode* _canopy1;
     CCNode* _canopy2;
     NSArray* _forestCanopy;
@@ -49,16 +51,24 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     NSArray* _cloudsLayer;
     CCNode* _farCloudNode;
     
-   // Nectar* nectar;
+    // Nectar* nectar;
     BOOL didFinish;
+    BOOL didLand;
+    BOOL didDie;
     
     CCNode* _levelNode;
-
+    
+    OALSimpleAudio* audio;
+    
+    CCButton* _reloadButton;
+    
 }
 
 - (void)didLoadFromCCB {
     
     didFinish = false;
+    didLand = false;
+    didDie = false;
     
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
     [_levelNode addChild:level];
@@ -78,7 +88,7 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
     
-   // [self addRockToScreen];
+    // [self addRockToScreen];
     
     for (CCNode* cloud in _cloudsLayer) {
         cloud.zOrder = DrawingOrderClouds;
@@ -101,15 +111,32 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     // set the buttergly colistion type and drawing order
     _butterfly.physicsBody.collisionType = @"butterfly";
     _butterfly.zOrder = DrawingOrdeButterfly;
+    
+    // set the butterfly to start animatting
+    [self LaunchButterfly];
+    
+    // get audio ready
+    audio = [OALSimpleAudio sharedInstance];
+    [audio playBg:@"background_music.mp3"];
 
+    
 }
 
-
+-(void)LaunchButterfly {
+    // start the annimation
+    CCAnimationManager* animationManager = _butterfly.animationManager;
+    [animationManager runAnimationsForSequenceNamed:@"FlyButterfly"];
+    // move the butterfly to the middle row
+    moveButterflyUp = true;
+    setPostion = 152;
+    
+}
 - (void)update:(CCTime)delta {
     if (!didFinish) {
-        // Move the objects
+        // NORMAL GAME PLAY, MOVE OBJECTS
+        
         // BUTTERFLY
-        _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, _butterfly.position.y);
+        _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
         
         // CLOUD LAYER
         _farCloudNode.position = ccp(_farCloudNode.position.x - (20.f *delta), _farCloudNode.position.y);
@@ -141,17 +168,58 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
             moveButterflyDown = false;
             moveButterflyUp = false;
         }
+        
+        // make sure the butterfly did not leave the screen by checking it's position in the world
+        CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
+        // If the x is less than 0 off screen, change to -50 so it completely disappears
+        if (objectPostion.x < -50) {
+            CCLOG(@"Butterfly is off screen");
+            didDie = YES;
+            didFinish = YES;
+            _reloadButton.visible = YES;
+        }
 
+        
     } else {
-    
-        CCBAnimationManager* animationManager = _butterfly.userObject;
-        [animationManager setPaused:YES];
+        // Get the annimation manager
+        CCAnimationManager* animationManager = _butterfly.animationManager;
+        // GAME ENDED FROM WIN OR LOSS
+        if (didDie) {
+            // The Player Lost
+            //CCLOG(@"You lost");
+            [animationManager setPaused:YES];
+            
+        } else {
+            // The Player Won
+            // if it hasn't landed on the flower yet
+            if (!didLand) {
+                // move to flower
+                CGPoint butterflyPosition = ccpAdd(_endFlower.position, ccp(1857 + 205, 115));
+                // create the action to move the butterfly
+                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:1.5f position:butterflyPosition];
+                CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
+                [_butterfly runAction: ease];
+                // Change the annimation
+                [animationManager runAnimationsForSequenceNamed:@"EndOnFlower"];
+                CCLOG(@"You win!");
+                didLand = true;
+            } else {
+                // change the animation
+                [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
+            }
+            
+            
+        }
     }
     
     
 }
 
-
+-(void) pauseAnnimation{
+    CCAnimationManager* animationManager = _butterfly.animationManager;
+    [animationManager setPaused:YES];
+    
+}
 // Loop the background objects in a regular node
 -(void) loopLayerObject:(NSArray*) layerObjectArray withNode:(CCNode*) node {
     // GROUND
@@ -219,30 +287,51 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
+    // Prepare audio
     NSLog(@"The butterfly hit the rock");
+    [audio playEffect:@"bounce.mp3"];
     return TRUE;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly end:(CCNode *)end {
     CCLOG(@"user finished the level");
     didFinish = true;
+    _reloadButton.visible = true;
     return TRUE;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly spider:(CCNode *)spider {
     NSLog(@"The butterfly hit the spider");
+    [audio playEffect:@"enemy.mp3"];
+    // stop the annimation
+    didDie = true;
+    didFinish = true;
+    _reloadButton.visible = true;
     return TRUE;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly web:(CCNode *)web {
     NSLog(@"The butterfly hit the spider web");
+    [audio playEffect:@"enemy.mp3"];
+    // stop the annimation
+    didDie = true;
+    didFinish = true;
+    _reloadButton.visible = true;
     return TRUE;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly nectar:(CCNode *)nectar {
+    // Play nectar drop
+    [audio playEffect:@"drop.mp3"];
     CCLOG(@"butterfly hit a nectar");
     [nectar removeFromParent];
     return TRUE;
+}
+
+-(void) reloadGame {
+    CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    [[CCDirector sharedDirector] replaceScene:scene];
+
 }
 
 @end

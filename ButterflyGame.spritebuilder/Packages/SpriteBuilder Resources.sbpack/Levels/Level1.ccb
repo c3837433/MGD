@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>120</integer>
+	<integer>121</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -136,7 +136,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>1763.4000244140625</real>
+							<real>1717.4000244140625</real>
 							<real>0.0</real>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -216,7 +216,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -343,7 +343,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -470,7 +470,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -597,7 +597,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -724,7 +724,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -851,7 +851,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -978,7 +978,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1105,7 +1105,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1232,7 +1232,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1359,7 +1359,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1486,7 +1486,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1613,7 +1613,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1740,7 +1740,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1867,7 +1867,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -1994,7 +1994,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2121,7 +2121,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2248,7 +2248,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2375,7 +2375,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2502,7 +2502,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2627,9 +2627,9 @@
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
-					<real>1</real>
+					<real>200</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2754,9 +2754,9 @@
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
-					<real>1</real>
+					<real>200</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2881,9 +2881,9 @@
 					<key>cornerRadius</key>
 					<real>0.0</real>
 					<key>density</key>
-					<real>1</real>
+					<real>200</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -2975,8 +2975,6 @@
 						<string>Rock.ccb</string>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -3012,7 +3010,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -3139,7 +3137,7 @@
 					<key>density</key>
 					<real>1</real>
 					<key>dynamic</key>
-					<true/>
+					<false/>
 					<key>elasticity</key>
 					<real>0.30000001192092896</real>
 					<key>friction</key>
@@ -3202,8 +3200,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>962.84722900390625</real>
-							<real>124.16664886474609</real>
+							<real>901.5</real>
+							<real>49.021549224853516</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -3229,6 +3227,179 @@
 						<string>CCBFile</string>
 						<key>value</key>
 						<string>Spider.ccb</string>
+					</dict>
+				</array>
+			</dict>
+			<dict>
+				<key>UUID</key>
+				<integer>120</integer>
+				<key>baseClass</key>
+				<string>CCSprite</string>
+				<key>children</key>
+				<array/>
+				<key>customClass</key>
+				<string></string>
+				<key>displayName</key>
+				<string>flower</string>
+				<key>memberVarAssignmentName</key>
+				<string>_endFlower</string>
+				<key>memberVarAssignmentType</key>
+				<integer>1</integer>
+				<key>physicsBody</key>
+				<dict>
+					<key>affectedByGravity</key>
+					<true/>
+					<key>allowsRotation</key>
+					<true/>
+					<key>bodyShape</key>
+					<integer>0</integer>
+					<key>collisionCategories</key>
+					<array/>
+					<key>collisionMask</key>
+					<array/>
+					<key>collisionType</key>
+					<string></string>
+					<key>cornerRadius</key>
+					<real>0.0</real>
+					<key>density</key>
+					<real>1</real>
+					<key>dynamic</key>
+					<false/>
+					<key>elasticity</key>
+					<real>0.30000001192092896</real>
+					<key>friction</key>
+					<real>0.30000001192092896</real>
+					<key>points</key>
+					<array>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+						</array>
+						<array>
+							<real>0.0</real>
+							<real>56</real>
+						</array>
+						<array>
+							<real>63</real>
+							<real>56</real>
+						</array>
+						<array>
+							<real>63</real>
+							<real>0.0</real>
+						</array>
+					</array>
+					<key>polygons</key>
+					<array>
+						<array>
+							<array>
+								<real>63</real>
+								<real>0.0</real>
+							</array>
+							<array>
+								<real>63</real>
+								<real>56</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>56</real>
+							</array>
+							<array>
+								<real>0.0</real>
+								<real>0.0</real>
+							</array>
+						</array>
+					</array>
+				</dict>
+				<key>properties</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>name</string>
+						<key>type</key>
+						<string>StringSimple</string>
+						<key>value</key>
+						<string></string>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>position</string>
+						<key>type</key>
+						<string>Position</string>
+						<key>value</key>
+						<array>
+							<real>1857</real>
+							<real>38.521549224853516</real>
+							<integer>0</integer>
+							<integer>0</integer>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>anchorPoint</string>
+						<key>type</key>
+						<string>Point</string>
+						<key>value</key>
+						<array>
+							<real>0.0</real>
+							<real>0.0</real>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>scale</string>
+						<key>type</key>
+						<string>ScaleLock</string>
+						<key>value</key>
+						<array>
+							<real>1</real>
+							<real>1</real>
+							<false/>
+							<integer>0</integer>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>spriteFrame</string>
+						<key>type</key>
+						<string>SpriteFrame</string>
+						<key>value</key>
+						<array>
+							<string></string>
+							<string>assets/flower.png</string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>normalMapSpriteFrame</string>
+						<key>type</key>
+						<string>SpriteFrame</string>
+						<key>value</key>
+						<array>
+							<string></string>
+							<string></string>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>color</string>
+						<key>type</key>
+						<string>Color3</string>
+						<key>value</key>
+						<array>
+							<real>1</real>
+							<real>1</real>
+							<real>1</real>
+							<real>1</real>
+						</array>
+					</dict>
+					<dict>
+						<key>name</key>
+						<string>effects</string>
+						<key>type</key>
+						<string>EffectControl</string>
+						<key>value</key>
+						<array/>
 					</dict>
 				</array>
 			</dict>
