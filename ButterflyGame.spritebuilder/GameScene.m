@@ -7,8 +7,17 @@
 //
 
 #import "GameScene.h"
+#import "Nectar.h"
 
 static const CGFloat scrollSpeed = 80.f;
+
+typedef NS_ENUM(NSInteger, DrawingOrder) {
+    DrawingOrderClouds,
+    DrawingOrderTrunks,
+    DrawingOrderFloor,
+    DrawingOrderCanopy,
+    DrawingOrdeButterfly
+};
 
 @implementation GameScene {
     
@@ -39,10 +48,20 @@ static const CGFloat scrollSpeed = 80.f;
     CCNode* _cloud2;
     NSArray* _cloudsLayer;
     CCNode* _farCloudNode;
+    
+   // Nectar* nectar;
+    BOOL didFinish;
+    
+    CCNode* _levelNode;
 
 }
 
 - (void)didLoadFromCCB {
+    
+    didFinish = false;
+    
+    CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
+    [_levelNode addChild:level];
     
     self.userInteractionEnabled = TRUE;
     // set up the node arrays
@@ -58,43 +77,78 @@ static const CGFloat scrollSpeed = 80.f;
     UISwipeGestureRecognizer* swipeDown= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeDown)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
-}
-- (void)update:(CCTime)delta {
-    // Move the objects
-   // BUTTERFLY
-   _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, _butterfly.position.y);
     
-    // CLOUD LAYER
-    _farCloudNode.position = ccp(_farCloudNode.position.x - (20.f *delta), _farCloudNode.position.y);
-    //loop the clouds
-    [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
-
-    // PHYSICS NODE LAYER
-    _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
-    // loop floor & canopy
-    [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
-    [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
-    [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
+   // [self addRockToScreen];
     
-    // if we need to update the current position of the butterfly
-    if ((moveButterflyUp || (moveButterflyDown))) {
-        CCLOG(@"Updating position");
-        // get the current  x position and the new y
-        CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
-        // create the action to move the butterfly
-        CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.8 position:butterflyPosition];
-        // set the ease action to slightly drop for liftoff and settle when at right location
-        if (moveButterflyUp) {
-            CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
-            [_butterfly runAction: ease];
-        } else if ( moveButterflyDown) {
-            CCActionEaseBackOut*  ease = [CCActionEaseBackOut actionWithAction:moveTo];
-            [_butterfly runAction: ease];
-        }
-        moveButterflyDown = false;
-        moveButterflyUp = false;
+    for (CCNode* cloud in _cloudsLayer) {
+        cloud.zOrder = DrawingOrderClouds;
     }
+    for (CCNode* trunk in _treeTrunks) {
+        trunk.zOrder = DrawingOrderTrunks;
+    }
+    
+    for (CCNode* canopy in _forestCanopy) {
+        canopy.zOrder = DrawingOrderCanopy;
+    }
+    
+    for (CCNode* floor in _forestFloors) {
+        floor.physicsBody.collisionType = @"floor";
+        floor.zOrder = DrawingOrderFloor;
+    }
+    // set the delegate
+    _gamePhysicNode.collisionDelegate = self;
+    
+    // set the buttergly colistion type and drawing order
+    _butterfly.physicsBody.collisionType = @"butterfly";
+    _butterfly.zOrder = DrawingOrdeButterfly;
 
+}
+
+
+- (void)update:(CCTime)delta {
+    if (!didFinish) {
+        // Move the objects
+        // BUTTERFLY
+        _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, _butterfly.position.y);
+        
+        // CLOUD LAYER
+        _farCloudNode.position = ccp(_farCloudNode.position.x - (20.f *delta), _farCloudNode.position.y);
+        //loop the clouds
+        [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
+        
+        // PHYSICS NODE LAYER
+        _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
+        // loop floor & canopy
+        [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
+        [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
+        [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
+        
+        // if we need to update the current position of the butterfly
+        if ((moveButterflyUp || (moveButterflyDown))) {
+            CCLOG(@"Updating position");
+            // get the current  x position and the new y
+            CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
+            // create the action to move the butterfly
+            CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.8 position:butterflyPosition];
+            // set the ease action to slightly drop for liftoff and settle when at right location
+            if (moveButterflyUp) {
+                CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
+                [_butterfly runAction: ease];
+            } else if ( moveButterflyDown) {
+                CCActionEaseBackOut*  ease = [CCActionEaseBackOut actionWithAction:moveTo];
+                [_butterfly runAction: ease];
+            }
+            moveButterflyDown = false;
+            moveButterflyUp = false;
+        }
+
+    } else {
+    
+        CCBAnimationManager* animationManager = _butterfly.userObject;
+        [animationManager setPaused:YES];
+    }
+    
+    
 }
 
 
@@ -164,5 +218,31 @@ static const CGFloat scrollSpeed = 80.f;
     }
 }
 
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
+    NSLog(@"The butterfly hit the rock");
+    return TRUE;
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly end:(CCNode *)end {
+    CCLOG(@"user finished the level");
+    didFinish = true;
+    return TRUE;
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly spider:(CCNode *)spider {
+    NSLog(@"The butterfly hit the spider");
+    return TRUE;
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly web:(CCNode *)web {
+    NSLog(@"The butterfly hit the spider web");
+    return TRUE;
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly nectar:(CCNode *)nectar {
+    CCLOG(@"butterfly hit a nectar");
+    [nectar removeFromParent];
+    return TRUE;
+}
 
 @end

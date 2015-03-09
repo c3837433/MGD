@@ -64,6 +64,11 @@
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
+		99C415471AAD01B60084DFD4 /* Rock.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415461AAD01B60084DFD4 /* Rock.m */; };
+		99C415541AAD63960084DFD4 /* End.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415531AAD63960084DFD4 /* End.m */; };
+		99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415591AAD6B070084DFD4 /* Spider.m */; };
+		99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155C1AAD6B430084DFD4 /* Nectar.m */; };
+		99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155F1AAD70920084DFD4 /* SpiderWeb.m */; };
 		99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EC08131AA7B1AD0079AB8A /* GamePlay.m */; };
 		99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083E1AA7C5350079AB8A /* bounce.mp3 */; };
 		99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083F1AA7C5350079AB8A /* drop.mp3 */; };
@@ -180,6 +185,16 @@
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		99C415451AAD01B60084DFD4 /* Rock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rock.h; sourceTree = "<group>"; };
+		99C415461AAD01B60084DFD4 /* Rock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rock.m; sourceTree = "<group>"; };
+		99C415521AAD63960084DFD4 /* End.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = End.h; sourceTree = "<group>"; };
+		99C415531AAD63960084DFD4 /* End.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = End.m; sourceTree = "<group>"; };
+		99C415581AAD6B070084DFD4 /* Spider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spider.h; sourceTree = "<group>"; };
+		99C415591AAD6B070084DFD4 /* Spider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Spider.m; sourceTree = "<group>"; };
+		99C4155B1AAD6B430084DFD4 /* Nectar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nectar.h; sourceTree = "<group>"; };
+		99C4155C1AAD6B430084DFD4 /* Nectar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nectar.m; sourceTree = "<group>"; };
+		99C4155E1AAD70920084DFD4 /* SpiderWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiderWeb.h; sourceTree = "<group>"; };
+		99C4155F1AAD70920084DFD4 /* SpiderWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiderWeb.m; sourceTree = "<group>"; };
 		99EC08121AA7B1AD0079AB8A /* GamePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlay.h; sourceTree = "<group>"; };
 		99EC08131AA7B1AD0079AB8A /* GamePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlay.m; sourceTree = "<group>"; };
 		99EC083E1AA7C5350079AB8A /* bounce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bounce.mp3; sourceTree = "<group>"; };
@@ -458,6 +473,8 @@
 		B737893C1807616C0076A88C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				99C415451AAD01B60084DFD4 /* Rock.h */,
+				99C415461AAD01B60084DFD4 /* Rock.m */,
 				7A40362019DDEF0D007B6E8F /* Platforms */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
@@ -466,6 +483,14 @@
 				99EC08131AA7B1AD0079AB8A /* GamePlay.m */,
 				99A6E52C1AACD71D00D01C67 /* GameScene.h */,
 				99A6E52D1AACD71D00D01C67 /* GameScene.m */,
+				99C415521AAD63960084DFD4 /* End.h */,
+				99C415531AAD63960084DFD4 /* End.m */,
+				99C415581AAD6B070084DFD4 /* Spider.h */,
+				99C415591AAD6B070084DFD4 /* Spider.m */,
+				99C4155B1AAD6B430084DFD4 /* Nectar.h */,
+				99C4155C1AAD6B430084DFD4 /* Nectar.m */,
+				99C4155E1AAD70920084DFD4 /* SpiderWeb.h */,
+				99C4155F1AAD70920084DFD4 /* SpiderWeb.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -846,9 +871,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
+				99C415541AAD63960084DFD4 /* End.m in Sources */,
+				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */,
+				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
+				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 			);

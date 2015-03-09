@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>1</integer>
+	<integer>3</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -50,7 +50,7 @@
 		<key>physicsBody</key>
 		<dict>
 			<key>affectedByGravity</key>
-			<true/>
+			<false/>
 			<key>allowsRotation</key>
 			<true/>
 			<key>bodyShape</key>
@@ -66,7 +66,7 @@
 			<key>density</key>
 			<real>1</real>
 			<key>dynamic</key>
-			<false/>
+			<true/>
 			<key>elasticity</key>
 			<real>0.30000001192092896</real>
 			<key>friction</key>
@@ -74,40 +74,168 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>0.0</real>
+					<real>0.28518655896186829</real>
+					<real>4.6872529983520508</real>
+				</array>
+				<array>
+					<real>1.1054248809814453</real>
+					<real>22.00383186340332</real>
+				</array>
+				<array>
+					<real>14.760366439819336</real>
+					<real>34.914409637451172</real>
+				</array>
+				<array>
+					<real>58.057701110839844</real>
+					<real>36.120567321777344</real>
+				</array>
+				<array>
+					<real>76.938880920410156</real>
+					<real>24.427919387817383</real>
+				</array>
+				<array>
+					<real>77</real>
 					<real>0.0</real>
 				</array>
 				<array>
-					<real>0.0</real>
-					<real>59</real>
+					<real>67.850852966308594</real>
+					<real>-0.46311131119728088</real>
 				</array>
 				<array>
-					<real>129</real>
-					<real>59</real>
+					<real>61.124111175537109</real>
+					<real>11.738425254821777</real>
 				</array>
 				<array>
-					<real>129</real>
-					<real>0.0</real>
+					<real>55.188831329345703</real>
+					<real>10.334732055664062</real>
+				</array>
+				<array>
+					<real>47.555511474609375</real>
+					<real>0.7155725359916687</real>
+				</array>
+				<array>
+					<real>31.515729904174805</real>
+					<real>1.7725942134857178</real>
+				</array>
+				<array>
+					<real>23.645627975463867</real>
+					<real>7.9904460906982422</real>
+				</array>
+				<array>
+					<real>16.111732482910156</real>
+					<real>10.733731269836426</real>
+				</array>
+				<array>
+					<real>10.550594329833984</real>
+					<real>0.46701547503471375</real>
+				</array>
+				<array>
+					<real>4.2686409950256348</real>
+					<real>-0.4513375461101532</real>
 				</array>
 			</array>
 			<key>polygons</key>
 			<array>
 				<array>
 					<array>
-						<real>129</real>
+						<real>1.1054248809814453</real>
+						<real>22.00383186340332</real>
+					</array>
+					<array>
+						<real>0.28518655896186829</real>
+						<real>4.6872529983520508</real>
+					</array>
+					<array>
+						<real>4.2686409950256348</real>
+						<real>-0.4513375461101532</real>
+					</array>
+					<array>
+						<real>10.550594329833984</real>
+						<real>0.46701547503471375</real>
+					</array>
+					<array>
+						<real>16.111732482910156</real>
+						<real>10.733731269836426</real>
+					</array>
+				</array>
+				<array>
+					<array>
+						<real>23.645627975463867</real>
+						<real>7.9904460906982422</real>
+					</array>
+					<array>
+						<real>31.515729904174805</real>
+						<real>1.7725942134857178</real>
+					</array>
+					<array>
+						<real>47.555511474609375</real>
+						<real>0.7155725359916687</real>
+					</array>
+				</array>
+				<array>
+					<array>
+						<real>76.938880920410156</real>
+						<real>24.427919387817383</real>
+					</array>
+					<array>
+						<real>58.057701110839844</real>
+						<real>36.120567321777344</real>
+					</array>
+					<array>
+						<real>55.188831329345703</real>
+						<real>10.334732055664062</real>
+					</array>
+					<array>
+						<real>61.124111175537109</real>
+						<real>11.738425254821777</real>
+					</array>
+				</array>
+				<array>
+					<array>
+						<real>61.124111175537109</real>
+						<real>11.738425254821777</real>
+					</array>
+					<array>
+						<real>67.850852966308594</real>
+						<real>-0.46311131119728088</real>
+					</array>
+					<array>
+						<real>77</real>
 						<real>0.0</real>
 					</array>
 					<array>
-						<real>129</real>
-						<real>59</real>
+						<real>76.938880920410156</real>
+						<real>24.427919387817383</real>
+					</array>
+				</array>
+				<array>
+					<array>
+						<real>58.057701110839844</real>
+						<real>36.120567321777344</real>
 					</array>
 					<array>
-						<real>0.0</real>
-						<real>59</real>
+						<real>14.760366439819336</real>
+						<real>34.914409637451172</real>
 					</array>
 					<array>
-						<real>0.0</real>
-						<real>0.0</real>
+						<real>1.1054248809814453</real>
+						<real>22.00383186340332</real>
+					</array>
+					<array>
+						<real>16.111732482910156</real>
+						<real>10.733731269836426</real>
+					</array>
+					<array>
+						<real>23.645627975463867</real>
+						<real>7.9904460906982422</real>
+					</array>
+					<array>
+						<real>47.555511474609375</real>
+						<real>0.7155725359916687</real>
+					</array>
+					<array>
+						<real>55.188831329345703</real>
+						<real>10.334732055664062</real>
 					</array>
 				</array>
 			</array>
@@ -143,8 +271,8 @@
 				<string>Point</string>
 				<key>value</key>
 				<array>
-					<real>0.5</real>
-					<real>0.5</real>
+					<real>0.0</real>
+					<real>0.0</real>
 				</array>
 			</dict>
 			<dict>
@@ -204,6 +332,8 @@
 				<array/>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 	</dict>
 	<key>notes</key>
 	<array/>
@@ -259,7 +389,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>2.5999999046325684</real>
+			<real>0.0</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
@@ -271,26 +401,7 @@
 				<key>isExpanded</key>
 				<false/>
 				<key>keyframes</key>
-				<array>
-					<dict>
-						<key>easing</key>
-						<dict>
-							<key>type</key>
-							<integer>0</integer>
-						</dict>
-						<key>time</key>
-						<real>0.0</real>
-						<key>type</key>
-						<integer>11</integer>
-						<key>value</key>
-						<array>
-							<string>soundEffects/enemy.wav</string>
-							<real>1</real>
-							<real>0.0</real>
-							<real>1</real>
-						</array>
-					</dict>
-				</array>
+				<array/>
 				<key>type</key>
 				<integer>11</integer>
 			</dict>

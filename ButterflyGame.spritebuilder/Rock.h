@@ -1,5 +1,5 @@
 //
-//  GameScene.h
+//  Rock.h
 //  ButterflyGame
 //
 //  Created by Angela Smith on 3/8/15.
@@ -8,6 +8,6 @@
 
 #import "CCNode.h"
 
-@interface GameScene : CCNode <CCPhysicsCollisionDelegate>
+@interface Rock : CCSprite
 
 @end

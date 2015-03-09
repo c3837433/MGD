@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -40,7 +40,7 @@
 		<key>children</key>
 		<array/>
 		<key>customClass</key>
-		<string>Rock</string>
+		<string>Nectar</string>
 		<key>displayName</key>
 		<string>CCSprite</string>
 		<key>memberVarAssignmentName</key>
@@ -74,48 +74,64 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>0.0</real>
-					<real>0.0</real>
+					<real>-0.37973999977111816</real>
+					<real>4.7294816970825195</real>
 				</array>
 				<array>
-					<real>16.78125</real>
-					<real>57.148406982421875</real>
+					<real>-0.19895468652248383</real>
+					<real>15.126908302307129</real>
 				</array>
 				<array>
-					<real>46.84765625</real>
-					<real>60.921844482421875</real>
+					<real>9.748779296875</real>
+					<real>30.739847183227539</real>
 				</array>
 				<array>
-					<real>64.4140625</real>
-					<real>39.835906982421875</real>
+					<real>15.222304344177246</real>
+					<real>24.693986892700195</real>
 				</array>
 				<array>
-					<real>73</real>
-					<real>0.0</real>
+					<real>21.144613265991211</real>
+					<real>10.098532676696777</real>
+				</array>
+				<array>
+					<real>18.430109024047852</real>
+					<real>1.2373274564743042</real>
+				</array>
+				<array>
+					<real>9.0592517852783203</real>
+					<real>-1.1401355266571045</real>
 				</array>
 			</array>
 			<key>polygons</key>
 			<array>
 				<array>
 					<array>
-						<real>73</real>
-						<real>0.0</real>
+						<real>9.0592517852783203</real>
+						<real>-1.1401355266571045</real>
 					</array>
 					<array>
-						<real>64.4140625</real>
-						<real>39.835906982421875</real>
+						<real>18.430109024047852</real>
+						<real>1.2373274564743042</real>
 					</array>
 					<array>
-						<real>46.84765625</real>
-						<real>60.921844482421875</real>
+						<real>21.144613265991211</real>
+						<real>10.098532676696777</real>
 					</array>
 					<array>
-						<real>16.78125</real>
-						<real>57.148406982421875</real>
+						<real>15.222304344177246</real>
+						<real>24.693986892700195</real>
 					</array>
 					<array>
-						<real>0.0</real>
-						<real>0.0</real>
+						<real>9.748779296875</real>
+						<real>30.739847183227539</real>
+					</array>
+					<array>
+						<real>-0.19895468652248383</real>
+						<real>15.126908302307129</real>
+					</array>
+					<array>
+						<real>-0.37973999977111816</real>
+						<real>4.7294816970825195</real>
 					</array>
 				</array>
 			</array>
@@ -176,7 +192,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/rock.png</string>
+					<string>assets/nectar.png</string>
 				</array>
 			</dict>
 			<dict>
