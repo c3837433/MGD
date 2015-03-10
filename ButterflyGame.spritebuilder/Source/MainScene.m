@@ -14,7 +14,7 @@
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     // Preload the music
-    [[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
+    //[[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
 
 // When the user presses the play button

@@ -53,12 +53,12 @@
     //[cocos2dSetup setObject:kEAGLColorFormatRGB565 forKey:CCConfigPixelFormat];
     
     [self setupCocos2dWithOptions:cocos2dSetup];
+
     
     return YES;
 }
 
-- (CCScene*) startScene
-{
+- (CCScene*) startScene {
     return [CCBReader loadAsScene:@"MainScene"];
 }
 

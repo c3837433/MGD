@@ -10,4 +10,7 @@
 
 @interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
+
+#define HORIZ_SWIPE_DRAG_MIN  12
+#define VERT_SWIPE_DRAG_MAX    4
 @end

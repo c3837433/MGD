@@ -62,10 +62,17 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     
     CCButton* _reloadButton;
     
+    CGPoint tapPosition;
+    UITapGestureRecognizer* userTap;
+    
 }
 
 - (void)didLoadFromCCB {
-    
+    CCLOG(@"Loaded Game");
+    // get audio ready
+    audio = [OALSimpleAudio sharedInstance];
+    // Preload the music
+    [audio  preloadBg:@"background_music.mp3"];
     didFinish = false;
     didLand = false;
     didDie = false;
@@ -74,6 +81,8 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     [_levelNode addChild:level];
     
     self.userInteractionEnabled = TRUE;
+    [[[CCDirector sharedDirector] view] setMultipleTouchEnabled:YES];
+    
     // set up the node arrays
     _forestFloors = @[_floor1, _floor2];
     _cloudsLayer = @[_cloud1, _cloud2];
@@ -87,6 +96,10 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     UISwipeGestureRecognizer* swipeDown= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeDown)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
+    
+    
+    userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:userTap];
     
     // [self addRockToScreen];
     
@@ -116,21 +129,24 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     [self LaunchButterfly];
     
     // get audio ready
-    audio = [OALSimpleAudio sharedInstance];
-    [audio playBg:@"background_music.mp3"];
-
+    //audio = [OALSimpleAudio sharedInstance];
+    //[audio playBg:@"background_music.mp3"];
     
 }
 
 -(void)LaunchButterfly {
+    CCLOG(@"Launching Butterfly");
     // start the annimation
     CCAnimationManager* animationManager = _butterfly.animationManager;
     [animationManager runAnimationsForSequenceNamed:@"FlyButterfly"];
     // move the butterfly to the middle row
     moveButterflyUp = true;
     setPostion = 152;
-    
+    // start background music
+    [audio playBg:@"background_music.mp3"];
 }
+
+
 - (void)update:(CCTime)delta {
     if (!didFinish) {
         // NORMAL GAME PLAY, MOVE OBJECTS
@@ -185,9 +201,14 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
         CCAnimationManager* animationManager = _butterfly.animationManager;
         // GAME ENDED FROM WIN OR LOSS
         if (didDie) {
-            // The Player Lost
-            //CCLOG(@"You lost");
-            [animationManager setPaused:YES];
+            if (!didLand) {
+                audio.bgPaused = TRUE;
+                CCLOG(@"pausing annimation and playing death effect");
+                [animationManager setPaused:YES];
+                [audio playEffect:@"loseGame.mp3"];
+                didLand = true;
+            }
+            
             
         } else {
             // The Player Won
@@ -203,16 +224,12 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
                 [animationManager runAnimationsForSequenceNamed:@"EndOnFlower"];
                 CCLOG(@"You win!");
                 didLand = true;
-            } else {
+                [audio playEffect:@"yahoo.mp3"];
                 // change the animation
                 [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
             }
-            
-            
         }
     }
-    
-    
 }
 
 -(void) pauseAnnimation{
@@ -286,6 +303,18 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     }
 }
 
+-(void) userTapped:(UITapGestureRecognizer *)recognizer {
+    CCLOG(@"User tapped on screen");
+     CGPoint touchLocation = [[CCDirector sharedDirector] convertToGL:[self convertToNodeSpace:[userTap locationInView:[[CCDirector sharedDirector] view]]]];
+     if (CGRectContainsPoint([_reloadButton boundingBox], touchLocation)) {
+       CCLOG(@"The reload button was touched");
+         if (_reloadButton.visible) {
+            [self reloadGame];
+         }
+   }
+
+}
+
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
     // Prepare audio
     NSLog(@"The butterfly hit the rock");
@@ -329,9 +358,11 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
 }
 
 -(void) reloadGame {
+    audio.bgPaused = false;
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     [[CCDirector sharedDirector] replaceScene:scene];
 
 }
+
 
 @end

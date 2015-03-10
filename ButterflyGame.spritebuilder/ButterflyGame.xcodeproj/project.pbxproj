@@ -64,6 +64,8 @@
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9904386B1AAE5154008BAAC2 /* background_music.mp3 */; };
+		9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */; };
+		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
 		99C415471AAD01B60084DFD4 /* Rock.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415461AAD01B60084DFD4 /* Rock.m */; };
 		99C415541AAD63960084DFD4 /* End.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415531AAD63960084DFD4 /* End.m */; };
@@ -185,6 +187,8 @@
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9904386B1AAE5154008BAAC2 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
+		9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yahoo.mp3; sourceTree = "<group>"; };
+		9971BE811AAEAE66005544C8 /* loseGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loseGame.mp3; sourceTree = "<group>"; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		99C415451AAD01B60084DFD4 /* Rock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rock.h; sourceTree = "<group>"; };
@@ -465,6 +469,8 @@
 		99EC083D1AA7C4160079AB8A /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				9971BE811AAEAE66005544C8 /* loseGame.mp3 */,
+				9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */,
 				9904386B1AAE5154008BAAC2 /* background_music.mp3 */,
 				99EC083E1AA7C5350079AB8A /* bounce.mp3 */,
 				99EC083F1AA7C5350079AB8A /* drop.mp3 */,
@@ -785,7 +791,9 @@
 				B71F5919188484E7003F4D28 /* Settings.png in Resources */,
 				B7378978180762440076A88C /* Default@2x.png in Resources */,
 				B71F5914188484E7003F4D28 /* iPad@2x.png in Resources */,
+				9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */,
 				B71F5913188484E7003F4D28 /* iPad.png in Resources */,
+				9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */,
 				99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */,
 				99EC08431AA7C5350079AB8A /* enemy.mp3 in Resources */,
 				9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */,
