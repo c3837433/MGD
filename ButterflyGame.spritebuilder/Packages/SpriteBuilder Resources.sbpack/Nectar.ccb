@@ -192,7 +192,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/nectar.png</string>
+					<string>gameAssets/nectar.png</string>
 				</array>
 			</dict>
 			<dict>

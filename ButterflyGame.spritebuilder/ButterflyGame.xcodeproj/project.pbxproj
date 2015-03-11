@@ -64,6 +64,7 @@
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9904386B1AAE5154008BAAC2 /* background_music.mp3 */; };
+		990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 990558D91AAF616D0026AA73 /* flap.mp3 */; };
 		9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */; };
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
@@ -72,7 +73,6 @@
 		99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415591AAD6B070084DFD4 /* Spider.m */; };
 		99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155C1AAD6B430084DFD4 /* Nectar.m */; };
 		99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155F1AAD70920084DFD4 /* SpiderWeb.m */; };
-		99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 99EC08131AA7B1AD0079AB8A /* GamePlay.m */; };
 		99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083E1AA7C5350079AB8A /* bounce.mp3 */; };
 		99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083F1AA7C5350079AB8A /* drop.mp3 */; };
 		99EC08431AA7C5350079AB8A /* enemy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC08401AA7C5350079AB8A /* enemy.mp3 */; };
@@ -187,6 +187,7 @@
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9904386B1AAE5154008BAAC2 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
+		990558D91AAF616D0026AA73 /* flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flap.mp3; sourceTree = "<group>"; };
 		9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yahoo.mp3; sourceTree = "<group>"; };
 		9971BE811AAEAE66005544C8 /* loseGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loseGame.mp3; sourceTree = "<group>"; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
@@ -201,8 +202,6 @@
 		99C4155C1AAD6B430084DFD4 /* Nectar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nectar.m; sourceTree = "<group>"; };
 		99C4155E1AAD70920084DFD4 /* SpiderWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiderWeb.h; sourceTree = "<group>"; };
 		99C4155F1AAD70920084DFD4 /* SpiderWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiderWeb.m; sourceTree = "<group>"; };
-		99EC08121AA7B1AD0079AB8A /* GamePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlay.h; sourceTree = "<group>"; };
-		99EC08131AA7B1AD0079AB8A /* GamePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlay.m; sourceTree = "<group>"; };
 		99EC083E1AA7C5350079AB8A /* bounce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bounce.mp3; sourceTree = "<group>"; };
 		99EC083F1AA7C5350079AB8A /* drop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = drop.mp3; sourceTree = "<group>"; };
 		99EC08401AA7C5350079AB8A /* enemy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemy.mp3; sourceTree = "<group>"; };
@@ -471,6 +470,7 @@
 			children = (
 				9971BE811AAEAE66005544C8 /* loseGame.mp3 */,
 				9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */,
+				990558D91AAF616D0026AA73 /* flap.mp3 */,
 				9904386B1AAE5154008BAAC2 /* background_music.mp3 */,
 				99EC083E1AA7C5350079AB8A /* bounce.mp3 */,
 				99EC083F1AA7C5350079AB8A /* drop.mp3 */,
@@ -488,8 +488,6 @@
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
 				D352B48019EC608A00829775 /* MetalShaders */,
-				99EC08121AA7B1AD0079AB8A /* GamePlay.h */,
-				99EC08131AA7B1AD0079AB8A /* GamePlay.m */,
 				99A6E52C1AACD71D00D01C67 /* GameScene.h */,
 				99A6E52D1AACD71D00D01C67 /* GameScene.m */,
 				99C415521AAD63960084DFD4 /* End.h */,
@@ -801,6 +799,7 @@
 				B71F5916188484E7003F4D28 /* iPhone-old@2x.png in Resources */,
 				B737893B180761570076A88C /* Published-iOS in Resources */,
 				99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */,
+				990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */,
 				B71F591A188484E7003F4D28 /* Settings@2x.png in Resources */,
 				B7378976180762440076A88C /* Default-Landscape~ipad.png in Resources */,
 				B71F5915188484E7003F4D28 /* iPhone-old.png in Resources */,
@@ -887,7 +886,6 @@
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
-				99EC08141AA7B1AD0079AB8A /* GamePlay.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,

@@ -176,7 +176,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/rock.png</string>
+					<string>gameAssets/rock.png</string>
 				</array>
 			</dict>
 			<dict>

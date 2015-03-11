@@ -112,7 +112,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/titleScene.png</string>
+							<string>gameAssets/titleScene.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -148,6 +148,8 @@
 						<array/>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -276,7 +278,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/play.png</string>
+							<string>gameAssets/play.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -287,7 +289,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>assets/play.png</string>
+							<string>gameAssets/play.png</string>
 						</array>
 					</dict>
 					<dict>
@@ -474,8 +476,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

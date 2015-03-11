@@ -80,6 +80,11 @@
 		</dict>
 		<key>Sprites</key>
 		<dict/>
+		<key>assets</key>
+		<dict>
+			<key>isDirty</key>
+			<true/>
+		</dict>
 		<key>butterflyAnnimation</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>
@@ -166,6 +171,11 @@
 			<integer>2</integer>
 			<key>tabletScale</key>
 			<integer>1</integer>
+		</dict>
+		<key>gameAssets</key>
+		<dict>
+			<key>isSmartSpriteSheet</key>
+			<true/>
 		</dict>
 	</dict>
 	<key>versionStr</key>

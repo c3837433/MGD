@@ -296,7 +296,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/spider.png</string>
+					<string>gameAssets/spider.png</string>
 				</array>
 			</dict>
 			<dict>

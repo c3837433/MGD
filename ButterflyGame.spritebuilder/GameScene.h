@@ -10,6 +10,17 @@
 
 @interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
+typedef NS_ENUM(NSInteger, DrawingOrder) {
+    DrawingOrderClouds,
+    DrawingOrderTreeline,
+    DrawingOrderBackHill,
+    DrawingOrderFrontHill,
+    DrawingOrderTrunks,
+    DrawingOrderFrontLayer,
+    DrawingOrderFloor,
+    DrawingOrderCanopy,
+    DrawingOrdeButterfly
+};
 
 #define HORIZ_SWIPE_DRAG_MIN  12
 #define VERT_SWIPE_DRAG_MAX    4

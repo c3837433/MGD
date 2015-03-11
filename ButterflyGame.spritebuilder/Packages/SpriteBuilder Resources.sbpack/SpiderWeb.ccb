@@ -254,7 +254,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>assets/spiderWeb.png</string>
+					<string>gameAssets/spiderWeb.png</string>
 				</array>
 			</dict>
 			<dict>
