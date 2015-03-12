@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -75,7 +75,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/12.png</string>
+								<string>butterflyAnnimation/2.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -183,7 +183,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/8.png</string>
+								<string>butterflyAnnimation/6.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -201,7 +201,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/9.png</string>
+								<string>butterflyAnnimation/5.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -219,7 +219,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/10.png</string>
+								<string>butterflyAnnimation/4.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -237,7 +237,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/11.png</string>
+								<string>butterflyAnnimation/3.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -255,7 +255,7 @@
 							<integer>7</integer>
 							<key>value</key>
 							<array>
-								<string>butterflyAnnimation/12.png</string>
+								<string>butterflyAnnimation/2.png</string>
 								<string>Use regular file</string>
 							</array>
 						</dict>
@@ -600,7 +600,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>butterflyAnnimation/end5.png</string>
+					<string>butterflyAnnimation/2.png</string>
 				</array>
 			</dict>
 			<dict>
@@ -636,6 +636,8 @@
 				<array/>
 			</dict>
 		</array>
+		<key>selected</key>
+		<true/>
 		<key>seqExpanded</key>
 		<true/>
 	</dict>
@@ -693,7 +695,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>1.2999999523162842</real>
+			<real>1.8333333730697632</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>

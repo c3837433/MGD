@@ -167,9 +167,12 @@ static const CGFloat scrollSpeed = 80.f;
     CCAnimationManager* animationManager = _butterfly.animationManager;
     [animationManager runAnimationsForSequenceNamed:@"FlyButterfly"];
     // move the butterfly to the middle row
+    //setPostion = 192;
+    setPostion = 0.5;
     moveButterflyUp = true;
-    setPostion = 152;
-    
+    //CGFloat currentPos = _butterfly.position.y;
+    //CCLOG(@"The butterfly is at %f", currentPos);
+    // ge
     //IF YOU WANT BACKGROUND MUSIC PLAYING
     //[audio playBg:@"background_music.mp3"];
 }
@@ -183,7 +186,7 @@ static const CGFloat scrollSpeed = 80.f;
             // The user bumped the top canopy
             CCLOG(@"Bouncing off canopy position");
             // set the position to move up slightly
-            CGPoint topPos = { _butterfly.position.x, setPostion + 15};
+            CGPoint topPos = { _butterfly.position.x, setPostion + .01};
             // create the action to move the butterfly up
             CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:topPos];
             didBumpTop = false;
@@ -276,7 +279,7 @@ static const CGFloat scrollSpeed = 80.f;
             // The Player Won; if it hasn't landed on the flower yet
             if (!didLand) {
                 // move to flower
-                CGPoint butterflyPosition =  ccp(1857 + 205, 115);
+                CGPoint butterflyPosition =  ccp(1857 + 225, .25);
                 // create the action to move the butterfly
                 CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:1.5f position:butterflyPosition];
                 CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
@@ -320,7 +323,7 @@ static const CGFloat scrollSpeed = 80.f;
         CGPoint objectPostion = [physicsNode convertToWorldSpace:piece.position];
         // get the current position on the screen
         CGPoint objectScreenPosition = [self convertToNodeSpace:objectPostion];
-        if (objectScreenPosition.x <= (- 0.5 * piece.contentSize.width)) {
+        if (objectScreenPosition.x <= ( -1 * piece.contentSize.width)) {
             piece.position = ccp(piece.position.x + 2 * piece.contentSize.width - 1, piece.position.y);
         }
     }
@@ -328,41 +331,47 @@ static const CGFloat scrollSpeed = 80.f;
 
 #pragma MARK - GESTURE METHODS
 - (void)swipeDown {
+    CGFloat currentPos = _butterfly.position.y;
+    CCLOG(@"The butterfly is at %f", currentPos);
     moveButterflyDown = true;
     CCLOG(@"User swiped down");
     // this was a tap on the butterfly, see where he is
-    if(_butterfly.position.y > 200){ //3
+    if(_butterfly.position.y > .6){ //3
         CCLOG(@"Butterfly is in the top, moving to middle");
         [audio playEffect:@"flap.mp3"];
-        setPostion = 152;
-    } else  if(_butterfly.position.y < 90){ //3
+        setPostion = .5;
+    } else  if(_butterfly.position.y < .3){ //3
         CCLOG(@"Butterfly will stay at the bottom");
         moveButterflyDown = false;
     } else {
         CCLOG(@"Butterfly is in the middle, moving to bottom");
-        setPostion = 85;
+        setPostion = .22;
         [audio playEffect:@"flap.mp3"];
     }
+
+    
 }
 
 -(void) swipeUp {
-    CCLOG(@"User Swiped up");
+    CGFloat currentPos = _butterfly.position.y;
+    CCLOG(@"The butterfly is at %f", currentPos);
+    //CCLOG(@"User Swiped up");
     moveButterflyUp = true;
     // this was a tap on the butterfly, see where he is
-    if(_butterfly.position.y > 200){ //3
+    if(_butterfly.position.y > .6){ //3
         CCLOG(@"Butterfly will stay at the top");
         [audio playEffect:@"bounce.mp3"];
-        setPostion = 223;
+        setPostion = .74;
         didBumpTop = TRUE;
         // NO movement needed
         moveButterflyUp = false;
-    }else  if(_butterfly.position.y < 90){ //3
+    }else  if(_butterfly.position.y < .30){ //3
         CCLOG(@"Butterfly is in the bottom, moving to middle");
-        setPostion = 152;
+        setPostion = .5;
         [audio playEffect:@"flap.mp3"];
     } else {
         CCLOG(@"Butterfly is in the middle, moving to top");
-        setPostion = 223;
+        setPostion = .74;
         [audio playEffect:@"flap.mp3"];
     }
 }

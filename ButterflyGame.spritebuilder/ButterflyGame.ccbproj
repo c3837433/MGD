@@ -63,7 +63,7 @@
 	<key>publishToZipFile</key>
 	<false/>
 	<key>resourceAutoScaleFactor</key>
-	<integer>2</integer>
+	<integer>4</integer>
 	<key>resourcePaths</key>
 	<array>
 		<dict>
@@ -81,10 +81,7 @@
 		<key>Sprites</key>
 		<dict/>
 		<key>assets</key>
-		<dict>
-			<key>isDirty</key>
-			<true/>
-		</dict>
+		<dict/>
 		<key>butterflyAnnimation</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>
