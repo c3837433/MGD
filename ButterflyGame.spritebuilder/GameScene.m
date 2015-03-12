@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
 
@@ -21,6 +22,9 @@ static const CGFloat scrollSpeed = 80.f;
     
     // Game nodes
     CCSprite* _butterfly;
+    CCSprite* _winButterfly;
+    CCSprite* _loseButterfly;
+    
     CCPhysicsNode* _gamePhysicNode;
     
     // PHYSICS NODE LAYER
@@ -65,12 +69,16 @@ static const CGFloat scrollSpeed = 80.f;
     BOOL didFinish;
     BOOL didLand;
     BOOL didDie;
+    BOOL didPause;
     
     CCNode* _levelNode;
+    CCNode* _gamePauseNode;
+    CCNode* _gameWinNode;
+    CCNode* _gameLoseNode;
     
     OALSimpleAudio* audio;
-    
-    CCButton* _reloadButton;
+
+    CCButton* _pauseButton;
     
     
     UITapGestureRecognizer* userTap;
@@ -89,6 +97,7 @@ static const CGFloat scrollSpeed = 80.f;
     didLand = false;
     didDie = false;
     didBumpTop = false;
+    didPause = false;
     
     //Load the first level
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
@@ -119,8 +128,8 @@ static const CGFloat scrollSpeed = 80.f;
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
     // Listen for a single tap for buttons
-    userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:userTap];
+   // userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
+   // [[[CCDirector sharedDirector] view] addGestureRecognizer:userTap];
     
     
     // SET BACKGROUND LAYERS FOR PARALLAX EFFECT
@@ -178,123 +187,130 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 #pragma MARK - FRAME UPDATES
-- (void)update:(CCTime)delta {
-    // CHECK IF THE USER IS STILL PLAYING
-    if (!didFinish) {
-        // NORMAL GAME PLAY, MOVE OBJECTS
-        if (didBumpTop) {
-            // The user bumped the top canopy
-            CCLOG(@"Bouncing off canopy position");
-            // set the position to move up slightly
-            CGPoint topPos = { _butterfly.position.x, setPostion + .01};
-            // create the action to move the butterfly up
-            CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:topPos];
-            didBumpTop = false;
-            CGPoint bottomPos = { _butterfly.position.x, setPostion};
-            // and back to the correct position
-            CCActionMoveTo* moveBack = [CCActionMoveTo actionWithDuration:.4 position:bottomPos];
-            // run the action sequence to bump the canopy
-            [_butterfly runAction:[CCActionSequence actions: moveTo, moveBack, nil]];
+    - (void)update:(CCTime)delta {
+        // CHECK IF THE USER IS STILL PLAYING
+        if (didPause) {
+            audio.bgPaused = TRUE;
+        } else  if (!didFinish) {
+            // NORMAL GAME PLAY, MOVE OBJECTS
+            if (didBumpTop) {
+                // The user bumped the top canopy
+                CCLOG(@"Bouncing off canopy position");
+                // set the position to move up slightly
+                CGPoint topPos = { _butterfly.position.x, setPostion + .01};
+                // create the action to move the butterfly up
+                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:topPos];
+                didBumpTop = false;
+                CGPoint bottomPos = { _butterfly.position.x, setPostion};
+                // and back to the correct position
+                CCActionMoveTo* moveBack = [CCActionMoveTo actionWithDuration:.4 position:bottomPos];
+                // run the action sequence to bump the canopy
+                [_butterfly runAction:[CCActionSequence actions: moveTo, moveBack, nil]];
 
-        } else {
-            // BUTTERFLY
-            _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
-        }
-
-        // CLOUD LAYER
-        // Move the clouds slowest
-        _farCloudNode.position = ccp(_farCloudNode.position.x - delta * (scrollSpeed - 50), _farCloudNode.position.y);
-        //loop the clouds
-        [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
-        
-        // BACK HILLS LAYER
-        _backhillNode.position = ccp(_backhillNode.position.x - delta * (scrollSpeed - 30), _backhillNode.position.y);
-        [self loopLayerObject:_backHillLayer withNode:_backhillNode];
-        
-        // TREELINE LAYER
-        _treelineNode.position = ccp(_treelineNode.position.x - delta * (scrollSpeed - 20), _treelineNode.position.y);
-        [self loopLayerObject:_treeLineLayer withNode:_treelineNode];
-    
-        
-        // FRONT HILLS LAYER
-        _frontHillNode.position = ccp(_frontHillNode.position.x - delta * (scrollSpeed - 10), _frontHillNode.position.y);
-        [self loopLayerObject:_frontHillLayer withNode:_frontHillNode];
-        
-        
-        // PHYSICS NODE LAYER
-        _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
-        // loop floor & canopy with the physics speed
-        [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
-        [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
-        [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
-        
-        // if we need to update the current position of the butterfly
-        if ((moveButterflyUp || (moveButterflyDown))) {
-            CCLOG(@"Updating position");
-            // get the current  x position and the new y
-            CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
-            // create the action to move the butterfly
-            CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.8 position:butterflyPosition];
-            // set the ease action to slightly drop for liftoff and settle when at right location
-            if (moveButterflyUp) {
-                CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
-                [_butterfly runAction: ease];
-            } else if ( moveButterflyDown) {
-                // gently lower back down
-                CCActionEaseBackOut*  ease = [CCActionEaseBackOut actionWithAction:moveTo];
-                [_butterfly runAction: ease];
+            } else {
+                // BUTTERFLY
+                _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
             }
-            // reset to prevent multiple movements
-            moveButterflyDown = false;
-            moveButterflyUp = false;
-        }
-        // WHEN BUTTERFLY FALLS BEHIND LEFT VIEW AREA
-        // make sure the butterfly did not leave the screen by checking it's position in the world
-        CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
-        // If the x is less than -50 it has completely disappeared off screen
-        if (objectPostion.x < -50) {
-            CCLOG(@"Butterfly is off screen");
-            didDie = YES;
-            didFinish = YES;
-            _reloadButton.visible = YES;
-        }
 
+            // CLOUD LAYER
+            // Move the clouds slowest
+            _farCloudNode.position = ccp(_farCloudNode.position.x - delta * (scrollSpeed - 50), _farCloudNode.position.y);
+            //loop the clouds
+            [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
+            
+            // BACK HILLS LAYER
+            _backhillNode.position = ccp(_backhillNode.position.x - delta * (scrollSpeed - 30), _backhillNode.position.y);
+            [self loopLayerObject:_backHillLayer withNode:_backhillNode];
+            
+            // TREELINE LAYER
+            _treelineNode.position = ccp(_treelineNode.position.x - delta * (scrollSpeed - 20), _treelineNode.position.y);
+            [self loopLayerObject:_treeLineLayer withNode:_treelineNode];
         
-    } else {
-          // THE GAME HAS ENDED FROM WIN OR LOSS
-        // Get the annimation manager
-        CCAnimationManager* animationManager = _butterfly.animationManager;
-        if (didDie) {
-            // Player died; check if it has landed yet
-            if (!didLand) {
-                audio.bgPaused = TRUE;
-                CCLOG(@"pausing annimation and playing death effect");
-                [animationManager setPaused:YES];
-                [audio playEffect:@"loseGame.mp3"];
-                didLand = true;
-            }
+            
+            // FRONT HILLS LAYER
+            _frontHillNode.position = ccp(_frontHillNode.position.x - delta * (scrollSpeed - 10), _frontHillNode.position.y);
+            [self loopLayerObject:_frontHillLayer withNode:_frontHillNode];
             
             
-        } else {
-            // The Player Won; if it hasn't landed on the flower yet
-            if (!didLand) {
-                // move to flower
-                CGPoint butterflyPosition =  ccp(1857 + 225, .25);
+            // PHYSICS NODE LAYER
+            _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
+            // loop floor & canopy with the physics speed
+            [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
+            [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
+            [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
+            
+            // if we need to update the current position of the butterfly
+            if ((moveButterflyUp || (moveButterflyDown))) {
+                CCLOG(@"Updating position");
+                // get the current  x position and the new y
+                CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
                 // create the action to move the butterfly
-                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:1.5f position:butterflyPosition];
-                CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
-                [_butterfly runAction: ease];
-                // Change the annimation
-                [animationManager runAnimationsForSequenceNamed:@"EndOnFlower"];
-                CCLOG(@"You win!");
-                didLand = true;
-                [audio playEffect:@"yahoo.mp3"];
-                // change the animation
-                [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
+                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.8 position:butterflyPosition];
+                // set the ease action to slightly drop for liftoff and settle when at right location
+                if (moveButterflyUp) {
+                    CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
+                    [_butterfly runAction: ease];
+                } else if ( moveButterflyDown) {
+                    // gently lower back down
+                    CCActionEaseBackOut*  ease = [CCActionEaseBackOut actionWithAction:moveTo];
+                    [_butterfly runAction: ease];
+                }
+                // reset to prevent multiple movements
+                moveButterflyDown = false;
+                moveButterflyUp = false;
+            }
+            // WHEN BUTTERFLY FALLS BEHIND LEFT VIEW AREA
+            // make sure the butterfly did not leave the screen by checking it's position in the world
+            CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
+            // If the x is less than -50 it has completely disappeared off screen
+            if (objectPostion.x < -50) {
+                CCLOG(@"Butterfly is off screen");
+                didDie = YES;
+                didFinish = YES;
+            }
+
+            
+        } else {
+              // THE GAME HAS ENDED FROM WIN OR LOSS
+            if (didDie) {
+                // Player died; check if it has landed yet
+                if (!didLand) {
+                    // Get the annimation manager
+                    CCAnimationManager* animationManager = _loseButterfly.animationManager;
+                    _gameLoseNode.visible = true;
+                    _butterfly.visible = false;
+                    [animationManager runAnimationsForSequenceNamed:@"SadButterfly"];
+                    audio.bgPaused = TRUE;
+                    CCLOG(@"pausing annimation and playing death effect");
+                    [animationManager setPaused:YES];
+                    [audio playEffect:@"loseGame.mp3"];
+                    didLand = true;
+                }
+                
+                
+            } else {
+                CCAnimationManager* animationManager = _winButterfly.animationManager;
+                // The Player Won; if it hasn't landed on the flower yet
+                if (!didLand) {
+                    // move to flower
+                    _gameWinNode.visible = true;
+                    _butterfly.visible = false;
+                    //CGPoint butterflyPosition =  ccp(1857 + 225, .25);
+                    // create the action to move the butterfly
+                    //CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:1.5f position:butterflyPosition];
+                    //CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
+                    //[_butterfly runAction: ease];
+                    // Change the annimation
+                   // [animationManager runAnimationsForSequenceNamed:@"EndOnFlower"];
+                    CCLOG(@"You win!");
+                    didLand = true;
+                    [audio playEffect:@"yahoo.mp3"];
+                    // change the animation
+                    [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
+                }
             }
         }
     }
-}
 
 
 #pragma MARK - BACKGROUND LOOPING FOR PARALLAX EFFECT
@@ -331,63 +347,74 @@ static const CGFloat scrollSpeed = 80.f;
 
 #pragma MARK - GESTURE METHODS
 - (void)swipeDown {
-    CGFloat currentPos = _butterfly.position.y;
-    CCLOG(@"The butterfly is at %f", currentPos);
-    moveButterflyDown = true;
-    CCLOG(@"User swiped down");
-    // this was a tap on the butterfly, see where he is
-    if(_butterfly.position.y > .6){ //3
-        CCLOG(@"Butterfly is in the top, moving to middle");
-        [audio playEffect:@"flap.mp3"];
-        setPostion = .5;
-    } else  if(_butterfly.position.y < .3){ //3
-        CCLOG(@"Butterfly will stay at the bottom");
-        moveButterflyDown = false;
-    } else {
-        CCLOG(@"Butterfly is in the middle, moving to bottom");
-        setPostion = .22;
-        [audio playEffect:@"flap.mp3"];
-    }
+    if (!didPause) {
+        CGFloat currentPos = _butterfly.position.y;
+        CCLOG(@"The butterfly is at %f", currentPos);
+        moveButterflyDown = true;
+        CCLOG(@"User swiped down");
+        // this was a tap on the butterfly, see where he is
+        if(_butterfly.position.y > .6){ //3
+            CCLOG(@"Butterfly is in the top, moving to middle");
+            [audio playEffect:@"flap.mp3"];
+            setPostion = .5;
+        } else  if(_butterfly.position.y < .3){ //3
+            CCLOG(@"Butterfly will stay at the bottom");
+            moveButterflyDown = false;
+        } else {
+            CCLOG(@"Butterfly is in the middle, moving to bottom");
+            setPostion = .22;
+            [audio playEffect:@"flap.mp3"];
+        }
+        
 
-    
+    }
 }
 
 -(void) swipeUp {
-    CGFloat currentPos = _butterfly.position.y;
-    CCLOG(@"The butterfly is at %f", currentPos);
-    //CCLOG(@"User Swiped up");
-    moveButterflyUp = true;
-    // this was a tap on the butterfly, see where he is
-    if(_butterfly.position.y > .6){ //3
-        CCLOG(@"Butterfly will stay at the top");
-        [audio playEffect:@"bounce.mp3"];
-        setPostion = .74;
-        didBumpTop = TRUE;
-        // NO movement needed
-        moveButterflyUp = false;
-    }else  if(_butterfly.position.y < .30){ //3
-        CCLOG(@"Butterfly is in the bottom, moving to middle");
-        setPostion = .5;
-        [audio playEffect:@"flap.mp3"];
-    } else {
-        CCLOG(@"Butterfly is in the middle, moving to top");
-        setPostion = .74;
-        [audio playEffect:@"flap.mp3"];
+    if (!didPause) {
+        CGFloat currentPos = _butterfly.position.y;
+        CCLOG(@"The butterfly is at %f", currentPos);
+        //CCLOG(@"User Swiped up");
+        moveButterflyUp = true;
+        // this was a tap on the butterfly, see where he is
+        if(_butterfly.position.y > .6){ //3
+            CCLOG(@"Butterfly will stay at the top");
+            [audio playEffect:@"bounce.mp3"];
+            setPostion = .74;
+            didBumpTop = TRUE;
+            // NO movement needed
+            moveButterflyUp = false;
+        }else  if(_butterfly.position.y < .30){ //3
+            CCLOG(@"Butterfly is in the bottom, moving to middle");
+            setPostion = .5;
+            [audio playEffect:@"flap.mp3"];
+        } else {
+            CCLOG(@"Butterfly is in the middle, moving to top");
+            setPostion = .74;
+            [audio playEffect:@"flap.mp3"];
+        }
+
     }
 }
-
+/*
 -(void) userTapped:(UITapGestureRecognizer *)recognizer {
     CCLOG(@"User tapped on screen");
-     CGPoint touchLocation = [[CCDirector sharedDirector] convertToGL:[self convertToNodeSpace:[userTap locationInView:[[CCDirector sharedDirector] view]]]];
-     if (CGRectContainsPoint([_reloadButton boundingBox], touchLocation)) {
+    CGPoint touchLocation = [[CCDirector sharedDirector] convertToGL:[self convertToNodeSpace:[userTap locationInView:[[CCDirector sharedDirector] view]]]];
+    if (CGRectContainsPoint([_reloadButton boundingBox], touchLocation)) {
        CCLOG(@"The reload button was touched");
          if (_reloadButton.visible) {
             [self reloadGame];
          }
-   }
+    } else if (CGRectContainsPoint([_pauseButton boundingBox], touchLocation)) {
+        CCLOG(@"The pause button was touched");
+        if (_pauseButton.visible) {
+            [self shouldPause];
+        }
+    }
+
 
 }
-
+*/
 #pragma MARK - COLLISION METHODS
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
     // Prepare audio
@@ -399,7 +426,6 @@ static const CGFloat scrollSpeed = 80.f;
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly end:(CCNode *)end {
     CCLOG(@"user finished the level");
     didFinish = true;
-    _reloadButton.visible = true;
     return TRUE;
 }
 
@@ -409,7 +435,6 @@ static const CGFloat scrollSpeed = 80.f;
     // stop the annimation
     didDie = true;
     didFinish = true;
-    _reloadButton.visible = true;
     return TRUE;
 }
 
@@ -419,7 +444,6 @@ static const CGFloat scrollSpeed = 80.f;
     // stop the annimation
     didDie = true;
     didFinish = true;
-    _reloadButton.visible = true;
     return TRUE;
 }
 
@@ -439,5 +463,57 @@ static const CGFloat scrollSpeed = 80.f;
 
 }
 
+-(void) shouldPause {
+    CCLOG(@"User paused the game");
+    // pause the physic node
+    _gamePhysicNode.paused = true;
+    didPause = true;
+    // Display the pause layer
+    _gamePauseNode.visible = true;
+}
+
+-(void) shouldExitFromPause {
+    CCLOG(@"User wants to exit from game");
+    // Return to main scene
+    CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+}
+
+-(void)shouldRestartFromPause {
+    CCLOG(@"User wants to restart game");
+    [self shouldResumeFromPause];
+    [self reloadGame];
+}
+
+-(void) shouldResumeFromPause {
+    CCLOG(@"User wants to resume  game");
+    _gamePauseNode.visible = NO;
+    didPause = false;
+    _gamePhysicNode.paused = NO;
+}
+
+-(void) winShouldReload {
+    CCLOG(@"User won, should reload game");
+    _gameWinNode.visible = false;
+    [self reloadGame];
+}
+
+-(void)winShouldExit {
+    CCLOG(@"User won, and wants to exit");
+    _gameWinNode.visible = false;
+    [self shouldExitFromPause];
+}
+
+-(void)loseShouldReload {
+     CCLOG(@"User lost, and wants to try again");
+    _gameLoseNode.visible = false;
+    [self reloadGame];
+}
+
+-(void)loseShouldExit {
+     CCLOG(@"User lost, and wants to exit");
+     [self shouldExitFromPause];
+}
 
 @end
