@@ -80,9 +80,6 @@ static const CGFloat scrollSpeed = 80.f;
 
     CCButton* _pauseButton;
     
-    
-    UITapGestureRecognizer* userTap;
-    
 }
 
 - (void)didLoadFromCCB {
@@ -127,10 +124,6 @@ static const CGFloat scrollSpeed = 80.f;
     UISwipeGestureRecognizer* swipeDown= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeDown)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
-    // Listen for a single tap for buttons
-   // userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
-   // [[[CCDirector sharedDirector] view] addGestureRecognizer:userTap];
-    
     
     // SET BACKGROUND LAYERS FOR PARALLAX EFFECT
     for (CCNode* cloud in _cloudsLayer) {
@@ -179,9 +172,7 @@ static const CGFloat scrollSpeed = 80.f;
     //setPostion = 192;
     setPostion = 0.5;
     moveButterflyUp = true;
-    //CGFloat currentPos = _butterfly.position.y;
-    //CCLOG(@"The butterfly is at %f", currentPos);
-    // ge
+
     //IF YOU WANT BACKGROUND MUSIC PLAYING
     //[audio playBg:@"background_music.mp3"];
 }
@@ -241,7 +232,7 @@ static const CGFloat scrollSpeed = 80.f;
             
             // if we need to update the current position of the butterfly
             if ((moveButterflyUp || (moveButterflyDown))) {
-                CCLOG(@"Updating position");
+              //  CCLOG(@"Updating position");
                 // get the current  x position and the new y
                 CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
                 // create the action to move the butterfly
@@ -333,7 +324,6 @@ static const CGFloat scrollSpeed = 80.f;
 // Loop the objects in the physics node
 -(void) loopLayerObject:(NSArray*) layerObjectArray withPhysicsNode:(CCPhysicsNode*) physicsNode {
     
-    // GROUND
     for (CCNode* piece in layerObjectArray) {
         // get the position of the ground
         CGPoint objectPostion = [physicsNode convertToWorldSpace:piece.position];
@@ -348,20 +338,20 @@ static const CGFloat scrollSpeed = 80.f;
 #pragma MARK - GESTURE METHODS
 - (void)swipeDown {
     if (!didPause) {
-        CGFloat currentPos = _butterfly.position.y;
-        CCLOG(@"The butterfly is at %f", currentPos);
+       // CGFloat currentPos = _butterfly.position.y;
+       // CCLOG(@"The butterfly is at %f", currentPos);
         moveButterflyDown = true;
-        CCLOG(@"User swiped down");
+       // CCLOG(@"User swiped down");
         // this was a tap on the butterfly, see where he is
         if(_butterfly.position.y > .6){ //3
-            CCLOG(@"Butterfly is in the top, moving to middle");
+       //     CCLOG(@"Butterfly is in the top, moving to middle");
             [audio playEffect:@"flap.mp3"];
             setPostion = .5;
         } else  if(_butterfly.position.y < .3){ //3
-            CCLOG(@"Butterfly will stay at the bottom");
+        //    CCLOG(@"Butterfly will stay at the bottom");
             moveButterflyDown = false;
         } else {
-            CCLOG(@"Butterfly is in the middle, moving to bottom");
+         //   CCLOG(@"Butterfly is in the middle, moving to bottom");
             setPostion = .22;
             [audio playEffect:@"flap.mp3"];
         }
@@ -372,49 +362,29 @@ static const CGFloat scrollSpeed = 80.f;
 
 -(void) swipeUp {
     if (!didPause) {
-        CGFloat currentPos = _butterfly.position.y;
-        CCLOG(@"The butterfly is at %f", currentPos);
         //CCLOG(@"User Swiped up");
         moveButterflyUp = true;
         // this was a tap on the butterfly, see where he is
         if(_butterfly.position.y > .6){ //3
-            CCLOG(@"Butterfly will stay at the top");
+           // CCLOG(@"Butterfly will stay at the top");
             [audio playEffect:@"bounce.mp3"];
             setPostion = .74;
             didBumpTop = TRUE;
             // NO movement needed
             moveButterflyUp = false;
         }else  if(_butterfly.position.y < .30){ //3
-            CCLOG(@"Butterfly is in the bottom, moving to middle");
+           // CCLOG(@"Butterfly is in the bottom, moving to middle");
             setPostion = .5;
             [audio playEffect:@"flap.mp3"];
         } else {
-            CCLOG(@"Butterfly is in the middle, moving to top");
+           // CCLOG(@"Butterfly is in the middle, moving to top");
             setPostion = .74;
             [audio playEffect:@"flap.mp3"];
         }
 
     }
 }
-/*
--(void) userTapped:(UITapGestureRecognizer *)recognizer {
-    CCLOG(@"User tapped on screen");
-    CGPoint touchLocation = [[CCDirector sharedDirector] convertToGL:[self convertToNodeSpace:[userTap locationInView:[[CCDirector sharedDirector] view]]]];
-    if (CGRectContainsPoint([_reloadButton boundingBox], touchLocation)) {
-       CCLOG(@"The reload button was touched");
-         if (_reloadButton.visible) {
-            [self reloadGame];
-         }
-    } else if (CGRectContainsPoint([_pauseButton boundingBox], touchLocation)) {
-        CCLOG(@"The pause button was touched");
-        if (_pauseButton.visible) {
-            [self shouldPause];
-        }
-    }
 
-
-}
-*/
 #pragma MARK - COLLISION METHODS
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
     // Prepare audio
@@ -448,21 +418,29 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly nectar:(CCNode *)nectar {
-    // Play nectar drop
-    [audio playEffect:@"drop.mp3"];
     CCLOG(@"butterfly hit a nectar");
-    [nectar removeFromParent];
+    // run the nectar disappear annimation
+    CCAnimationManager* animationManager = nectar.animationManager;
+    [animationManager setCompletedAnimationCallbackBlock:^(id sender) {
+        // Once done, remove the nectar drop
+        [nectar removeFromParent];
+        [audio playEffect:@"drop.mp3"];
+    }];
+    [animationManager runAnimationsForSequenceNamed:@"Disappear"];
     return TRUE;
 }
 
 #pragma MARK - RESET GAME
 -(void) reloadGame {
+    // pause the music
     audio.bgPaused = false;
+    // reload the scene
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     [[CCDirector sharedDirector] replaceScene:scene];
 
 }
 
+#pragma  mark - PAUSE MENU METHODS
 -(void) shouldPause {
     CCLOG(@"User paused the game");
     // pause the physic node
@@ -482,38 +460,48 @@ static const CGFloat scrollSpeed = 80.f;
 
 -(void)shouldRestartFromPause {
     CCLOG(@"User wants to restart game");
+    // pause game layer
     [self shouldResumeFromPause];
+    // restart game
     [self reloadGame];
 }
 
 -(void) shouldResumeFromPause {
     CCLOG(@"User wants to resume  game");
+    // show the pause menu
     _gamePauseNode.visible = NO;
     didPause = false;
+    // pause the physics layer
     _gamePhysicNode.paused = NO;
 }
 
+#pragma  mark - WIN / LOSS MENU METHODS
 -(void) winShouldReload {
     CCLOG(@"User won, should reload game");
+    // hide the win layer and reload the game
     _gameWinNode.visible = false;
     [self reloadGame];
 }
 
 -(void)winShouldExit {
     CCLOG(@"User won, and wants to exit");
+    // hid the win layer and move back to the main view
     _gameWinNode.visible = false;
     [self shouldExitFromPause];
 }
 
 -(void)loseShouldReload {
      CCLOG(@"User lost, and wants to try again");
+    // hide the lose layer and reload
     _gameLoseNode.visible = false;
     [self reloadGame];
 }
 
 -(void)loseShouldExit {
      CCLOG(@"User lost, and wants to exit");
+    // return to the main
      [self shouldExitFromPause];
 }
+
 
 @end

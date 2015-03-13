@@ -1574,7 +1574,7 @@
 								<key>customClass</key>
 								<string></string>
 								<key>displayName</key>
-								<string>CCNode</string>
+								<string>Level Node</string>
 								<key>memberVarAssignmentName</key>
 								<string>_levelNode</string>
 								<key>memberVarAssignmentType</key>
@@ -2106,7 +2106,7 @@
 								<key>customClass</key>
 								<string></string>
 								<key>displayName</key>
-								<string>CCBFile</string>
+								<string>Butterfly</string>
 								<key>memberVarAssignmentName</key>
 								<string>_butterfly</string>
 								<key>memberVarAssignmentType</key>
@@ -2128,7 +2128,7 @@
 									<key>cornerRadius</key>
 									<real>0.0</real>
 									<key>density</key>
-									<real>1</real>
+									<real>40</real>
 									<key>dynamic</key>
 									<true/>
 									<key>elasticity</key>
@@ -2358,6 +2358,8 @@
 										<string>Butterfly.ccb</string>
 									</dict>
 								</array>
+								<key>selected</key>
+								<true/>
 							</dict>
 							<dict>
 								<key>UUID</key>
@@ -3826,8 +3828,6 @@
 										</array>
 									</dict>
 								</array>
-								<key>selected</key>
-								<true/>
 							</dict>
 							<dict>
 								<key>UUID</key>
@@ -5626,10 +5626,10 @@ Complete!</string>
 								<key>value</key>
 								<array>
 									<real>248.54400634765625</real>
-									<real>267.5</real>
+									<real>0.69661456346511841</real>
 									<integer>0</integer>
 									<integer>0</integer>
-									<integer>0</integer>
+									<integer>2</integer>
 								</array>
 							</dict>
 							<dict>
@@ -6744,10 +6744,10 @@ didn't make it.</string>
 								<key>value</key>
 								<array>
 									<real>252.34397888183594</real>
-									<real>267.5</real>
+									<real>0.69661456346511841</real>
 									<integer>0</integer>
 									<integer>0</integer>
-									<integer>0</integer>
+									<integer>2</integer>
 								</array>
 							</dict>
 							<dict>

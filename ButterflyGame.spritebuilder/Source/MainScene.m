@@ -7,18 +7,27 @@
 
 #import "MainScene.h"
 
-@implementation MainScene
+@implementation MainScene {
+
+    CCSprite* _mainButterfly;
+    CCAnimationManager* animationManager;
+
+}
 
 //Once the game file loads, allow user interaction so the player can view the game scene
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
+    animationManager = _mainButterfly.animationManager;
+    [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
     // Preload the music
     //[[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
 
 // When the user presses the play button
 - (void) startGame {
+    
+    [animationManager setPaused:YES];
     // Switch to the game scene
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
