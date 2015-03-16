@@ -135,6 +135,11 @@ static const CGFloat scrollSpeed = 80.f;
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
     
+    // also add for for swipes right
+    UISwipeGestureRecognizer* swipeRight= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
+    
     // SET BACKGROUND LAYERS FOR PARALLAX EFFECT
     for (CCNode* cloud in _cloudsLayer) {
         cloud.zOrder = DrawingOrderClouds;
@@ -213,7 +218,7 @@ static const CGFloat scrollSpeed = 80.f;
             audio.bgPaused = TRUE;
         } else  if (!didFinish) {
             timeElapsed = timeElapsed + delta;
-            CCLOG(@"Time elapsed: %f", timeElapsed);
+           // CCLOG(@"Time elapsed: %f", timeElapsed);
 
             // NORMAL GAME PLAY, MOVE OBJECTS
             if (didBumpTop) {
@@ -232,7 +237,15 @@ static const CGFloat scrollSpeed = 80.f;
 
             } else {
                 // BUTTERFLY
-                _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
+                // set speed based on position
+                if (_butterfly.position.x < 600) {
+                    // give it a little boost
+                   _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
+                } else {
+                    // normal speed
+                    _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, _butterfly.position.y);
+                }
+                
                 CCAnimationManager* animationManager = _healthNectar.animationManager;
                 // update the health bar
                // Reduce the health bar
@@ -470,11 +483,57 @@ static const CGFloat scrollSpeed = 80.f;
     }
 }
 
+-(void)swipeRight {
+    // make sure we are not done
+    if ((!didPause) && (!didFinish)) {
+        CGPoint currentPosition = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
+        //CCLOG(@"Current dash position : %f", currentPosition.x);
+        CCAnimationManager* animationManager = _butterfly.animationManager;
+        [animationManager runAnimationsForSequenceNamed:@"BoostFlap"];
+        // If the butterfly is not past the dash level
+        CGFloat currentXPos = (currentPosition.x < 400) ? _butterfly.position.x + 60 : _butterfly.position.x;
+        // set the end dash position
+        CGPoint dashPos = { currentXPos, setPostion};
+        // start rotating the butterfly slightly
+        CCActionRotateBy* rotate = [CCActionRotateBy actionWithDuration:.2 angle:35];
+        // move to position
+        CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:dashPos];
+        // return the butterfly to it's original angle
+        CCActionRotateBy* rotateBack = [CCActionRotateBy actionWithDuration:.2 angle:-35];
+        // prepare the sequence with the callback
+        CCActionSequence *sequence = [CCActionSequence actionWithArray:@[rotate, moveTo, rotateBack, [CCActionCallFunc actionWithTarget:self selector:@selector(finishedDashSequence)]]];
+        // run the sequence
+        [_butterfly runAction:sequence];
+        // reduce the energy bar
+        if (_healthColorBar.scaleX - .04 < 0) {
+            // if it would be more than the current, set to full
+            _healthColorBar.scaleX = 0;
+        } else {
+            // otherwise add to the bar
+            [_healthColorBar setScaleX:_healthColorBar.scaleX - .04];
+        }
+    }
+}
+
+// WHEN DASH SEQUENCE IS COMPLETE
+-(void)finishedDashSequence{
+    CCAnimationManager* animationManager = _butterfly.animationManager;
+    // stop the fast flying
+    [animationManager runAnimationsForSequenceNamed:@"FlyButterfly"];
+}
+
 #pragma MARK - COLLISION METHODS
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
-    // Prepare audio
-    NSLog(@"The butterfly hit the rock");
+
+    // Play audio
     [audio playEffect:@"bounce.mp3"];
+
+    CCParticleSystem* rockDust = (CCParticleSystem *)[CCBReader load:@"BumpDust"];
+    rockDust.autoRemoveOnFinish = TRUE;
+    // set dust off the rock
+    rockDust.position = rock.position;
+    // add the effect to the rock parent node
+    [rock.parent addChild:rockDust];
     return TRUE;
 }
 
@@ -503,7 +562,7 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly nectar:(CCNode *)nectar {
-    CCLOG(@"butterfly hit a nectar");
+    //CCLOG(@"butterfly hit a nectar");
     dropsGathered = dropsGathered + 1;
     // run the nectar disappear annimation
     CCAnimationManager* animationManager = nectar.animationManager;
@@ -521,7 +580,7 @@ static const CGFloat scrollSpeed = 80.f;
         }
         
     }];
-    [animationManager runAnimationsForSequenceNamed:@"Disappear"];
+    [animationManager runAnimationsForSequenceNamed:@"NectarSpriteSheetAnnimation"];
     return TRUE;
 }
 

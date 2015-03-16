@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>117</integer>
+	<integer>119</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -2138,80 +2138,102 @@
 									<key>points</key>
 									<array>
 										<array>
-											<real>3.8965110778808594</real>
-											<real>16.348455429077148</real>
+											<real>14.97149658203125</real>
+											<real>23.142433166503906</real>
 										</array>
 										<array>
-											<real>3.2449486255645752</real>
-											<real>40.451580047607422</real>
+											<real>15.69610595703125</real>
+											<real>39.822120666503906</real>
 										</array>
 										<array>
-											<real>9.2332296371459961</real>
-											<real>50.372673034667969</real>
+											<real>19.53204345703125</real>
+											<real>48.476417541503906</real>
 										</array>
 										<array>
-											<real>12.990261077880859</real>
-											<real>91.603927612304688</real>
+											<real>19.27423095703125</real>
+											<real>83.915870666503906</real>
 										</array>
 										<array>
-											<real>35.363700866699219</real>
-											<real>95.13128662109375</real>
+											<real>34.21173095703125</real>
+											<real>85.320167541503906</real>
 										</array>
 										<array>
-											<real>46.060573577880859</real>
-											<real>81.631271362304688</real>
+											<real>42.73712158203125</real>
+											<real>76.923683166503906</real>
 										</array>
 										<array>
-											<real>54.821529388427734</real>
-											<real>76.385955810546875</real>
+											<real>48.780082702636719</real>
+											<real>71.673683166503906</real>
 										</array>
 										<array>
-											<real>57.160594940185547</real>
-											<real>69.425018310546875</real>
+											<real>55.19415283203125</real>
+											<real>66.468605041503906</real>
 										</array>
 										<array>
-											<real>59.384811401367188</real>
-											<real>57.725017547607422</real>
+											<real>54.82305908203125</real>
+											<real>57.812355041503906</real>
 										</array>
 										<array>
-											<real>66.387939453125</real>
-											<real>51.251579284667969</real>
+											<real>52.24688720703125</real>
+											<real>47.658058166503906</real>
 										</array>
 										<array>
-											<real>69.055122375488281</real>
-											<real>42.064079284667969</real>
+											<real>64.04766845703125</real>
+											<real>46.564308166503906</real>
 										</array>
 										<array>
 											<real>51.045749664306641</real>
 											<real>42.218769073486328</real>
 										</array>
 										<array>
-											<real>59.051998138427734</real>
-											<real>24.964080810546875</real>
+											<real>54.910957336425781</real>
+											<real>29.382667541503906</real>
 										</array>
 										<array>
-											<real>39.748855590820312</real>
-											<real>22.936737060546875</real>
+											<real>44.64337158203125</real>
+											<real>25.900253295898438</real>
 										</array>
 										<array>
-											<real>28.091043472290039</real>
-											<real>14.642204284667969</real>
+											<real>38.10040283203125</real>
+											<real>33.201026916503906</real>
 										</array>
 										<array>
-											<real>19.505886077880859</real>
-											<real>13.214860916137695</real>
+											<real>28.68634033203125</real>
+											<real>19.935401916503906</real>
+										</array>
+										<array>
+											<real>25.35040283203125</real>
+											<real>24.495948791503906</real>
 										</array>
 									</array>
 									<key>polygons</key>
 									<array>
 										<array>
 											<array>
-												<real>39.748855590820312</real>
-												<real>22.936737060546875</real>
+												<real>25.35040283203125</real>
+												<real>24.495948791503906</real>
 											</array>
 											<array>
-												<real>59.051998138427734</real>
-												<real>24.964080810546875</real>
+												<real>28.68634033203125</real>
+												<real>19.935401916503906</real>
+											</array>
+											<array>
+												<real>38.10040283203125</real>
+												<real>33.201026916503906</real>
+											</array>
+										</array>
+										<array>
+											<array>
+												<real>38.10040283203125</real>
+												<real>33.201026916503906</real>
+											</array>
+											<array>
+												<real>44.64337158203125</real>
+												<real>25.900253295898438</real>
+											</array>
+											<array>
+												<real>54.910957336425781</real>
+												<real>29.382667541503906</real>
 											</array>
 											<array>
 												<real>51.045749664306641</real>
@@ -2224,90 +2246,106 @@
 												<real>42.218769073486328</real>
 											</array>
 											<array>
-												<real>69.055122375488281</real>
-												<real>42.064079284667969</real>
+												<real>64.04766845703125</real>
+												<real>46.564308166503906</real>
 											</array>
 											<array>
-												<real>66.387939453125</real>
-												<real>51.251579284667969</real>
-											</array>
-											<array>
-												<real>59.384811401367188</real>
-												<real>57.725017547607422</real>
+												<real>52.24688720703125</real>
+												<real>47.658058166503906</real>
 											</array>
 										</array>
 										<array>
 											<array>
-												<real>59.384811401367188</real>
-												<real>57.725017547607422</real>
+												<real>52.24688720703125</real>
+												<real>47.658058166503906</real>
 											</array>
 											<array>
-												<real>57.160594940185547</real>
-												<real>69.425018310546875</real>
+												<real>54.82305908203125</real>
+												<real>57.812355041503906</real>
 											</array>
 											<array>
-												<real>54.821529388427734</real>
-												<real>76.385955810546875</real>
-											</array>
-											<array>
-												<real>46.060573577880859</real>
-												<real>81.631271362304688</real>
+												<real>55.19415283203125</real>
+												<real>66.468605041503906</real>
 											</array>
 										</array>
 										<array>
 											<array>
-												<real>9.2332296371459961</real>
-												<real>50.372673034667969</real>
+												<real>52.24688720703125</real>
+												<real>47.658058166503906</real>
 											</array>
 											<array>
-												<real>3.2449486255645752</real>
-												<real>40.451580047607422</real>
+												<real>55.19415283203125</real>
+												<real>66.468605041503906</real>
 											</array>
 											<array>
-												<real>3.8965110778808594</real>
-												<real>16.348455429077148</real>
-											</array>
-											<array>
-												<real>19.505886077880859</real>
-												<real>13.214860916137695</real>
+												<real>48.780082702636719</real>
+												<real>71.673683166503906</real>
 											</array>
 										</array>
 										<array>
 											<array>
-												<real>19.505886077880859</real>
-												<real>13.214860916137695</real>
+												<real>42.73712158203125</real>
+												<real>76.923683166503906</real>
 											</array>
 											<array>
-												<real>28.091043472290039</real>
-												<real>14.642204284667969</real>
+												<real>34.21173095703125</real>
+												<real>85.320167541503906</real>
 											</array>
 											<array>
-												<real>39.748855590820312</real>
-												<real>22.936737060546875</real>
+												<real>19.27423095703125</real>
+												<real>83.915870666503906</real>
+											</array>
+										</array>
+										<array>
+											<array>
+												<real>19.53204345703125</real>
+												<real>48.476417541503906</real>
+											</array>
+											<array>
+												<real>15.69610595703125</real>
+												<real>39.822120666503906</real>
+											</array>
+											<array>
+												<real>14.97149658203125</real>
+												<real>23.142433166503906</real>
+											</array>
+											<array>
+												<real>25.35040283203125</real>
+												<real>24.495948791503906</real>
+											</array>
+											<array>
+												<real>38.10040283203125</real>
+												<real>33.201026916503906</real>
+											</array>
+										</array>
+										<array>
+											<array>
+												<real>38.10040283203125</real>
+												<real>33.201026916503906</real>
 											</array>
 											<array>
 												<real>51.045749664306641</real>
 												<real>42.218769073486328</real>
 											</array>
 											<array>
-												<real>59.384811401367188</real>
-												<real>57.725017547607422</real>
+												<real>52.24688720703125</real>
+												<real>47.658058166503906</real>
 											</array>
 											<array>
-												<real>46.060573577880859</real>
-												<real>81.631271362304688</real>
+												<real>48.780082702636719</real>
+												<real>71.673683166503906</real>
 											</array>
 											<array>
-												<real>35.363700866699219</real>
-												<real>95.13128662109375</real>
+												<real>42.73712158203125</real>
+												<real>76.923683166503906</real>
 											</array>
 											<array>
-												<real>12.990261077880859</real>
-												<real>91.603927612304688</real>
+												<real>19.27423095703125</real>
+												<real>83.915870666503906</real>
 											</array>
 											<array>
-												<real>9.2332296371459961</real>
-												<real>50.372673034667969</real>
+												<real>19.53204345703125</real>
+												<real>48.476417541503906</real>
 											</array>
 										</array>
 									</array>
@@ -2848,125 +2886,289 @@
 			</dict>
 			<dict>
 				<key>UUID</key>
-				<integer>94</integer>
+				<integer>118</integer>
 				<key>baseClass</key>
-				<string>CCSprite</string>
+				<string>CCPhysicsNode</string>
 				<key>children</key>
-				<array/>
-				<key>customClass</key>
-				<string></string>
-				<key>displayName</key>
-				<string>healthBar</string>
-				<key>memberVarAssignmentName</key>
-				<string></string>
-				<key>memberVarAssignmentType</key>
-				<integer>1</integer>
-				<key>properties</key>
 				<array>
 					<dict>
-						<key>name</key>
-						<string>name</string>
-						<key>type</key>
-						<string>StringSimple</string>
-						<key>value</key>
-						<string></string>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>position</string>
-						<key>type</key>
-						<string>Position</string>
-						<key>value</key>
-						<array>
-							<real>68</real>
-							<real>16.399999618530273</real>
-							<integer>1</integer>
-							<integer>0</integer>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>anchorPoint</string>
-						<key>type</key>
-						<string>Point</string>
-						<key>value</key>
-						<array>
-							<real>0.5</real>
-							<real>0.5</real>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>scale</string>
-						<key>type</key>
-						<string>ScaleLock</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<false/>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>spriteFrame</string>
-						<key>type</key>
-						<string>SpriteFrame</string>
-						<key>value</key>
-						<array>
-							<string></string>
-							<string>menuAssets/healthBar.png</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>normalMapSpriteFrame</string>
-						<key>type</key>
-						<string>SpriteFrame</string>
-						<key>value</key>
-						<array>
-							<string></string>
-							<string></string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>color</string>
-						<key>type</key>
-						<string>Color3</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>effects</string>
-						<key>type</key>
-						<string>EffectControl</string>
-						<key>value</key>
+						<key>UUID</key>
+						<integer>94</integer>
+						<key>baseClass</key>
+						<string>CCSprite</string>
+						<key>children</key>
 						<array/>
+						<key>customClass</key>
+						<string></string>
+						<key>displayName</key>
+						<string>healthBar</string>
+						<key>memberVarAssignmentName</key>
+						<string></string>
+						<key>memberVarAssignmentType</key>
+						<integer>1</integer>
+						<key>properties</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>name</string>
+								<key>type</key>
+								<string>StringSimple</string>
+								<key>value</key>
+								<string></string>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>position</string>
+								<key>type</key>
+								<string>Position</string>
+								<key>value</key>
+								<array>
+									<real>68</real>
+									<real>16.399999618530273</real>
+									<integer>1</integer>
+									<integer>0</integer>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>anchorPoint</string>
+								<key>type</key>
+								<string>Point</string>
+								<key>value</key>
+								<array>
+									<real>0.5</real>
+									<real>0.5</real>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>scale</string>
+								<key>type</key>
+								<string>ScaleLock</string>
+								<key>value</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+									<false/>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>spriteFrame</string>
+								<key>type</key>
+								<string>SpriteFrame</string>
+								<key>value</key>
+								<array>
+									<string></string>
+									<string>menuAssets/healthBar.png</string>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>normalMapSpriteFrame</string>
+								<key>type</key>
+								<string>SpriteFrame</string>
+								<key>value</key>
+								<array>
+									<string></string>
+									<string></string>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>color</string>
+								<key>type</key>
+								<string>Color3</string>
+								<key>value</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+									<real>1</real>
+									<real>1</real>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>effects</string>
+								<key>type</key>
+								<string>EffectControl</string>
+								<key>value</key>
+								<array/>
+							</dict>
+						</array>
+					</dict>
+					<dict>
+						<key>UUID</key>
+						<integer>95</integer>
+						<key>baseClass</key>
+						<string>CCNodeColor</string>
+						<key>children</key>
+						<array/>
+						<key>customClass</key>
+						<string></string>
+						<key>displayName</key>
+						<string>CCNodeColor</string>
+						<key>memberVarAssignmentName</key>
+						<string>_healthColorBar</string>
+						<key>memberVarAssignmentType</key>
+						<integer>1</integer>
+						<key>properties</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>name</string>
+								<key>type</key>
+								<string>StringSimple</string>
+								<key>value</key>
+								<string></string>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>position</string>
+								<key>type</key>
+								<string>Position</string>
+								<key>value</key>
+								<array>
+									<real>32</real>
+									<real>20.5</real>
+									<integer>1</integer>
+									<integer>0</integer>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>contentSize</string>
+								<key>type</key>
+								<string>Size</string>
+								<key>value</key>
+								<array>
+									<real>70</real>
+									<real>8</real>
+									<integer>0</integer>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>anchorPoint</string>
+								<key>type</key>
+								<string>Point</string>
+								<key>value</key>
+								<array>
+									<real>0.0</real>
+									<real>0.0</real>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>scale</string>
+								<key>type</key>
+								<string>ScaleLock</string>
+								<key>value</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+									<false/>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>color</string>
+								<key>type</key>
+								<string>Color3</string>
+								<key>value</key>
+								<array>
+									<real>0.20000000298023224</real>
+									<real>0.60000002384185791</real>
+									<real>0.20000000298023224</real>
+									<real>1</real>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>opacity</string>
+								<key>type</key>
+								<string>Float</string>
+								<key>value</key>
+								<real>1</real>
+							</dict>
+						</array>
+					</dict>
+					<dict>
+						<key>UUID</key>
+						<integer>116</integer>
+						<key>baseClass</key>
+						<string>CCBFile</string>
+						<key>children</key>
+						<array/>
+						<key>customClass</key>
+						<string></string>
+						<key>displayName</key>
+						<string>Nectar</string>
+						<key>memberVarAssignmentName</key>
+						<string>_healthNectar</string>
+						<key>memberVarAssignmentType</key>
+						<integer>1</integer>
+						<key>properties</key>
+						<array>
+							<dict>
+								<key>name</key>
+								<string>name</string>
+								<key>type</key>
+								<string>StringSimple</string>
+								<key>value</key>
+								<string></string>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>position</string>
+								<key>type</key>
+								<string>Position</string>
+								<key>value</key>
+								<array>
+									<real>22.184000015258789</real>
+									<real>31</real>
+									<integer>1</integer>
+									<integer>0</integer>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>scale</string>
+								<key>type</key>
+								<string>ScaleLock</string>
+								<key>value</key>
+								<array>
+									<real>1</real>
+									<real>1</real>
+									<false/>
+									<integer>0</integer>
+								</array>
+							</dict>
+							<dict>
+								<key>name</key>
+								<string>ccbFile</string>
+								<key>type</key>
+								<string>CCBFile</string>
+								<key>value</key>
+								<string>Nectar.ccb</string>
+							</dict>
+						</array>
+						<key>selected</key>
+						<true/>
 					</dict>
 				</array>
-			</dict>
-			<dict>
-				<key>UUID</key>
-				<integer>95</integer>
-				<key>baseClass</key>
-				<string>CCNodeColor</string>
-				<key>children</key>
-				<array/>
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>CCNodeColor</string>
+				<string>CCPhysicsNode</string>
 				<key>memberVarAssignmentName</key>
-				<string>_healthColorBar</string>
+				<string></string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -2986,11 +3188,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>32</real>
-							<real>20.5</real>
+							<real>0.0</real>
+							<real>0.1302083283662796</real>
 							<integer>1</integer>
 							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -3000,10 +3202,10 @@
 						<string>Size</string>
 						<key>value</key>
 						<array>
-							<real>70</real>
-							<real>8</real>
+							<real>50</real>
+							<real>0.1302083283662796</real>
 							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -3032,86 +3234,22 @@
 					</dict>
 					<dict>
 						<key>name</key>
-						<string>color</string>
+						<string>gravity</string>
 						<key>type</key>
-						<string>Color3</string>
+						<string>Point</string>
 						<key>value</key>
 						<array>
-							<real>0.20000000298023224</real>
-							<real>0.60000002384185791</real>
-							<real>0.20000000298023224</real>
-							<real>1</real>
+							<real>0.0</real>
+							<real>-100</real>
 						</array>
 					</dict>
 					<dict>
 						<key>name</key>
-						<string>opacity</string>
+						<string>sleepTimeThreshold</string>
 						<key>type</key>
 						<string>Float</string>
 						<key>value</key>
-						<real>1</real>
-					</dict>
-				</array>
-			</dict>
-			<dict>
-				<key>UUID</key>
-				<integer>116</integer>
-				<key>baseClass</key>
-				<string>CCBFile</string>
-				<key>children</key>
-				<array/>
-				<key>customClass</key>
-				<string></string>
-				<key>displayName</key>
-				<string>Nectar</string>
-				<key>memberVarAssignmentName</key>
-				<string>_healthNectar</string>
-				<key>memberVarAssignmentType</key>
-				<integer>1</integer>
-				<key>properties</key>
-				<array>
-					<dict>
-						<key>name</key>
-						<string>name</string>
-						<key>type</key>
-						<string>StringSimple</string>
-						<key>value</key>
-						<string></string>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>position</string>
-						<key>type</key>
-						<string>Position</string>
-						<key>value</key>
-						<array>
-							<real>21</real>
-							<real>28.75</real>
-							<integer>1</integer>
-							<integer>0</integer>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>scale</string>
-						<key>type</key>
-						<string>ScaleLock</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<false/>
-							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>ccbFile</string>
-						<key>type</key>
-						<string>CCBFile</string>
-						<key>value</key>
-						<string>Nectar.ccb</string>
+						<real>0.5</real>
 					</dict>
 				</array>
 			</dict>
@@ -5732,8 +5870,6 @@ Complete!</string>
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -6808,8 +6944,8 @@ didn't make it.</string>
 						<key>value</key>
 						<array>
 							<real>0.0</real>
-							<real>0.0</real>
-							<integer>0</integer>
+							<real>384</real>
+							<integer>1</integer>
 							<integer>0</integer>
 							<integer>0</integer>
 						</array>
