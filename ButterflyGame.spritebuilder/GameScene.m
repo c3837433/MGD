@@ -15,6 +15,9 @@ static const CGFloat scrollSpeed = 80.f;
     
     // Butterfly movement and position
     CGFloat setPostion;
+    CGFloat dropsGathered;
+    CGFloat timeElapsed;
+    
     BOOL moveButterflyUp;
     BOOL moveButterflyDown;
     BOOL didBumpTop;
@@ -70,6 +73,7 @@ static const CGFloat scrollSpeed = 80.f;
     BOOL didLand;
     BOOL didDie;
     BOOL didPause;
+    BOOL nectarWarningRunning;
     
     CCNode* _levelNode;
     CCNode* _gamePauseNode;
@@ -80,21 +84,27 @@ static const CGFloat scrollSpeed = 80.f;
 
     CCButton* _pauseButton;
     
+    // Health Bar
+    CCNodeColor* _healthColorBar;
+    CCNode* _healthNectar;
+    CGFloat currentEnergy;
+    
+    CCLabelTTF* _winScoreLabel;
 }
 
 - (void)didLoadFromCCB {
     CCLOG(@"Loaded Game");
-    // get audio ready
-    audio = [OALSimpleAudio sharedInstance];
-    // Preload the music
-    [audio  preloadBg:@"background_music.mp3"];
     
+    [self preloadMusic];
     // preset conditionals for frame updates
     didFinish = false;
     didLand = false;
     didDie = false;
     didBumpTop = false;
     didPause = false;
+    nectarWarningRunning = false;
+    dropsGathered = 0;
+    timeElapsed = 0;
     
     //Load the first level
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
@@ -149,6 +159,8 @@ static const CGFloat scrollSpeed = 80.f;
         floor.zOrder = DrawingOrderFloor;
     }
     
+    // set up the energy properties total nectar available = 15, required to complete easy level = 5
+    currentEnergy = 1;
     
     // COLLISION DELEGATE
     _gamePhysicNode.collisionDelegate = self;
@@ -160,6 +172,23 @@ static const CGFloat scrollSpeed = 80.f;
     // set the butterfly to start animatting
     [self LaunchButterfly];
     
+    // set Health bar
+    CCAnimationManager* animationManager = _healthNectar.animationManager;
+    [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
+}
+
+// PRELOAD MUSIC
+-(void) preloadMusic {
+    // get audio ready
+    audio = [OALSimpleAudio sharedInstance];
+    // Preload the music
+    [audio  preloadBg:@"background_music.mp3"];
+    [audio preloadEffect:@"loseGame.mp3"];
+    [audio preloadEffect:@"yahoo.mp3"];
+    [audio preloadEffect:@"flap.mp3"];
+    [audio preloadEffect:@"bounce.mp3"];
+    [audio preloadEffect:@"drop.mp3"];
+    [audio preloadEffect:@"enemy.mp3"];
 }
 
 // GET THE BUTTERFLY AND BEGIN ANIMATING IT
@@ -183,6 +212,9 @@ static const CGFloat scrollSpeed = 80.f;
         if (didPause) {
             audio.bgPaused = TRUE;
         } else  if (!didFinish) {
+            timeElapsed = timeElapsed + delta;
+            CCLOG(@"Time elapsed: %f", timeElapsed);
+
             // NORMAL GAME PLAY, MOVE OBJECTS
             if (didBumpTop) {
                 // The user bumped the top canopy
@@ -201,6 +233,44 @@ static const CGFloat scrollSpeed = 80.f;
             } else {
                 // BUTTERFLY
                 _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
+                CCAnimationManager* animationManager = _healthNectar.animationManager;
+                // update the health bar
+               // Reduce the health bar
+                //CCLOG(@"Health bar scale x = %f", _healthColorBar.scaleX);
+                [_healthColorBar setScaleX:_healthColorBar.scaleX - .0015];
+                currentEnergy = _healthColorBar.scaleX;
+                if (currentEnergy < 0.5) {
+                    // change the color
+                    if (currentEnergy < 0.3) {
+                        // Red color
+                        _healthColorBar.color = [CCColor colorWithRed:0.89 green:0.22 blue:0.18 alpha:1];
+                        if (!nectarWarningRunning) {
+                            // if the warning is not running, start it
+                            [animationManager runAnimationsForSequenceNamed:@"LowNectar"];
+                            nectarWarningRunning = true;
+                        }
+
+
+                    } else {
+                        // Orange/yellow color
+                        _healthColorBar.color = [CCColor colorWithRed:0.99 green:0.64 blue:0.26 alpha:1];
+                        if (nectarWarningRunning) {
+                            // stop it
+                            [animationManager paused];
+                            nectarWarningRunning = false;
+                            [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
+                        }
+                    }
+                } else {
+                    // Green color
+                    _healthColorBar.color = [CCColor colorWithRed:0.27 green:0.68 blue:0.13 alpha:1];
+                }
+
+            }
+            
+            if (currentEnergy <= 0) {
+                didDie = YES;
+                didFinish = YES;
             }
 
             // CLOUD LAYER
@@ -298,6 +368,20 @@ static const CGFloat scrollSpeed = 80.f;
                     [audio playEffect:@"yahoo.mp3"];
                     // change the animation
                     [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
+                    // update the label with a score
+                    float updateForTime = 1;
+                    int totalScore = timeElapsed * (dropsGathered * 8);
+                    CCLOG(@"Total Score: %d", totalScore);
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                        for (int i = 1; i < totalScore; i ++) {
+                            //increment the count
+                            usleep(updateForTime/100 * 10000);
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                // update the score
+                                _winScoreLabel.string = [NSString stringWithFormat:@"Score %d", i];
+                            });
+                        }
+                    });
                 }
             }
         }
@@ -334,6 +418,7 @@ static const CGFloat scrollSpeed = 80.f;
         }
     }
 }
+
 
 #pragma MARK - GESTURE METHODS
 - (void)swipeDown {
@@ -419,12 +504,22 @@ static const CGFloat scrollSpeed = 80.f;
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly nectar:(CCNode *)nectar {
     CCLOG(@"butterfly hit a nectar");
+    dropsGathered = dropsGathered + 1;
     // run the nectar disappear annimation
     CCAnimationManager* animationManager = nectar.animationManager;
     [animationManager setCompletedAnimationCallbackBlock:^(id sender) {
         // Once done, remove the nectar drop
         [nectar removeFromParent];
         [audio playEffect:@"drop.mp3"];
+        // increase the health bar
+        if (_healthColorBar.scaleX + .14 > 1) {
+            // if it would be more than the current, set to full
+            _healthColorBar.scaleX = 1;
+        } else {
+            // otherwise add to the bar
+              [_healthColorBar setScaleX:_healthColorBar.scaleX + .14];
+        }
+        
     }];
     [animationManager runAnimationsForSequenceNamed:@"Disappear"];
     return TRUE;

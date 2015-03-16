@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>115</integer>
+	<integer>117</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -2358,8 +2358,6 @@
 										<string>Butterfly.ccb</string>
 									</dict>
 								</array>
-								<key>selected</key>
-								<true/>
 							</dict>
 							<dict>
 								<key>UUID</key>
@@ -2880,8 +2878,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>67.779197692871094</real>
-							<real>16.5</real>
+							<real>68</real>
+							<real>16.399999618530273</real>
 							<integer>1</integer>
 							<integer>0</integer>
 							<integer>0</integer>
@@ -2968,7 +2966,7 @@
 				<key>displayName</key>
 				<string>CCNodeColor</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>_healthColorBar</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -2988,7 +2986,7 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>32.779197692871094</real>
+							<real>32</real>
 							<real>20.5</real>
 							<integer>1</integer>
 							<integer>0</integer>
@@ -3039,9 +3037,9 @@
 						<string>Color3</string>
 						<key>value</key>
 						<array>
-							<real>0.20999999344348907</real>
-							<real>0.64999997615814209</real>
-							<real>0.87000000476837158</real>
+							<real>0.20000000298023224</real>
+							<real>0.60000002384185791</real>
+							<real>0.20000000298023224</real>
 							<real>1</real>
 						</array>
 					</dict>
@@ -3057,17 +3055,17 @@
 			</dict>
 			<dict>
 				<key>UUID</key>
-				<integer>96</integer>
+				<integer>116</integer>
 				<key>baseClass</key>
-				<string>CCSprite</string>
+				<string>CCBFile</string>
 				<key>children</key>
 				<array/>
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>healthNectar</string>
+				<string>Nectar</string>
 				<key>memberVarAssignmentName</key>
-				<string></string>
+				<string>_healthNectar</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -3087,22 +3085,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>29</real>
-							<real>15</real>
+							<real>21</real>
+							<real>28.75</real>
 							<integer>1</integer>
 							<integer>0</integer>
 							<integer>0</integer>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>anchorPoint</string>
-						<key>type</key>
-						<string>Point</string>
-						<key>value</key>
-						<array>
-							<real>0.5</real>
-							<real>0.5</real>
 						</array>
 					</dict>
 					<dict>
@@ -3120,46 +3107,11 @@
 					</dict>
 					<dict>
 						<key>name</key>
-						<string>spriteFrame</string>
+						<string>ccbFile</string>
 						<key>type</key>
-						<string>SpriteFrame</string>
+						<string>CCBFile</string>
 						<key>value</key>
-						<array>
-							<string></string>
-							<string>menuAssets/healthNectar.png</string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>normalMapSpriteFrame</string>
-						<key>type</key>
-						<string>SpriteFrame</string>
-						<key>value</key>
-						<array>
-							<string></string>
-							<string></string>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>color</string>
-						<key>type</key>
-						<string>Color3</string>
-						<key>value</key>
-						<array>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
-							<real>1</real>
-						</array>
-					</dict>
-					<dict>
-						<key>name</key>
-						<string>effects</string>
-						<key>type</key>
-						<string>EffectControl</string>
-						<key>value</key>
-						<array/>
+						<string>Nectar.ccb</string>
 					</dict>
 				</array>
 			</dict>
@@ -5403,7 +5355,7 @@
 								<key>displayName</key>
 								<string>CCLabelTTF</string>
 								<key>memberVarAssignmentName</key>
-								<string></string>
+								<string>_winScoreLabel</string>
 								<key>memberVarAssignmentType</key>
 								<integer>1</integer>
 								<key>properties</key>
@@ -5780,6 +5732,8 @@ Complete!</string>
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -7039,7 +6993,7 @@ didn't make it.</string>
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>4.0333333015441895</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
