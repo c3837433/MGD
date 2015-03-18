@@ -3159,8 +3159,6 @@
 								<string>Nectar.ccb</string>
 							</dict>
 						</array>
-						<key>selected</key>
-						<true/>
 					</dict>
 				</array>
 				<key>customClass</key>
@@ -4752,6 +4750,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -6944,8 +6944,8 @@ didn't make it.</string>
 						<key>value</key>
 						<array>
 							<real>0.0</real>
-							<real>384</real>
-							<integer>1</integer>
+							<real>0.0</real>
+							<integer>0</integer>
 							<integer>0</integer>
 							<integer>0</integer>
 						</array>
