@@ -7,6 +7,7 @@
 //
 
 #import "GameScene.h"
+#import <CoreMotion/CoreMotion.h>
 
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
@@ -90,6 +91,10 @@ static const CGFloat scrollSpeed = 80.f;
     CGFloat currentEnergy;
     
     CCLabelTTF* _winScoreLabel;
+    
+    // Create an instance of the core motion manager
+    CMMotionManager* motionManager;
+
 }
 
 - (void)didLoadFromCCB {
@@ -126,16 +131,7 @@ static const CGFloat scrollSpeed = 80.f;
     _treeLineLayer = @[_treeline1, _treeline2];
     
     // INPUT CONTROL LISTENERS
-    // Listen for a swipe Up
-    UISwipeGestureRecognizer* swipeUp= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeUp)];
-    swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeUp];
-    // listen for swipes down
-    UISwipeGestureRecognizer* swipeDown= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeDown)];
-    swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeDown];
-    
-    // also add for for swipes right
+    // Listen for swipes right for dash
     UISwipeGestureRecognizer* swipeRight= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
@@ -164,7 +160,6 @@ static const CGFloat scrollSpeed = 80.f;
         floor.zOrder = DrawingOrderFloor;
     }
     
-    // set up the energy properties total nectar available = 15, required to complete easy level = 5
     currentEnergy = 1;
     
     // COLLISION DELEGATE
@@ -180,6 +175,15 @@ static const CGFloat scrollSpeed = 80.f;
     // set Health bar
     CCAnimationManager* animationManager = _healthNectar.animationManager;
     [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
+    
+    // set up the accelerometer
+    motionManager = [[CMMotionManager alloc] init];
+}
+- (void)onEnter
+{
+    [super onEnter];
+    
+    [motionManager startAccelerometerUpdates];
 }
 
 // PRELOAD MUSIC
@@ -206,6 +210,7 @@ static const CGFloat scrollSpeed = 80.f;
     //setPostion = 192;
     setPostion = 0.5;
     moveButterflyUp = true;
+    _pauseButton.visible = true;
 
     //IF YOU WANT BACKGROUND MUSIC PLAYING
     //[audio playBg:@"background_music.mp3"];
@@ -216,6 +221,8 @@ static const CGFloat scrollSpeed = 80.f;
         // CHECK IF THE USER IS STILL PLAYING
         if (didPause) {
             audio.bgPaused = TRUE;
+            [motionManager stopAccelerometerUpdates];
+
         } else  if (!didFinish) {
             timeElapsed = timeElapsed + delta;
            // CCLOG(@"Time elapsed: %f", timeElapsed);
@@ -237,13 +244,20 @@ static const CGFloat scrollSpeed = 80.f;
 
             } else {
                 // BUTTERFLY
+                // get the accelerometer data
+                CMAccelerometerData* data = motionManager.accelerometerData;
+                CMAcceleration acceleration = data.acceleration;
+                // move the butterfly up as the device is rotated forward, and set its reverse
+                CGFloat yPos = _butterfly.position.y - acceleration.x * 5 * delta;
+                // make sure it stays within the floor/ceiling boundries
+                yPos = clampf(yPos, .19, .79);
                 // set speed based on position
-                if (_butterfly.position.x < 600) {
+               if (_butterfly.position.x < 600) {
                     // give it a little boost
-                   _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, _butterfly.position.y);
+                   _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, yPos);
                 } else {
                     // normal speed
-                    _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, _butterfly.position.y);
+                    _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, yPos);
                 }
                 
                 CCAnimationManager* animationManager = _healthNectar.animationManager;
@@ -284,6 +298,7 @@ static const CGFloat scrollSpeed = 80.f;
             if (currentEnergy <= 0) {
                 didDie = YES;
                 didFinish = YES;
+                _pauseButton.visible = NO;
             }
 
             // CLOUD LAYER
@@ -313,26 +328,6 @@ static const CGFloat scrollSpeed = 80.f;
             [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
             [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
             
-            // if we need to update the current position of the butterfly
-            if ((moveButterflyUp || (moveButterflyDown))) {
-              //  CCLOG(@"Updating position");
-                // get the current  x position and the new y
-                CGPoint butterflyPosition = { _butterfly.position.x, setPostion};
-                // create the action to move the butterfly
-                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.8 position:butterflyPosition];
-                // set the ease action to slightly drop for liftoff and settle when at right location
-                if (moveButterflyUp) {
-                    CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
-                    [_butterfly runAction: ease];
-                } else if ( moveButterflyDown) {
-                    // gently lower back down
-                    CCActionEaseBackOut*  ease = [CCActionEaseBackOut actionWithAction:moveTo];
-                    [_butterfly runAction: ease];
-                }
-                // reset to prevent multiple movements
-                moveButterflyDown = false;
-                moveButterflyUp = false;
-            }
             // WHEN BUTTERFLY FALLS BEHIND LEFT VIEW AREA
             // make sure the butterfly did not leave the screen by checking it's position in the world
             CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
@@ -341,12 +336,15 @@ static const CGFloat scrollSpeed = 80.f;
                 CCLOG(@"Butterfly is off screen");
                 didDie = YES;
                 didFinish = YES;
+                _pauseButton.visible = false;
             }
 
             
         } else {
               // THE GAME HAS ENDED FROM WIN OR LOSS
             if (didDie) {
+                // make sure the accelerometer stops
+                [motionManager stopAccelerometerUpdates];
                 // Player died; check if it has landed yet
                 if (!didLand) {
                     // Get the annimation manager
@@ -369,16 +367,10 @@ static const CGFloat scrollSpeed = 80.f;
                     // move to flower
                     _gameWinNode.visible = true;
                     _butterfly.visible = false;
-                    //CGPoint butterflyPosition =  ccp(1857 + 225, .25);
-                    // create the action to move the butterfly
-                    //CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:1.5f position:butterflyPosition];
-                    //CCActionEaseBackInOut*  ease = [CCActionEaseBackInOut actionWithAction:moveTo];
-                    //[_butterfly runAction: ease];
-                    // Change the annimation
-                   // [animationManager runAnimationsForSequenceNamed:@"EndOnFlower"];
                     CCLOG(@"You win!");
                     didLand = true;
                     [audio playEffect:@"yahoo.mp3"];
+                    _pauseButton.visible = false;
                     // change the animation
                     [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
                     // update the label with a score
@@ -429,57 +421,6 @@ static const CGFloat scrollSpeed = 80.f;
         if (objectScreenPosition.x <= ( -1 * piece.contentSize.width)) {
             piece.position = ccp(piece.position.x + 2 * piece.contentSize.width - 1, piece.position.y);
         }
-    }
-}
-
-
-#pragma MARK - GESTURE METHODS
-- (void)swipeDown {
-    if (!didPause) {
-       // CGFloat currentPos = _butterfly.position.y;
-       // CCLOG(@"The butterfly is at %f", currentPos);
-        moveButterflyDown = true;
-       // CCLOG(@"User swiped down");
-        // this was a tap on the butterfly, see where he is
-        if(_butterfly.position.y > .6){ //3
-       //     CCLOG(@"Butterfly is in the top, moving to middle");
-            [audio playEffect:@"flap.mp3"];
-            setPostion = .5;
-        } else  if(_butterfly.position.y < .3){ //3
-        //    CCLOG(@"Butterfly will stay at the bottom");
-            moveButterflyDown = false;
-        } else {
-         //   CCLOG(@"Butterfly is in the middle, moving to bottom");
-            setPostion = .22;
-            [audio playEffect:@"flap.mp3"];
-        }
-        
-
-    }
-}
-
--(void) swipeUp {
-    if (!didPause) {
-        //CCLOG(@"User Swiped up");
-        moveButterflyUp = true;
-        // this was a tap on the butterfly, see where he is
-        if(_butterfly.position.y > .6){ //3
-           // CCLOG(@"Butterfly will stay at the top");
-            [audio playEffect:@"bounce.mp3"];
-            setPostion = .74;
-            didBumpTop = TRUE;
-            // NO movement needed
-            moveButterflyUp = false;
-        }else  if(_butterfly.position.y < .30){ //3
-           // CCLOG(@"Butterfly is in the bottom, moving to middle");
-            setPostion = .5;
-            [audio playEffect:@"flap.mp3"];
-        } else {
-           // CCLOG(@"Butterfly is in the middle, moving to top");
-            setPostion = .74;
-            [audio playEffect:@"flap.mp3"];
-        }
-
     }
 }
 
@@ -540,6 +481,7 @@ static const CGFloat scrollSpeed = 80.f;
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly end:(CCNode *)end {
     CCLOG(@"user finished the level");
     didFinish = true;
+    _pauseButton.visible = false;
     return TRUE;
 }
 
@@ -549,6 +491,7 @@ static const CGFloat scrollSpeed = 80.f;
     // stop the annimation
     didDie = true;
     didFinish = true;
+    _pauseButton.visible = false;
     return TRUE;
 }
 
@@ -558,6 +501,7 @@ static const CGFloat scrollSpeed = 80.f;
     // stop the annimation
     didDie = true;
     didFinish = true;
+    _pauseButton.visible = false;
     return TRUE;
 }
 

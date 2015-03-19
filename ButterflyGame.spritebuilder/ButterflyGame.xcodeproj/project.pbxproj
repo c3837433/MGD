@@ -67,6 +67,7 @@
 		990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 990558D91AAF616D0026AA73 /* flap.mp3 */; };
 		9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */; };
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
+		99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99888D161ABB2AF1003D30FE /* CoreMotion.framework */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
 		99C415471AAD01B60084DFD4 /* Rock.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415461AAD01B60084DFD4 /* Rock.m */; };
 		99C415541AAD63960084DFD4 /* End.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415531AAD63960084DFD4 /* End.m */; };
@@ -190,6 +191,7 @@
 		990558D91AAF616D0026AA73 /* flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flap.mp3; sourceTree = "<group>"; };
 		9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yahoo.mp3; sourceTree = "<group>"; };
 		9971BE811AAEAE66005544C8 /* loseGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loseGame.mp3; sourceTree = "<group>"; };
+		99888D161ABB2AF1003D30FE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		99C415451AAD01B60084DFD4 /* Rock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rock.h; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */,
 				7A97911819E631CD001FFC4D /* libcocos2d.a in Frameworks */,
 				8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */,
 				B77F1B3217B978D7009739AE /* QuartzCore.framework in Frameworks */,
@@ -548,6 +551,7 @@
 		B77F1B3017B978D7009739AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				99888D161ABB2AF1003D30FE /* CoreMotion.framework */,
 				BC5399D31A44DCC90063F482 /* AndroidKit.framework */,
 				BC5399D41A44DCC90063F482 /* CoreJava.framework */,
 				BC5399D51A44DCC90063F482 /* GLActivityKit.framework */,
