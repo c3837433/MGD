@@ -65,6 +65,7 @@
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9904386B1AAE5154008BAAC2 /* background_music.mp3 */; };
 		990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 990558D91AAF616D0026AA73 /* flap.mp3 */; };
+		9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */ = {isa = PBXBuildFile; fileRef = 993654091ABB86FF0031E035 /* Tutorial.m */; };
 		9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */; };
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
 		99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99888D161ABB2AF1003D30FE /* CoreMotion.framework */; };
@@ -189,6 +190,8 @@
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9904386B1AAE5154008BAAC2 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
 		990558D91AAF616D0026AA73 /* flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flap.mp3; sourceTree = "<group>"; };
+		993654081ABB86FF0031E035 /* Tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial.h; sourceTree = "<group>"; };
+		993654091ABB86FF0031E035 /* Tutorial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tutorial.m; sourceTree = "<group>"; };
 		9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yahoo.mp3; sourceTree = "<group>"; };
 		9971BE811AAEAE66005544C8 /* loseGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loseGame.mp3; sourceTree = "<group>"; };
 		99888D161ABB2AF1003D30FE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -501,6 +504,8 @@
 				99C4155C1AAD6B430084DFD4 /* Nectar.m */,
 				99C4155E1AAD70920084DFD4 /* SpiderWeb.h */,
 				99C4155F1AAD70920084DFD4 /* SpiderWeb.m */,
+				993654081ABB86FF0031E035 /* Tutorial.h */,
+				993654091ABB86FF0031E035 /* Tutorial.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
+				9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,

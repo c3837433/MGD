@@ -81,7 +81,10 @@
 		<key>Sprites</key>
 		<dict/>
 		<key>assets</key>
-		<dict/>
+		<dict>
+			<key>isSmartSpriteSheet</key>
+			<true/>
+		</dict>
 		<key>butterflyAnnimation</key>
 		<dict>
 			<key>isSmartSpriteSheet</key>
@@ -171,20 +174,23 @@
 		</dict>
 		<key>gameAssets</key>
 		<dict>
+			<key>isDirty</key>
+			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
 		<key>menuAssets</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
 		<key>nectarAnnimation</key>
 		<dict>
-			<key>isDirty</key>
+			<key>isSmartSpriteSheet</key>
 			<true/>
+		</dict>
+		<key>tutorialAssets</key>
+		<dict>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>

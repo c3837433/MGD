@@ -248,7 +248,7 @@ static const CGFloat scrollSpeed = 80.f;
                 CMAccelerometerData* data = motionManager.accelerometerData;
                 CMAcceleration acceleration = data.acceleration;
                 // move the butterfly up as the device is rotated forward, and set its reverse
-                CGFloat yPos = _butterfly.position.y - acceleration.x * 5 * delta;
+                CGFloat yPos = _butterfly.position.y - acceleration.x * 2 * delta;
                 // make sure it stays within the floor/ceiling boundries
                 yPos = clampf(yPos, .19, .79);
                 // set speed based on position

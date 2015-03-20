@@ -34,5 +34,20 @@
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
 
+-(void)shouldStartTutorial {
+    [animationManager setPaused:YES];
+    // Switch to the game scene
+    CCScene* scene = [CCBReader loadAsScene:@"Tutorial"];
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+
+
+}
+
+-(void) shouldOpenCredits {
+
+
+}
+
 
 @end
