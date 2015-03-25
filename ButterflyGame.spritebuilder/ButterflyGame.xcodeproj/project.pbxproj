@@ -75,6 +75,7 @@
 		99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415591AAD6B070084DFD4 /* Spider.m */; };
 		99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155C1AAD6B430084DFD4 /* Nectar.m */; };
 		99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155F1AAD70920084DFD4 /* SpiderWeb.m */; };
+		99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DB0E641ABCD7F20047EFBE /* Credits.m */; };
 		99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083E1AA7C5350079AB8A /* bounce.mp3 */; };
 		99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083F1AA7C5350079AB8A /* drop.mp3 */; };
 		99EC08431AA7C5350079AB8A /* enemy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC08401AA7C5350079AB8A /* enemy.mp3 */; };
@@ -207,6 +208,8 @@
 		99C4155C1AAD6B430084DFD4 /* Nectar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nectar.m; sourceTree = "<group>"; };
 		99C4155E1AAD70920084DFD4 /* SpiderWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiderWeb.h; sourceTree = "<group>"; };
 		99C4155F1AAD70920084DFD4 /* SpiderWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiderWeb.m; sourceTree = "<group>"; };
+		99DB0E631ABCD7F20047EFBE /* Credits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Credits.h; sourceTree = "<group>"; };
+		99DB0E641ABCD7F20047EFBE /* Credits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Credits.m; sourceTree = "<group>"; };
 		99EC083E1AA7C5350079AB8A /* bounce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bounce.mp3; sourceTree = "<group>"; };
 		99EC083F1AA7C5350079AB8A /* drop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = drop.mp3; sourceTree = "<group>"; };
 		99EC08401AA7C5350079AB8A /* enemy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemy.mp3; sourceTree = "<group>"; };
@@ -506,6 +509,8 @@
 				99C4155F1AAD70920084DFD4 /* SpiderWeb.m */,
 				993654081ABB86FF0031E035 /* Tutorial.h */,
 				993654091ABB86FF0031E035 /* Tutorial.m */,
+				99DB0E631ABCD7F20047EFBE /* Credits.h */,
+				99DB0E641ABCD7F20047EFBE /* Credits.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -894,6 +899,7 @@
 				99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
+				99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
 				9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */,

@@ -36,4 +36,13 @@
     _tutorialANode.visible = false;
     _tutorialBNode.visible = true;
 }
+
+-(void) shouldReturnToMenu {
+    // reopen the main menu
+    CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+    
+}
+
 @end

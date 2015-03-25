@@ -1373,7 +1373,7 @@
 						<key>value</key>
 						<array>
 							<string></string>
-							<string>gameAssets/rope.png</string>
+							<string>menuAssets/rope.png</string>
 						</array>
 					</dict>
 					<dict>

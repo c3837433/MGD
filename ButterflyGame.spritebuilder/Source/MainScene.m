@@ -45,7 +45,11 @@
 }
 
 -(void) shouldOpenCredits {
-
+    [animationManager setPaused:YES];
+    // Switch to the game scene
+    CCScene* scene = [CCBReader loadAsScene:@"Credits"];
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 
 }
 
