@@ -29,7 +29,9 @@
     
     [animationManager setPaused:YES];
     // Switch to the game scene
-    CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+  //  CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    CCScene* scene = [CCBReader loadAsScene:@"Map"];
+    
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }

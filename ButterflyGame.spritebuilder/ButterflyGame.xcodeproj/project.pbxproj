@@ -63,6 +63,8 @@
 		927F61B9196C771E000F43EF /* iPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F590E188484E7003F4D28 /* iPhone@2x.png */; };
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
+		9902BC3C1ACA2C320075E0AD /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902BC3B1ACA2C320075E0AD /* Map.m */; };
+		9902BC411ACA47FD0075E0AD /* JourneyA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902BC401ACA47FC0075E0AD /* JourneyA.m */; };
 		9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9904386B1AAE5154008BAAC2 /* background_music.mp3 */; };
 		990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 990558D91AAF616D0026AA73 /* flap.mp3 */; };
 		9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */ = {isa = PBXBuildFile; fileRef = 993654091ABB86FF0031E035 /* Tutorial.m */; };
@@ -189,6 +191,10 @@
 		7BF6AF9F1A425F9800FFF9BA /* JavaFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaFoundation.framework; path = "../../../../../../../Library/SBAndroid/Application Support/Developer/Shared/Xcode/Platforms/Android.platform/Developer/SDKs/SBAndroid.sdk/System/Library/Frameworks/JavaFoundation.framework"; sourceTree = "<group>"; };
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9902BC3A1ACA2C320075E0AD /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
+		9902BC3B1ACA2C320075E0AD /* Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Map.m; sourceTree = "<group>"; };
+		9902BC3F1ACA47FC0075E0AD /* JourneyA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyA.h; sourceTree = "<group>"; };
+		9902BC401ACA47FC0075E0AD /* JourneyA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyA.m; sourceTree = "<group>"; };
 		9904386B1AAE5154008BAAC2 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
 		990558D91AAF616D0026AA73 /* flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flap.mp3; sourceTree = "<group>"; };
 		993654081ABB86FF0031E035 /* Tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial.h; sourceTree = "<group>"; };
@@ -511,6 +517,8 @@
 				993654091ABB86FF0031E035 /* Tutorial.m */,
 				99DB0E631ABCD7F20047EFBE /* Credits.h */,
 				99DB0E641ABCD7F20047EFBE /* Credits.m */,
+				9902BC3A1ACA2C320075E0AD /* Map.h */,
+				9902BC3B1ACA2C320075E0AD /* Map.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -539,6 +547,8 @@
 		B77F1B2517B978D7009739AE = {
 			isa = PBXGroup;
 			children = (
+				9902BC3F1ACA47FC0075E0AD /* JourneyA.h */,
+				9902BC401ACA47FC0075E0AD /* JourneyA.m */,
 				B737893C1807616C0076A88C /* Source */,
 				B77F1B4617B978D7009739AE /* Resources */,
 				9222E2B918734FF800A246C7 /* libs */,
@@ -902,6 +912,8 @@
 				99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
+				9902BC411ACA47FD0075E0AD /* JourneyA.m in Sources */,
+				9902BC3C1ACA2C320075E0AD /* Map.m in Sources */,
 				9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,
