@@ -10,4 +10,7 @@
 
 @interface Map : CCNode
 
+
+@property (nonatomic) NSInteger highestLevel;
+
 @end

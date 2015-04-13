@@ -64,7 +64,6 @@
 		927F61BA196C771E000F43EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B737896D180762440076A88C /* Default.png */; };
 		927F61BB196C771E000F43EF /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		9902BC3C1ACA2C320075E0AD /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902BC3B1ACA2C320075E0AD /* Map.m */; };
-		9902BC411ACA47FD0075E0AD /* JourneyA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9902BC401ACA47FC0075E0AD /* JourneyA.m */; };
 		9904386C1AAE5154008BAAC2 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9904386B1AAE5154008BAAC2 /* background_music.mp3 */; };
 		990558DA1AAF616D0026AA73 /* flap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 990558D91AAF616D0026AA73 /* flap.mp3 */; };
 		9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */ = {isa = PBXBuildFile; fileRef = 993654091ABB86FF0031E035 /* Tutorial.m */; };
@@ -72,6 +71,12 @@
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
 		99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99888D161ABB2AF1003D30FE /* CoreMotion.framework */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
+		99BFE3CF1ADC2CF5005F2DFD /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3CE1ADC2CF5005F2DFD /* Constants.m */; };
+		99BFE3D51ADC44B6005F2DFD /* MigrationA.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3D41ADC44B6005F2DFD /* MigrationA.m */; };
+		99BFE3D81ADC44C1005F2DFD /* MigrationB.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3D71ADC44C1005F2DFD /* MigrationB.m */; };
+		99BFE3DB1ADC4B4C005F2DFD /* MigrationC.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3DA1ADC4B4C005F2DFD /* MigrationC.m */; };
+		99BFE3DE1ADC4B60005F2DFD /* MigrationD.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3DD1ADC4B60005F2DFD /* MigrationD.m */; };
+		99BFE3E11ADC4B69005F2DFD /* MigrationE.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3E01ADC4B69005F2DFD /* MigrationE.m */; };
 		99C415471AAD01B60084DFD4 /* Rock.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415461AAD01B60084DFD4 /* Rock.m */; };
 		99C415541AAD63960084DFD4 /* End.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415531AAD63960084DFD4 /* End.m */; };
 		99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415591AAD6B070084DFD4 /* Spider.m */; };
@@ -193,8 +198,6 @@
 		927F61BF196C771E000F43EF /* ButterflyGame Android.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ButterflyGame Android.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9902BC3A1ACA2C320075E0AD /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		9902BC3B1ACA2C320075E0AD /* Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Map.m; sourceTree = "<group>"; };
-		9902BC3F1ACA47FC0075E0AD /* JourneyA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JourneyA.h; sourceTree = "<group>"; };
-		9902BC401ACA47FC0075E0AD /* JourneyA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JourneyA.m; sourceTree = "<group>"; };
 		9904386B1AAE5154008BAAC2 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
 		990558D91AAF616D0026AA73 /* flap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flap.mp3; sourceTree = "<group>"; };
 		993654081ABB86FF0031E035 /* Tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial.h; sourceTree = "<group>"; };
@@ -204,6 +207,18 @@
 		99888D161ABB2AF1003D30FE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		99BFE3CD1ADC2CF5005F2DFD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		99BFE3CE1ADC2CF5005F2DFD /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		99BFE3D31ADC44B6005F2DFD /* MigrationA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationA.h; sourceTree = "<group>"; };
+		99BFE3D41ADC44B6005F2DFD /* MigrationA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationA.m; sourceTree = "<group>"; };
+		99BFE3D61ADC44C1005F2DFD /* MigrationB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationB.h; sourceTree = "<group>"; };
+		99BFE3D71ADC44C1005F2DFD /* MigrationB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationB.m; sourceTree = "<group>"; };
+		99BFE3D91ADC4B4C005F2DFD /* MigrationC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationC.h; sourceTree = "<group>"; };
+		99BFE3DA1ADC4B4C005F2DFD /* MigrationC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationC.m; sourceTree = "<group>"; };
+		99BFE3DC1ADC4B60005F2DFD /* MigrationD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationD.h; sourceTree = "<group>"; };
+		99BFE3DD1ADC4B60005F2DFD /* MigrationD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationD.m; sourceTree = "<group>"; };
+		99BFE3DF1ADC4B69005F2DFD /* MigrationE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrationE.h; sourceTree = "<group>"; };
+		99BFE3E01ADC4B69005F2DFD /* MigrationE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrationE.m; sourceTree = "<group>"; };
 		99C415451AAD01B60084DFD4 /* Rock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rock.h; sourceTree = "<group>"; };
 		99C415461AAD01B60084DFD4 /* Rock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rock.m; sourceTree = "<group>"; };
 		99C415521AAD63960084DFD4 /* End.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = End.h; sourceTree = "<group>"; };
@@ -480,6 +495,23 @@
 			name = libs;
 			sourceTree = "<group>";
 		};
+		99BFE3CC1ADC1AB8005F2DFD /* Journeys */ = {
+			isa = PBXGroup;
+			children = (
+				99BFE3D31ADC44B6005F2DFD /* MigrationA.h */,
+				99BFE3D41ADC44B6005F2DFD /* MigrationA.m */,
+				99BFE3D61ADC44C1005F2DFD /* MigrationB.h */,
+				99BFE3D71ADC44C1005F2DFD /* MigrationB.m */,
+				99BFE3D91ADC4B4C005F2DFD /* MigrationC.h */,
+				99BFE3DA1ADC4B4C005F2DFD /* MigrationC.m */,
+				99BFE3DC1ADC4B60005F2DFD /* MigrationD.h */,
+				99BFE3DD1ADC4B60005F2DFD /* MigrationD.m */,
+				99BFE3DF1ADC4B69005F2DFD /* MigrationE.h */,
+				99BFE3E01ADC4B69005F2DFD /* MigrationE.m */,
+			);
+			name = Journeys;
+			sourceTree = "<group>";
+		};
 		99EC083D1AA7C4160079AB8A /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -519,6 +551,9 @@
 				99DB0E641ABCD7F20047EFBE /* Credits.m */,
 				9902BC3A1ACA2C320075E0AD /* Map.h */,
 				9902BC3B1ACA2C320075E0AD /* Map.m */,
+				99BFE3CC1ADC1AB8005F2DFD /* Journeys */,
+				99BFE3CD1ADC2CF5005F2DFD /* Constants.h */,
+				99BFE3CE1ADC2CF5005F2DFD /* Constants.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -547,8 +582,6 @@
 		B77F1B2517B978D7009739AE = {
 			isa = PBXGroup;
 			children = (
-				9902BC3F1ACA47FC0075E0AD /* JourneyA.h */,
-				9902BC401ACA47FC0075E0AD /* JourneyA.m */,
 				B737893C1807616C0076A88C /* Source */,
 				B77F1B4617B978D7009739AE /* Resources */,
 				9222E2B918734FF800A246C7 /* libs */,
@@ -907,17 +940,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */,
+				99BFE3D51ADC44B6005F2DFD /* MigrationA.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
+				99BFE3DB1ADC4B4C005F2DFD /* MigrationC.m in Sources */,
 				99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */,
+				99BFE3D81ADC44C1005F2DFD /* MigrationB.m in Sources */,
+				99BFE3DE1ADC4B60005F2DFD /* MigrationD.m in Sources */,
+				99BFE3CF1ADC2CF5005F2DFD /* Constants.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
-				9902BC411ACA47FD0075E0AD /* JourneyA.m in Sources */,
 				9902BC3C1ACA2C320075E0AD /* Map.m in Sources */,
 				9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
+				99BFE3E11ADC4B69005F2DFD /* MigrationE.m in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
