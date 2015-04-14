@@ -16,6 +16,7 @@
 
 //Once the game file loads, allow user interaction so the player can view the game scene
 - (void)didLoadFromCCB {
+
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     animationManager = _mainButterfly.animationManager;
@@ -26,12 +27,9 @@
 
 // When the user presses the play button
 - (void) startGame {
-    
     [animationManager setPaused:YES];
-    // Switch to the game scene
-  //  CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    // Switch to the map
     CCScene* scene = [CCBReader loadAsScene:@"Map"];
-    
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }

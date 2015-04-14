@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
     DrawingOrdeButterfly
 };
 
+@property (nonatomic, strong) NSString* currentJourney;
+@property (nonatomic) NSInteger currentStop;
+@property (nonatomic) BOOL forUnlock;
+
 #define HORIZ_SWIPE_DRAG_MIN  12
 #define VERT_SWIPE_DRAG_MAX    4
 @end

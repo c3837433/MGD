@@ -24,7 +24,7 @@
  */
 
 #import "cocos2d.h"
-
+#import <Parse/Parse.h>
 #import "AppDelegate.h"
 #import "CCBuilderReader.h"
 
@@ -37,7 +37,17 @@
     configPath = [configPath stringByAppendingPathComponent:@"configCocos2d.plist"];
     
     NSMutableDictionary* cocos2dSetup = [NSMutableDictionary dictionaryWithContentsOfFile:configPath];
-    
+    [Parse enableLocalDatastore];
+    // Initialize Parse.
+    [Parse setApplicationId:@"i2oHPIVzpVlU0I6qu0KCOgfxS0DnY1iIrjzDWT2o"
+                  clientKey:@"A8GZq0OpyAfMi3UOr3TOqEVkgWR7FunVV1H6Nezd"];
+    if (![PFUser currentUser]) {
+        [PFAnonymousUtils logInWithBlock:^(PFUser *user, NSError *error) {
+            if (!error) {
+                NSLog(@"Logged in user anonymously");
+            }
+        }];
+    }
     // Note: this needs to happen before configureCCFileUtils is called, because we need apportable to correctly setup the screen scale factor.
 #ifdef APPORTABLE
     if([cocos2dSetup[CCSetupScreenMode] isEqual:CCScreenModeFixed])
@@ -55,6 +65,11 @@
     [self setupCocos2dWithOptions:cocos2dSetup];
     
     return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations {
+
+    return UIInterfaceOrientationMaskLandscapeLeft;
 }
 
 - (CCScene*) startScene {

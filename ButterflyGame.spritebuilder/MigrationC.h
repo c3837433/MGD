@@ -12,4 +12,6 @@
 
 @property (nonatomic) NSInteger highestPlayableStop;
 
+@property (nonatomic) BOOL unlockJourney;
+
 @end

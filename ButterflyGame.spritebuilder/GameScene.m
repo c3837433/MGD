@@ -8,6 +8,13 @@
 
 #import "GameScene.h"
 #import <CoreMotion/CoreMotion.h>
+#import <Parse/Parse.h>
+#import "Constants.h"
+#import "MigrationA.h"
+#import "MigrationB.h"
+#import "MigrationC.h"
+#import "MigrationD.h"
+#import "MigrationE.h"
 
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
@@ -82,7 +89,7 @@ static const CGFloat scrollSpeed = 80.f;
     CCNode* _gameLoseNode;
     
     OALSimpleAudio* audio;
-
+    
     CCButton* _pauseButton;
     
     // Health Bar
@@ -94,10 +101,97 @@ static const CGFloat scrollSpeed = 80.f;
     
     // Create an instance of the core motion manager
     CMMotionManager* motionManager;
-
+    
 }
+/*
+ - (void)didLoadFromCCB {
+ CCLOG(@"Loaded Game");
+ 
+ [self preloadMusic];
+ // preset conditionals for frame updates
+ didFinish = false;
+ didLand = false;
+ didDie = false;
+ didBumpTop = false;
+ didPause = false;
+ nectarWarningRunning = false;
+ dropsGathered = 0;
+ timeElapsed = 0;
+ 
+ //Load the first level
+ CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
+ [_levelNode addChild:level];
+ // set it in front of the trunks but behind the floor and canopy
+ _levelNode.zOrder = DrawingOrderFrontLayer;
+ 
+ // ALLOW TOUCH AND MULTI TOUCH
+ self.userInteractionEnabled = TRUE;
+ [[[CCDirector sharedDirector] view] setMultipleTouchEnabled:YES];
+ 
+ // set up the background node arrays
+ _forestFloors = @[_floor1, _floor2];
+ _cloudsLayer = @[_cloud1, _cloud2];
+ _forestCanopy =  @[_canopy1, _canopy2];
+ _treeTrunks =  @[_trunks1, _trunks2];
+ _frontHillLayer = @[_fronthill1, _fronthill2];
+ _backHillLayer = @[_backHill1, _backHill2];
+ _treeLineLayer = @[_treeline1, _treeline2];
+ 
+ // INPUT CONTROL LISTENERS
+ // Listen for swipes right for dash
+ UISwipeGestureRecognizer* swipeRight= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
+ swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+ [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
+ 
+ // SET BACKGROUND LAYERS FOR PARALLAX EFFECT
+ for (CCNode* cloud in _cloudsLayer) {
+ cloud.zOrder = DrawingOrderClouds;
+ }
+ for (CCNode* trunk in _treeTrunks) {
+ trunk.zOrder = DrawingOrderTrunks;
+ }
+ for (CCNode* canopy in _forestCanopy) {
+ canopy.zOrder = DrawingOrderCanopy;
+ }
+ for (CCNode* hill in _backHillLayer) {
+ hill.zOrder = DrawingOrderBackHill;
+ }
+ for (CCNode* hill in _frontHillLayer) {
+ hill.zOrder = DrawingOrderFrontHill;
+ }
+ for (CCNode* trees in _treeLineLayer) {
+ trees.zOrder = DrawingOrderTreeline;
+ }
+ for (CCNode* floor in _forestFloors) {
+ floor.physicsBody.collisionType = @"floor";
+ floor.zOrder = DrawingOrderFloor;
+ }
+ 
+ currentEnergy = 1;
+ 
+ // COLLISION DELEGATE
+ _gamePhysicNode.collisionDelegate = self;
+ 
+ // set the buttergly colistion type and drawing order
+ _butterfly.physicsBody.collisionType = @"butterfly";
+ _butterfly.zOrder = DrawingOrdeButterfly;
+ 
+ // set the butterfly to start animatting
+ [self LaunchButterfly];
+ 
+ // set Health bar
+ CCAnimationManager* animationManager = _healthNectar.animationManager;
+ [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
+ 
+ // set up the accelerometer
+ motionManager = [[CMMotionManager alloc] init];
+ }
+ */
 
-- (void)didLoadFromCCB {
+- (void)onEnter
+{
+    [super onEnter];
+    
     CCLOG(@"Loaded Game");
     
     [self preloadMusic];
@@ -116,7 +210,7 @@ static const CGFloat scrollSpeed = 80.f;
     [_levelNode addChild:level];
     // set it in front of the trunks but behind the floor and canopy
     _levelNode.zOrder = DrawingOrderFrontLayer;
-
+    
     // ALLOW TOUCH AND MULTI TOUCH
     self.userInteractionEnabled = TRUE;
     [[[CCDirector sharedDirector] view] setMultipleTouchEnabled:YES];
@@ -178,10 +272,6 @@ static const CGFloat scrollSpeed = 80.f;
     
     // set up the accelerometer
     motionManager = [[CMMotionManager alloc] init];
-}
-- (void)onEnter
-{
-    [super onEnter];
     
     [motionManager startAccelerometerUpdates];
 }
@@ -211,187 +301,233 @@ static const CGFloat scrollSpeed = 80.f;
     setPostion = 0.5;
     moveButterflyUp = true;
     _pauseButton.visible = true;
-
+    
     //IF YOU WANT BACKGROUND MUSIC PLAYING
     //[audio playBg:@"background_music.mp3"];
 }
 
 #pragma MARK - FRAME UPDATES
-    - (void)update:(CCTime)delta {
-        // CHECK IF THE USER IS STILL PLAYING
-        if (didPause) {
-            audio.bgPaused = TRUE;
-            [motionManager stopAccelerometerUpdates];
-
-        } else  if (!didFinish) {
-            timeElapsed = timeElapsed + delta;
-           // CCLOG(@"Time elapsed: %f", timeElapsed);
-
-            // NORMAL GAME PLAY, MOVE OBJECTS
-            if (didBumpTop) {
-                // The user bumped the top canopy
-                CCLOG(@"Bouncing off canopy position");
-                // set the position to move up slightly
-                CGPoint topPos = { _butterfly.position.x, setPostion + .01};
-                // create the action to move the butterfly up
-                CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:topPos];
-                didBumpTop = false;
-                CGPoint bottomPos = { _butterfly.position.x, setPostion};
-                // and back to the correct position
-                CCActionMoveTo* moveBack = [CCActionMoveTo actionWithDuration:.4 position:bottomPos];
-                // run the action sequence to bump the canopy
-                [_butterfly runAction:[CCActionSequence actions: moveTo, moveBack, nil]];
-
-            } else {
-                // BUTTERFLY
-                // get the accelerometer data
-                CMAccelerometerData* data = motionManager.accelerometerData;
-                CMAcceleration acceleration = data.acceleration;
-                // move the butterfly up as the device is rotated forward, and set its reverse
-                CGFloat yPos = _butterfly.position.y - acceleration.x * 2 * delta;
-                // make sure it stays within the floor/ceiling boundries
-                yPos = clampf(yPos, .19, .79);
-                // set speed based on position
-               if (_butterfly.position.x < 600) {
-                    // give it a little boost
-                   _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, yPos);
-                } else {
-                    // normal speed
-                    _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, yPos);
-                }
-                
-                CCAnimationManager* animationManager = _healthNectar.animationManager;
-                // update the health bar
-               // Reduce the health bar
-                //CCLOG(@"Health bar scale x = %f", _healthColorBar.scaleX);
-                [_healthColorBar setScaleX:_healthColorBar.scaleX - .0015];
-                currentEnergy = _healthColorBar.scaleX;
-                if (currentEnergy < 0.5) {
-                    // change the color
-                    if (currentEnergy < 0.3) {
-                        // Red color
-                        _healthColorBar.color = [CCColor colorWithRed:0.89 green:0.22 blue:0.18 alpha:1];
-                        if (!nectarWarningRunning) {
-                            // if the warning is not running, start it
-                            [animationManager runAnimationsForSequenceNamed:@"LowNectar"];
-                            nectarWarningRunning = true;
-                        }
-
-
-                    } else {
-                        // Orange/yellow color
-                        _healthColorBar.color = [CCColor colorWithRed:0.99 green:0.64 blue:0.26 alpha:1];
-                        if (nectarWarningRunning) {
-                            // stop it
-                            [animationManager paused];
-                            nectarWarningRunning = false;
-                            [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
-                        }
-                    }
-                } else {
-                    // Green color
-                    _healthColorBar.color = [CCColor colorWithRed:0.27 green:0.68 blue:0.13 alpha:1];
-                }
-
-            }
-            
-            if (currentEnergy <= 0) {
-                didDie = YES;
-                didFinish = YES;
-                _pauseButton.visible = NO;
-            }
-
-            // CLOUD LAYER
-            // Move the clouds slowest
-            _farCloudNode.position = ccp(_farCloudNode.position.x - delta * (scrollSpeed - 50), _farCloudNode.position.y);
-            //loop the clouds
-            [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
-            
-            // BACK HILLS LAYER
-            _backhillNode.position = ccp(_backhillNode.position.x - delta * (scrollSpeed - 30), _backhillNode.position.y);
-            [self loopLayerObject:_backHillLayer withNode:_backhillNode];
-            
-            // TREELINE LAYER
-            _treelineNode.position = ccp(_treelineNode.position.x - delta * (scrollSpeed - 20), _treelineNode.position.y);
-            [self loopLayerObject:_treeLineLayer withNode:_treelineNode];
+- (void)update:(CCTime)delta {
+    // CHECK IF THE USER IS STILL PLAYING
+    if (didPause) {
+        audio.bgPaused = TRUE;
+        [motionManager stopAccelerometerUpdates];
         
-            
-            // FRONT HILLS LAYER
-            _frontHillNode.position = ccp(_frontHillNode.position.x - delta * (scrollSpeed - 10), _frontHillNode.position.y);
-            [self loopLayerObject:_frontHillLayer withNode:_frontHillNode];
-            
-            
-            // PHYSICS NODE LAYER
-            _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
-            // loop floor & canopy with the physics speed
-            [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
-            [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
-            [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
-            
-            // WHEN BUTTERFLY FALLS BEHIND LEFT VIEW AREA
-            // make sure the butterfly did not leave the screen by checking it's position in the world
-            CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
-            // If the x is less than -50 it has completely disappeared off screen
-            if (objectPostion.x < -50) {
-                CCLOG(@"Butterfly is off screen");
-                didDie = YES;
-                didFinish = YES;
-                _pauseButton.visible = false;
-            }
-
+    } else  if (!didFinish) {
+        timeElapsed = timeElapsed + delta;
+        // CCLOG(@"Time elapsed: %f", timeElapsed);
+        
+        // NORMAL GAME PLAY, MOVE OBJECTS
+        if (didBumpTop) {
+            // The user bumped the top canopy
+            CCLOG(@"Bouncing off canopy position");
+            // set the position to move up slightly
+            CGPoint topPos = { _butterfly.position.x, setPostion + .01};
+            // create the action to move the butterfly up
+            CCActionMoveTo*  moveTo = [CCActionMoveTo actionWithDuration:.4 position:topPos];
+            didBumpTop = false;
+            CGPoint bottomPos = { _butterfly.position.x, setPostion};
+            // and back to the correct position
+            CCActionMoveTo* moveBack = [CCActionMoveTo actionWithDuration:.4 position:bottomPos];
+            // run the action sequence to bump the canopy
+            [_butterfly runAction:[CCActionSequence actions: moveTo, moveBack, nil]];
             
         } else {
-              // THE GAME HAS ENDED FROM WIN OR LOSS
-            if (didDie) {
-                // make sure the accelerometer stops
-                [motionManager stopAccelerometerUpdates];
-                // Player died; check if it has landed yet
-                if (!didLand) {
-                    // Get the annimation manager
-                    CCAnimationManager* animationManager = _loseButterfly.animationManager;
-                    _gameLoseNode.visible = true;
-                    _butterfly.visible = false;
-                    [animationManager runAnimationsForSequenceNamed:@"SadButterfly"];
-                    audio.bgPaused = TRUE;
-                    CCLOG(@"pausing annimation and playing death effect");
-                    [animationManager setPaused:YES];
-                    [audio playEffect:@"loseGame.mp3"];
-                    didLand = true;
-                }
-                
-                
+            // BUTTERFLY
+            // get the accelerometer data
+            CMAccelerometerData* data = motionManager.accelerometerData;
+            CMAcceleration acceleration = data.acceleration;
+            // move the butterfly up as the device is rotated forward, and set its reverse
+            CGFloat yPos = _butterfly.position.y - acceleration.x * 2 * delta;
+            // make sure it stays within the floor/ceiling boundries
+            yPos = clampf(yPos, .19, .79);
+            // set speed based on position
+            if (_butterfly.position.x < 600) {
+                // give it a little boost
+                _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed + 0.1, yPos);
             } else {
-                CCAnimationManager* animationManager = _winButterfly.animationManager;
-                // The Player Won; if it hasn't landed on the flower yet
-                if (!didLand) {
-                    // move to flower
-                    _gameWinNode.visible = true;
-                    _butterfly.visible = false;
-                    CCLOG(@"You win!");
-                    didLand = true;
-                    [audio playEffect:@"yahoo.mp3"];
-                    _pauseButton.visible = false;
-                    // change the animation
-                    [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
-                    // update the label with a score
-                    float updateForTime = 1;
-                    int totalScore = timeElapsed * (dropsGathered * 8);
-                    CCLOG(@"Total Score: %d", totalScore);
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                        for (int i = 1; i < totalScore; i ++) {
-                            //increment the count
-                            usleep(updateForTime/100 * 10000);
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                // update the score
-                                _winScoreLabel.string = [NSString stringWithFormat:@"Score %d", i];
-                            });
-                        }
-                    });
+                // normal speed
+                _butterfly.position = ccp(_butterfly.position.x + delta * scrollSpeed, yPos);
+            }
+            
+            CCAnimationManager* animationManager = _healthNectar.animationManager;
+            // update the health bar
+            // Reduce the health bar
+            //CCLOG(@"Health bar scale x = %f", _healthColorBar.scaleX);
+            [_healthColorBar setScaleX:_healthColorBar.scaleX - .0015];
+            currentEnergy = _healthColorBar.scaleX;
+            if (currentEnergy < 0.5) {
+                // change the color
+                if (currentEnergy < 0.3) {
+                    // Red color
+                    _healthColorBar.color = [CCColor colorWithRed:0.89 green:0.22 blue:0.18 alpha:1];
+                    if (!nectarWarningRunning) {
+                        // if the warning is not running, start it
+                        [animationManager runAnimationsForSequenceNamed:@"LowNectar"];
+                        nectarWarningRunning = true;
+                    }
+                    
+                    
+                } else {
+                    // Orange/yellow color
+                    _healthColorBar.color = [CCColor colorWithRed:0.99 green:0.64 blue:0.26 alpha:1];
+                    if (nectarWarningRunning) {
+                        // stop it
+                        [animationManager paused];
+                        nectarWarningRunning = false;
+                        [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
+                    }
                 }
+            } else {
+                // Green color
+                _healthColorBar.color = [CCColor colorWithRed:0.27 green:0.68 blue:0.13 alpha:1];
+            }
+            
+        }
+        
+        if (currentEnergy <= 0) {
+            didDie = YES;
+            didFinish = YES;
+            _pauseButton.visible = NO;
+        }
+        
+        // CLOUD LAYER
+        // Move the clouds slowest
+        _farCloudNode.position = ccp(_farCloudNode.position.x - delta * (scrollSpeed - 50), _farCloudNode.position.y);
+        //loop the clouds
+        [self loopLayerObject:_cloudsLayer withNode:_farCloudNode];
+        
+        // BACK HILLS LAYER
+        _backhillNode.position = ccp(_backhillNode.position.x - delta * (scrollSpeed - 30), _backhillNode.position.y);
+        [self loopLayerObject:_backHillLayer withNode:_backhillNode];
+        
+        // TREELINE LAYER
+        _treelineNode.position = ccp(_treelineNode.position.x - delta * (scrollSpeed - 20), _treelineNode.position.y);
+        [self loopLayerObject:_treeLineLayer withNode:_treelineNode];
+        
+        
+        // FRONT HILLS LAYER
+        _frontHillNode.position = ccp(_frontHillNode.position.x - delta * (scrollSpeed - 10), _frontHillNode.position.y);
+        [self loopLayerObject:_frontHillLayer withNode:_frontHillNode];
+        
+        
+        // PHYSICS NODE LAYER
+        _gamePhysicNode.position = ccp(_gamePhysicNode.position.x - (scrollSpeed *delta), _gamePhysicNode.position.y);
+        // loop floor & canopy with the physics speed
+        [self loopLayerObject:_forestFloors withPhysicsNode:_gamePhysicNode];
+        [self loopLayerObject:_forestCanopy withPhysicsNode:_gamePhysicNode];
+        [self loopLayerObject:_treeTrunks withNode:_gamePhysicNode];
+        
+        // WHEN BUTTERFLY FALLS BEHIND LEFT VIEW AREA
+        // make sure the butterfly did not leave the screen by checking it's position in the world
+        CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
+        // If the x is less than -50 it has completely disappeared off screen
+        if (objectPostion.x < -50) {
+            CCLOG(@"Butterfly is off screen");
+            didDie = YES;
+            didFinish = YES;
+            _pauseButton.visible = false;
+        }
+        
+        
+    } else {
+        // THE GAME HAS ENDED FROM WIN OR LOSS
+        if (didDie) {
+            // make sure the accelerometer stops
+            [motionManager stopAccelerometerUpdates];
+            // Player died; check if it has landed yet
+            if (!didLand) {
+                // Get the annimation manager
+                CCAnimationManager* animationManager = _loseButterfly.animationManager;
+                _gameLoseNode.visible = true;
+                _butterfly.visible = false;
+                [animationManager runAnimationsForSequenceNamed:@"SadButterfly"];
+                audio.bgPaused = TRUE;
+                CCLOG(@"pausing annimation and playing death effect");
+                [animationManager setPaused:YES];
+                [audio playEffect:@"loseGame.mp3"];
+                didLand = true;
+            }
+            
+            
+        } else {
+            CCAnimationManager* animationManager = _winButterfly.animationManager;
+            // The Player Won; if it hasn't landed on the flower yet
+            if (!didLand) {
+                // move to flower
+                _gameWinNode.visible = true;
+                _butterfly.visible = false;
+                CCLOG(@"You win!");
+                didLand = true;
+                [audio playEffect:@"yahoo.mp3"];
+                _pauseButton.visible = false;
+                // change the animation
+                [animationManager runAnimationsForSequenceNamed:@"FlapFacing"];
+                // update the label with a score
+                float updateForTime = 1;
+                int totalScore = timeElapsed * (dropsGathered * 8);
+                CCLOG(@"Total Score: %d", totalScore);
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    for (int i = 1; i < totalScore; i ++) {
+                        //increment the count
+                        usleep(updateForTime/100 * 10000);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // update the score
+                            _winScoreLabel.string = [NSString stringWithFormat:@"Score %d", i];
+                        });
+                    }
+                    // check if this is a new high score
+                    [self saveLevelData:totalScore];
+                });
             }
         }
     }
+}
 
+-(void)saveLevelData:(int) score {
+    NSLog(@"Pinning this data");
+    // see if we already have one saved
+    PFQuery *query = [PFQuery queryWithClassName:dClassName];
+    [query fromLocalDatastore];
+    // make sure it is for the current journey, stop, and player
+    [query whereKey:dJourney equalTo:self.currentJourney];
+    [query whereKey:dLevel equalTo:@(self.currentStop)];
+    [query whereKey:dPlayer equalTo:[PFUser currentUser]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (objects.count > 0) {
+            NSLog(@"Already have an object to update: objects: %@", objects.description);
+            PFObject* object = [objects objectAtIndex:0];
+            NSLog(@"Object: %@", object.description);
+            //  see if we need to update it
+            if ([object objectForKey:dHighScore]) {
+                int previousScore = [[object objectForKey:dHighScore] intValue];
+                    if (score > previousScore){
+                        [object setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
+                    }
+            }
+            CGFloat previousEnergy = 0;
+            // see if we have an energy level
+            if ([object objectForKey:dEnergy]) {
+                // get the energy
+                previousEnergy = [[object objectForKey:dEnergy] floatValue];
+                if (previousEnergy < currentEnergy) {
+                    [object setObject:@(currentEnergy) forKey:dEnergy];
+                }
+            }
+            [object pinInBackground];
+        } else {
+            NSLog(@"Saving a new object");
+            // Create a new one
+            PFObject* newLevelStop = [PFObject objectWithClassName:dClassName];
+            [newLevelStop setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
+            newLevelStop[dEnergy] = @(currentEnergy);
+            newLevelStop[dJourney] = self.currentJourney;
+            newLevelStop[dLevel] = @(self.currentStop);
+            newLevelStop[dPlayer] = [PFUser currentUser];
+            [newLevelStop pinInBackground];
+        }
+    }];
+}
 
 #pragma MARK - BACKGROUND LOOPING FOR PARALLAX EFFECT
 // Loop the background objects in a regular node
@@ -465,10 +601,10 @@ static const CGFloat scrollSpeed = 80.f;
 
 #pragma MARK - COLLISION METHODS
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly rock:(CCNode *)rock {
-
+    
     // Play audio
     [audio playEffect:@"bounce.mp3"];
-
+    
     CCParticleSystem* rockDust = (CCParticleSystem *)[CCBReader load:@"BumpDust"];
     rockDust.autoRemoveOnFinish = TRUE;
     // set dust off the rock
@@ -520,7 +656,7 @@ static const CGFloat scrollSpeed = 80.f;
             _healthColorBar.scaleX = 1;
         } else {
             // otherwise add to the bar
-              [_healthColorBar setScaleX:_healthColorBar.scaleX + .14];
+            [_healthColorBar setScaleX:_healthColorBar.scaleX + .14];
         }
         
     }];
@@ -532,10 +668,16 @@ static const CGFloat scrollSpeed = 80.f;
 -(void) reloadGame {
     // pause the music
     audio.bgPaused = false;
-    // reload the scene
+    // reload the scene with current property values
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    GameScene* gameScene = [[scene children] firstObject];
+    gameScene.currentStop = self.currentStop;
+    gameScene.forUnlock = self.forUnlock;
+    gameScene.currentJourney = self.currentJourney;
     [[CCDirector sharedDirector] replaceScene:scene];
-
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+    
 }
 
 #pragma  mark - PAUSE MENU METHODS
@@ -550,8 +692,29 @@ static const CGFloat scrollSpeed = 80.f;
 
 -(void) shouldExitFromPause {
     CCLOG(@"User wants to exit from game");
-    // Return to main scene
-    CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
+    // Return to map scene
+    CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", self.currentJourney]];
+    if ((self.forUnlock) && (currentEnergy >= .5)) {
+        // we need to raise the current highest level for the migration journey
+        if ([self.currentJourney isEqualToString:@"A"]) {
+            MigrationA* migration = [[scene children] firstObject];
+            migration.unlockJourney = true;
+        } else if ([self.currentJourney isEqualToString:@"B"]) {
+            MigrationB* migration = [[scene children] firstObject];
+            migration.unlockJourney = true;
+        } else if ([self.currentJourney isEqualToString:@"C"]) {
+            MigrationC* migration = [[scene children] firstObject];
+            migration.unlockJourney = true;
+        } else if ([self.currentJourney isEqualToString:@"D"]) {
+            MigrationD* migration = [[scene children] firstObject];
+            migration.unlockJourney = true;
+        } else if ([self.currentJourney isEqualToString:@"E"]) {
+            MigrationD* migration = [[scene children] firstObject];
+            migration.unlockJourney = true;
+        }
+    } else {
+        self.forUnlock = false;
+    }
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
@@ -589,16 +752,16 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(void)loseShouldReload {
-     CCLOG(@"User lost, and wants to try again");
+    CCLOG(@"User lost, and wants to try again");
     // hide the lose layer and reload
     _gameLoseNode.visible = false;
     [self reloadGame];
 }
 
 -(void)loseShouldExit {
-     CCLOG(@"User lost, and wants to exit");
+    CCLOG(@"User lost, and wants to exit");
     // return to the main
-     [self shouldExitFromPause];
+    [self shouldExitFromPause];
 }
 
 
