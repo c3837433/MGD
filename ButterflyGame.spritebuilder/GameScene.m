@@ -188,8 +188,7 @@ static const CGFloat scrollSpeed = 80.f;
  }
  */
 
-- (void)onEnter
-{
+- (void)onEnter {
     [super onEnter];
     
     CCLOG(@"Loaded Game");
@@ -694,7 +693,8 @@ static const CGFloat scrollSpeed = 80.f;
     CCLOG(@"User wants to exit from game");
     // Return to map scene
     CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", self.currentJourney]];
-    if ((self.forUnlock) && (currentEnergy >= .5)) {
+    if ((self.forUnlock) && (currentEnergy >= 0.5)) {
+        NSLog(@"Next stop SHOULD unlock");
         // we need to raise the current highest level for the migration journey
         if ([self.currentJourney isEqualToString:@"A"]) {
             MigrationA* migration = [[scene children] firstObject];
@@ -713,6 +713,24 @@ static const CGFloat scrollSpeed = 80.f;
             migration.unlockJourney = true;
         }
     } else {
+         NSLog(@"Next stop SHOULD NOT unlock");
+        if ([self.currentJourney isEqualToString:@"A"]) {
+            MigrationA* migration = [[scene children] firstObject];
+            migration.unlockJourney = false;
+        } else if ([self.currentJourney isEqualToString:@"B"]) {
+            MigrationB* migration = [[scene children] firstObject];
+            migration.unlockJourney = false;
+        } else if ([self.currentJourney isEqualToString:@"C"]) {
+            MigrationC* migration = [[scene children] firstObject];
+            migration.unlockJourney = false;
+        } else if ([self.currentJourney isEqualToString:@"D"]) {
+            MigrationD* migration = [[scene children] firstObject];
+            migration.unlockJourney = false;
+        } else if ([self.currentJourney isEqualToString:@"E"]) {
+            MigrationD* migration = [[scene children] firstObject];
+            migration.unlockJourney = false;
+        }
+
         self.forUnlock = false;
     }
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];

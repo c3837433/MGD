@@ -44,6 +44,7 @@
         [userDefaults setInteger:1 forKey:mHighestJourneyUnlocked];
         self.highestLevel = 1;
     }
+    NSLog(@"Number of migrations that should be viewable: %ld", (long)self.highestLevel);
     [self setUpMapviewWithButtons];
     
 }

@@ -10,21 +10,15 @@
 #import "Constants.h"
 #import "GameScene.h"
 #import <Parse/Parse.h>
+#import "Utility.h"
 
 @implementation MigrationA  {
     CCButton* _stop1;
     CCButton* _stop2;
     CCButton* _stop3;
     
-    CCSpriteFrame* greenDot;
-    CCSpriteFrame* redDot;
-    CCSpriteFrame* orangeDot;
-    CCSpriteFrame* grayDot;
-    CCSpriteFrame* greenHLDot;
-    CCSpriteFrame* redHLDot;
-    CCSpriteFrame* orangeHLDot;
-    CCSpriteFrame* grayHLDot;
     CCLabelTTF* _scoreLabel;
+    CCLabelTTF* _totalScoreLabel;
     NSInteger selectedStop;
     NSArray* journeyStops;
     
@@ -35,14 +29,7 @@
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
-    greenDot = [CCSpriteFrame frameWithImageNamed:jGreenDot];
-    redDot = [CCSpriteFrame frameWithImageNamed:jRedDot];
-    orangeDot = [CCSpriteFrame frameWithImageNamed:jOrangenDot];
-    grayDot = [CCSpriteFrame frameWithImageNamed:jUnlocked];
-    greenHLDot = [CCSpriteFrame frameWithImageNamed:jGreenHighlighted];
-    redHLDot = [CCSpriteFrame frameWithImageNamed:jRedHighlighted];
-    orangeHLDot = [CCSpriteFrame frameWithImageNamed:jOrangeHighlighted];
-    grayHLDot = [CCSpriteFrame frameWithImageNamed:jUnlockedHighlighted];
+    _totalScoreLabel.string = @"";
     journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, nil];
     selectedStop = 1;
     
@@ -73,33 +60,14 @@
         [userDefaults synchronize];
     }
     // make sure the available buttons are visable and enabled
-    [self setActiveButtons];
+    [Utility setActiveButtons:journeyStops withHighestStop:self.highestPlayableStop];
     // get any saved data for the journey
     [self setUpCurrentSavedData];
 }
 
--(void) setActiveButtons {
-    // Create an array of all the journey nodes
-    NSArray* buttonArray = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, nil];
-    for (CCButton* button in buttonArray) {
-        // get the button name
-        NSString* buttonName = button.name;
-        // Get the last number value
-        NSString* buttonNum = [buttonName substringFromIndex:[buttonName length] - 1];
-        // convert to integer
-        NSInteger buttonInt = [buttonNum integerValue];
-        // if this is higher than the current hghest level, hide it
-        if (buttonInt <= self.highestPlayableStop) {
-            [button setVisible:true];
-            button.userInteractionEnabled = true;
-            [button setBackgroundSpriteFrame:grayDot forState:CCControlStateNormal];
-            [button setBackgroundSpriteFrame:grayHLDot forState:CCControlStateHighlighted];
-            [button setBackgroundSpriteFrame:grayHLDot forState:CCControlStateSelected];
-        }
-    }
-}
 
 -(void) setUpCurrentSavedData {
+    self.totalScore = 0;
     PFQuery *query = [PFQuery queryWithClassName:dClassName];
     [query fromLocalDatastore];
     // find any scores for this journey
@@ -110,8 +78,11 @@
             for (PFObject* object in objects) {
                 NSLog(@"%@", object.description);
                 [self.levelsArray addObject:object];
+                NSInteger score = [[object objectForKey:dHighScore] integerValue];
+                self.totalScore = self.totalScore + score;
                 [self setUpStop:object];
             }
+            _totalScoreLabel.string = [NSString stringWithFormat:@"Total Score \n%ld", (long)self.totalScore];
         }
         
     }];
@@ -144,54 +115,29 @@
                     // set up the button
                     switch ([buttonNum integerValue]) {
                         case 1:
-                            [self setButtonImage:_stop1 forEnergy:energyLevel];
+                            //[self setButtonImage:_stop1 forEnergy:energyLevel];
+                            [Utility setButtonImage:_stop1 forEnergy:energyLevel];
                             NSLog(@"Setting first button");
                             break;
                         case 2:
-                            [self setButtonImage:_stop2 forEnergy:energyLevel];
+                           // [self setButtonImage:_stop2 forEnergy:energyLevel];
+                            [Utility setButtonImage:_stop2 forEnergy:energyLevel];
                              NSLog(@"Setting second button");
                             break;
                         case 3:
-                            [self setButtonImage:_stop3 forEnergy:energyLevel];
+                            //[self setButtonImage:_stop3 forEnergy:energyLevel];
+                            [Utility setButtonImage:_stop3 forEnergy:energyLevel];
                              NSLog(@"Setting third button");
                             break;
                         default:
                             break;
                     }
                 }
-                
+                // currently select the highest playable stop
+                mapButton.selected = ([buttonNum integerValue] == self.highestPlayableStop) ? true : false;
             }
+
         }
-}
-
--(void) setButtonImage:(CCButton*)button forEnergy:(CGFloat)energy {
-    NSLog(@"selected stop energy level: %f", energy);
-    if (energy > .5) {
-        // green image
-         NSLog(@"button should be green");
-        [button setBackgroundSpriteFrame:greenDot forState:CCControlStateNormal];
-        [button setBackgroundSpriteFrame:greenHLDot forState:CCControlStateHighlighted];
-        [button setBackgroundSpriteFrame:greenHLDot forState:CCControlStateSelected];
-    } else if (energy > .3) {
-        // orange image
-         NSLog(@"button should be orange");
-        [button setBackgroundSpriteFrame:orangeDot forState:CCControlStateNormal];
-        [button setBackgroundSpriteFrame:orangeHLDot forState:CCControlStateHighlighted];
-        [button setBackgroundSpriteFrame:orangeHLDot forState:CCControlStateSelected];
-    } else if (energy > 0) {
-        // red
-         NSLog(@"button should be red");
-        [button setBackgroundSpriteFrame:redDot forState:CCControlStateNormal];
-        [button setBackgroundSpriteFrame:redHLDot forState:CCControlStateHighlighted];
-        [button setBackgroundSpriteFrame:redHLDot forState:CCControlStateSelected];
-    } else {
-        // dark grey
-         NSLog(@"button should be grey");
-        [button setBackgroundSpriteFrame:grayDot forState:CCControlStateNormal];
-        [button setBackgroundSpriteFrame:grayHLDot forState:CCControlStateHighlighted];
-        [button setBackgroundSpriteFrame:grayHLDot forState:CCControlStateSelected];
-    }
-
 }
 
 -(void )selectedFirstStop {
@@ -201,17 +147,22 @@
 }
 
 -(void) setButtonAndStop:(CCButton*) button {
-    _scoreLabel.string = @"High Score";
+    // unselect all the buttons
+    for (CCButton* button in journeyStops) {
+        button.selected = false;
+    }
+    _scoreLabel.string = @"";
     for (PFObject* object in self.levelsArray) {
         if ([object objectForKey:dLevel]) {
             NSInteger stop = [[object objectForKey:dLevel] integerValue];
             if (stop == selectedStop) {
                 // get the high score and energy level
                 if ([object objectForKey:dHighScore]) {
-                    _scoreLabel.string = [object objectForKey:dHighScore];
+                    _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
                 }
                 CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
-                [self setButtonImage:button forEnergy:energyLevel];
+                //[self setButtonImage:button forEnergy:energyLevel];
+                [Utility setButtonImage:button forEnergy:energyLevel];
             }
         }
     }
@@ -219,25 +170,33 @@
 
 
 -(void) selectedSecondStop {
-    selectedStop = 2;
-    [self setButtonAndStop:_stop2];
+    if (self.highestPlayableStop >= 2) {
+        selectedStop = 2;
+        [self setButtonAndStop:_stop2];
+    }
+    
 }
 
 -(void) selectedThirdStop {
-    selectedStop = 3;
-    [self setButtonAndStop:_stop3];
+    if (self.highestPlayableStop >= 3) {
+        selectedStop = 3;
+        [self setButtonAndStop:_stop3];
+    }
 }
 
 
 -(void)shouldReturnToMap {
     // Return to the main map
-    CCScene* scene = [CCBReader loadAsScene:@"Map"];
+    [Utility shouldReturnToMap];
+/*    CCScene* scene = [CCBReader loadAsScene:@"Map"];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];*/
     
 }
 
 -(void)shouldPlaySelectedLevel {
+    [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A"];
+    /*
     // Just load the same game
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     GameScene* gameScene = [[scene children] firstObject];
@@ -252,7 +211,7 @@
     
     [[CCDirector sharedDirector] replaceScene:scene];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];*/
 }
 
 @end

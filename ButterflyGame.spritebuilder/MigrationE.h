@@ -11,5 +11,9 @@
 @interface MigrationE : CCNode
 
 @property (nonatomic) NSInteger highestPlayableStop;
+@property (nonatomic) NSInteger currentPlayableLevel;
+@property (nonatomic, strong) NSMutableArray* levelsArray;
 @property (nonatomic) BOOL unlockJourney;
+@property (nonatomic) NSInteger totalScore;
+
 @end

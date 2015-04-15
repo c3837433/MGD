@@ -6,6 +6,7 @@
 //
 
 #import "MainScene.h"
+#import "ABGameKitHelper.h"
 
 @implementation MainScene {
 
@@ -16,7 +17,7 @@
 
 //Once the game file loads, allow user interaction so the player can view the game scene
 - (void)didLoadFromCCB {
-
+    [ABGameKitHelper sharedHelper];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     animationManager = _mainButterfly.animationManager;
@@ -53,5 +54,13 @@
 
 }
 
+-(void) shouldOpenAchievements {
+    CCLOG(@"User clicked achievements button");
+}
+
+-(void) shouldOpenLeaderboards {
+    CCLOG(@"User clicked leaderboard button");
+    [[ABGameKitHelper sharedHelper] showLeaderboard:@"com.Smith.Angela.ButterflyGame.Scores"];
+}
 
 @end

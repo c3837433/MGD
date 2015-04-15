@@ -35,5 +35,5 @@ extern NSString* const mHighestJourneyAStopUnlocked;
 extern NSString* const mHighestJourneyBStopUnlocked;
 extern NSString* const mHighestJourneyCStopUnlocked;
 extern NSString* const mHighestJourneyDStopUnlocked;
-extern NSString* const mHighestJourneyDStopUnlocked;
+extern NSString* const mHighestJourneyEStopUnlocked;
 
