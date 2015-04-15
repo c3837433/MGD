@@ -16,6 +16,7 @@
     CCButton* _stop2;
     CCButton* _stop3;
     CCButton* _stop4;
+    CCButton* _stop5;
     
     CCLabelTTF* _scoreLabel;
     NSInteger selectedStop;
@@ -31,7 +32,7 @@
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     _totalScoreLabel.string = @"";
-    journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, _stop4, nil];
+    journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, _stop4, _stop5, nil];
     selectedStop = 1;
     
     
@@ -39,9 +40,11 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey:mHighestJourneyEStopUnlocked]) {
         self.highestPlayableStop = [userDefaults integerForKey:mHighestJourneyEStopUnlocked];
+        // set the selected stop to the previous so the user sees the score they just recieved
+        selectedStop = self.highestPlayableStop;
         if (self.unlockJourney) {
             // need to unlock another stop on the map
-            if (self.highestPlayableStop < 4) {
+            if (self.highestPlayableStop < 5) {
                 self.highestPlayableStop ++;
                 [userDefaults setInteger:self.highestPlayableStop forKey:mHighestJourneyEStopUnlocked];
                 [userDefaults synchronize];
@@ -91,7 +94,7 @@
         NSLog(@"Stop number: %ld", (long)stopNum);
         if (stopNum == selectedStop) {
             // set this button to selected and set the high score
-            _scoreLabel.string = [stop objectForKey:dHighScore];
+            _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:dHighScore]];
             NSLog(@"This high score: %@", [stop objectForKey:dHighScore]);
         }
         CGFloat energyLevel = [[stop objectForKey:dEnergy] floatValue];
@@ -118,6 +121,9 @@
                     case 4:
                         [Utility setButtonImage:_stop4 forEnergy:energyLevel];
                         break;
+                    case 5:
+                        [Utility setButtonImage:_stop5 forEnergy:energyLevel];
+                        break;
                     default:
                         break;
                 }
@@ -135,14 +141,15 @@
         button.selected = false;
     }
     // set the correct data for the score
-    _scoreLabel.string = @"High Score";
+    _scoreLabel.string =[NSString stringWithFormat:@"Stop %ld Score \n0", (long)selectedStop];
+
     for (PFObject* object in self.levelsArray) {
         if ([object objectForKey:dLevel]) {
             NSInteger stop = [[object objectForKey:dLevel] integerValue];
             if (stop == selectedStop) {
                 // get the high score and energy level
                 if ([object objectForKey:dHighScore]) {
-                    _scoreLabel.string = [object objectForKey:dHighScore];
+                    _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
                 }
                 CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
                 // set the current button selected
@@ -179,8 +186,12 @@
     }
 }
 
-
-
+-(void) selectedFifthStop {
+    if (self.highestPlayableStop >=5) {
+        selectedStop = 5;
+        [self setButtonAndStop:_stop5];
+    }
+}
 
 -(void)shouldReturnToMap {
     // Return to the main map

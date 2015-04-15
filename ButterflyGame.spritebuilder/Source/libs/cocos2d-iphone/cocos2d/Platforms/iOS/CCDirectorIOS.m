@@ -192,8 +192,8 @@
 }
 
 // Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    
 	BOOL ret =YES;
 	if( [_delegate respondsToSelector:_cmd] )
 		ret = (BOOL) [_delegate shouldAutorotateToInterfaceOrientation:interfaceOrientation];

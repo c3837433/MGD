@@ -14,7 +14,7 @@
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>currentSequenceId</key>
 	<integer>0</integer>
 	<key>docDimensionsType</key>
@@ -1380,11 +1380,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>63</real>
-							<real>242</real>
+							<real>58</real>
+							<real>0.23125000298023224</real>
+							<integer>1</integer>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -1418,7 +1418,8 @@
 						<string>Text</string>
 						<key>value</key>
 						<array>
-							<string>Journey 3</string>
+							<string>Journey to
+El Rosario</string>
 							<false/>
 						</array>
 					</dict>
@@ -1554,6 +1555,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -1587,11 +1590,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>53</real>
-							<real>48</real>
+							<real>44.999996185302734</real>
+							<real>0.11249999701976776</real>
 							<integer>0</integer>
 							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -1913,8 +1916,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>55</real>
-							<real>0.89375001192092896</real>
+							<real>47</real>
+							<real>0.911979079246521</real>
 							<integer>0</integer>
 							<integer>0</integer>
 							<integer>2</integer>
@@ -2565,10 +2568,10 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.12852112948894501</real>
-							<real>0.63125002384185791</real>
+							<real>62.999996185302734</real>
+							<real>0.61562502384185791</real>
 							<integer>0</integer>
-							<integer>2</integer>
+							<integer>0</integer>
 							<integer>2</integer>
 						</array>
 					</dict>
@@ -2604,7 +2607,7 @@
 						<key>value</key>
 						<array>
 							<string>Stop 1 Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2774,10 +2777,10 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.11443661898374557</real>
-							<real>0.3359375</real>
+							<real>56.999996185302734</real>
+							<real>0.26406249403953552</real>
 							<integer>0</integer>
-							<integer>2</integer>
+							<integer>0</integer>
 							<integer>2</integer>
 						</array>
 					</dict>
@@ -2813,7 +2816,7 @@
 						<key>value</key>
 						<array>
 							<string>Total Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2950,8 +2953,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

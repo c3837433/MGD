@@ -31,13 +31,13 @@
     self.userInteractionEnabled = TRUE;
     _totalScoreLabel.string = @"";
     journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, nil];
-    selectedStop = 1;
-    
 
     // check if the user has a highest stop saved yet
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey:mHighestJourneyAStopUnlocked]) {
         self.highestPlayableStop = [userDefaults integerForKey:mHighestJourneyAStopUnlocked];
+        // set the selected stop to the previous so the user sees the score they just recieved
+        selectedStop = self.highestPlayableStop;
         if (self.unlockJourney) {
             // need to unlock another stop on the map
             if (self.highestPlayableStop < 3) {
@@ -57,6 +57,7 @@
         // set the default
         [userDefaults setInteger:1 forKey:mHighestJourneyAStopUnlocked];
         self.highestPlayableStop = 1;
+        selectedStop = 1;
         [userDefaults synchronize];
     }
     // make sure the available buttons are visable and enabled
@@ -98,7 +99,7 @@
             NSLog(@"Stop number: %ld", (long)stopNum);
             if (stopNum == selectedStop) {
                 // set this button to selected and set the high score
-                _scoreLabel.string = [stop objectForKey:dHighScore];
+                _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:dHighScore]];
                 NSLog(@"This high score: %@", [stop objectForKey:dHighScore]);
             }
             CGFloat energyLevel = [[stop objectForKey:dEnergy] floatValue];
@@ -115,17 +116,14 @@
                     // set up the button
                     switch ([buttonNum integerValue]) {
                         case 1:
-                            //[self setButtonImage:_stop1 forEnergy:energyLevel];
                             [Utility setButtonImage:_stop1 forEnergy:energyLevel];
                             NSLog(@"Setting first button");
                             break;
                         case 2:
-                           // [self setButtonImage:_stop2 forEnergy:energyLevel];
                             [Utility setButtonImage:_stop2 forEnergy:energyLevel];
                              NSLog(@"Setting second button");
                             break;
                         case 3:
-                            //[self setButtonImage:_stop3 forEnergy:energyLevel];
                             [Utility setButtonImage:_stop3 forEnergy:energyLevel];
                              NSLog(@"Setting third button");
                             break;
@@ -135,6 +133,7 @@
                 }
                 // currently select the highest playable stop
                 mapButton.selected = ([buttonNum integerValue] == self.highestPlayableStop) ? true : false;
+
             }
 
         }
@@ -151,7 +150,7 @@
     for (CCButton* button in journeyStops) {
         button.selected = false;
     }
-    _scoreLabel.string = @"";
+    _scoreLabel.string =[NSString stringWithFormat:@"Stop %ld Score \n0", (long)selectedStop];
     for (PFObject* object in self.levelsArray) {
         if ([object objectForKey:dLevel]) {
             NSInteger stop = [[object objectForKey:dLevel] integerValue];
@@ -161,7 +160,7 @@
                     _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
                 }
                 CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
-                //[self setButtonImage:button forEnergy:energyLevel];
+                // Update the button
                 [Utility setButtonImage:button forEnergy:energyLevel];
             }
         }
@@ -188,30 +187,11 @@
 -(void)shouldReturnToMap {
     // Return to the main map
     [Utility shouldReturnToMap];
-/*    CCScene* scene = [CCBReader loadAsScene:@"Map"];
-    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];*/
-    
 }
 
 -(void)shouldPlaySelectedLevel {
+    // Set the migration level to return to, selected stop to play and highest stop for unlocking and play stop
     [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A"];
-    /*
-    // Just load the same game
-    CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
-    GameScene* gameScene = [[scene children] firstObject];
-    gameScene.currentStop = selectedStop;
-    NSLog(@"Selected stop: %ld", (long)selectedStop);
-    NSLog(@"Hichest stop: %ld", (long)self.highestPlayableStop);
-    if (selectedStop == self.highestPlayableStop) {
-        gameScene.forUnlock = YES;
-        NSLog(@"This is for unlocking");
-    }
-    gameScene.currentJourney = @"A";
-    
-    [[CCDirector sharedDirector] replaceScene:scene];
-    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];*/
 }
 
 @end

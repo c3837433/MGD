@@ -38,6 +38,8 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey:mHighestJourneyBStopUnlocked]) {
         self.highestPlayableStop = [userDefaults integerForKey:mHighestJourneyBStopUnlocked];
+        // set the selected stop to the previous so the user sees the score they just recieved
+        selectedStop = self.highestPlayableStop;
         if (self.unlockJourney) {
             NSLog(@"Need to unlock another stop");
             // need to unlock another stop on the map
@@ -98,7 +100,7 @@
         NSLog(@"Stop number: %ld", (long)stopNum);
         if (stopNum == selectedStop) {
             // set this button to selected and set the high score
-            _scoreLabel.string = [stop objectForKey:dHighScore];
+            _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:dHighScore]];
             NSLog(@"This high score: %@", [stop objectForKey:dHighScore]);
         }
         CGFloat energyLevel = [[stop objectForKey:dEnergy] floatValue];
@@ -138,14 +140,14 @@
         button.selected = false;
     }
     // set the correct data for the score
-    _scoreLabel.string = @"High Score";
+    _scoreLabel.string =[NSString stringWithFormat:@"Stop %ld Score \n0", (long)selectedStop];
     for (PFObject* object in self.levelsArray) {
         if ([object objectForKey:dLevel]) {
             NSInteger stop = [[object objectForKey:dLevel] integerValue];
             if (stop == selectedStop) {
                 // get the high score and energy level
                 if ([object objectForKey:dHighScore]) {
-                    _scoreLabel.string = [object objectForKey:dHighScore];
+                    _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
                 }
                 CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
                 // set the current button selected

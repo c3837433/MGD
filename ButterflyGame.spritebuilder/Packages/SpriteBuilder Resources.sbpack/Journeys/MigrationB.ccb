@@ -14,7 +14,7 @@
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>currentSequenceId</key>
 	<integer>0</integer>
 	<key>docDimensionsType</key>
@@ -294,8 +294,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.61179578304290771</real>
-							<real>0.52187502384185791</real>
+							<real>0.57273328304290771</real>
+							<real>0.56979161500930786</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -402,8 +402,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.5</real>
-							<real>0.375</real>
+							<real>0.45703125</real>
+							<real>0.45520830154418945</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -728,8 +728,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.59683096408843994</real>
-							<real>0.51249998807907104</real>
+							<real>0.57273328304290771</real>
+							<real>0.56979161500930786</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -1054,8 +1054,8 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.70422536134719849</real>
-							<real>0.63125002384185791</real>
+							<real>0.68628960847854614</real>
+							<real>0.69166660308837891</real>
 							<integer>0</integer>
 							<integer>2</integer>
 							<integer>2</integer>
@@ -1380,11 +1380,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>62</real>
-							<real>283</real>
+							<real>97</real>
+							<real>0.23124997317790985</real>
+							<integer>1</integer>
 							<integer>0</integer>
-							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -1418,7 +1418,8 @@
 						<string>Text</string>
 						<key>value</key>
 						<array>
-							<string>Journey 2</string>
+							<string>Journey to Ellwood 
+Main Monarch Grove</string>
 							<false/>
 						</array>
 					</dict>
@@ -1587,11 +1588,11 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>53</real>
-							<real>48</real>
+							<real>47.091548919677734</real>
+							<real>0.11418596655130386</real>
 							<integer>0</integer>
 							<integer>0</integer>
-							<integer>0</integer>
+							<integer>2</integer>
 						</array>
 					</dict>
 					<dict>
@@ -1913,9 +1914,9 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>55</real>
-							<real>0.89375001192092896</real>
-							<integer>0</integer>
+							<real>49.577465057373047</real>
+							<real>0.10624996572732925</real>
+							<integer>1</integer>
 							<integer>0</integer>
 							<integer>2</integer>
 						</array>
@@ -2239,10 +2240,10 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.1259765625</real>
-							<real>0.2682291567325592</real>
+							<real>58.591548919677734</real>
+							<real>0.2451559454202652</real>
 							<integer>0</integer>
-							<integer>2</integer>
+							<integer>0</integer>
 							<integer>2</integer>
 						</array>
 					</dict>
@@ -2278,7 +2279,7 @@
 						<key>value</key>
 						<array>
 							<string>Total Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2448,10 +2449,10 @@
 						<string>Position</string>
 						<key>value</key>
 						<array>
-							<real>0.1376953125</real>
-							<real>0.63125002384185791</real>
+							<real>64</real>
+							<real>0.37708339095115662</real>
+							<integer>1</integer>
 							<integer>0</integer>
-							<integer>2</integer>
 							<integer>2</integer>
 						</array>
 					</dict>
@@ -2487,7 +2488,7 @@
 						<key>value</key>
 						<array>
 							<string>Stop 1 Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2624,8 +2625,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

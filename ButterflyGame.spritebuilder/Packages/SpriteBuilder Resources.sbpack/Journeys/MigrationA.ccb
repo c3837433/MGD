@@ -1626,7 +1626,7 @@
 						<key>value</key>
 						<array>
 							<string>Stop 1 Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2487,7 +2487,7 @@
 						<key>value</key>
 						<array>
 							<string>Total Score
-123456
+0
 </string>
 							<false/>
 						</array>
@@ -2624,8 +2624,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>

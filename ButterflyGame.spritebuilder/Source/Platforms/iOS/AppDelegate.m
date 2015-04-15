@@ -70,8 +70,12 @@
 -(NSUInteger)supportedInterfaceOrientations {
 
     return UIInterfaceOrientationMaskLandscapeLeft;
+} 
+ /*
+-(NSUInteger)application:(UIApplication*)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return UIInterfaceOrientationLandscapeLeft;
 }
-
+*/
 - (CCScene*) startScene {
     return [CCBReader loadAsScene:@"MainScene"];
 }
