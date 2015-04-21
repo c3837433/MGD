@@ -21,12 +21,12 @@
 #define jUnlockedHighlighted  @"mapAssets/unfinishHL.png"
 
 #pragma mark PARSE DATASTORE DEFINITIONS
-#define dClassName @"LevelStop"
-#define dLevel @"level"
-#define dJourney @"journey"
-#define dHighScore @"highScore"
-#define dEnergy @"energy"
-#define dPlayer @"player"
+#define pClassName @"GameStop"
+#define pStop @"stop"
+#define pJourney @"journey"
+#define pHighScore @"highScore"
+#define pEnergy @"energy"
+#define pPlayerName @"playerName"
 
 #pragma mark MAP LEVEL DEFAULTS
 extern NSString* const mHighestJourneyUnlocked;

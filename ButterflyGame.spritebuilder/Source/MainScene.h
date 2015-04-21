@@ -5,6 +5,8 @@
 //  Copyright (c) 2015 Apportable. All rights reserved.
 //
 #import "Player.h"
+#import "GamePlayer.h"
+#import "GameData.h"
 
 @interface MainScene : CCNode
 
@@ -14,4 +16,5 @@
 @property (nonatomic) BOOL connectedToGameCenter;
 @property (nonatomic) BOOL currentPlayerSelected;
 @property (nonatomic, strong) Player* player;
+//@property (nonatomic, strong) GamePlayer* currentPlayer;
 @end

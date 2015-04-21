@@ -17,5 +17,6 @@
 @property (nonatomic) NSInteger highestCStop;
 @property (nonatomic) NSInteger highestDStop;
 @property (nonatomic) NSInteger highestEStop;
-
+@property (nonatomic, strong) NSArray* playerScores;
+-(void)save;
 @end

@@ -27,6 +27,8 @@
 #import <Parse/Parse.h>
 #import "AppDelegate.h"
 #import "CCBuilderReader.h"
+#import "GamePlayer.h"
+#import "Score.h"
 
 @implementation AppController
 
@@ -43,6 +45,9 @@
     configPath = [configPath stringByAppendingPathComponent:@"configCocos2d.plist"];
     
     NSMutableDictionary* cocos2dSetup = [NSMutableDictionary dictionaryWithContentsOfFile:configPath];
+    
+    [GamePlayer registerSubclass];
+    [Score registerSubclass];
     [Parse enableLocalDatastore];
     // Initialize Parse.
     [Parse setApplicationId:@"i2oHPIVzpVlU0I6qu0KCOgfxS0DnY1iIrjzDWT2o"

@@ -205,9 +205,10 @@ static const CGFloat scrollSpeed = 80.f;
             self.scoresArray = [[NSMutableArray alloc] init];
     }
     NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)self.scoresArray.count);
-    for (GameScore* score in self.scoresArray) {
+    /*for (GameScore* score in self.scoresArray) {
         NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
-    }
+    }*/
+    
 }
 
 
@@ -422,6 +423,7 @@ static const CGFloat scrollSpeed = 80.f;
 #pragma mark - SAVE GAME DATA
 -(void)prepareToSaveLevelData:(int) score {
     NSLog(@"USER FINISHED GAME");
+    [self saveGameCenterGame:score];
     // see if we are connected to game center or not
     if (self.sessionConnectedToGC) {
         NSLog(@"Saving Game Center game");
@@ -432,6 +434,7 @@ static const CGFloat scrollSpeed = 80.f;
     }
 }
 
+// save the score to the local data store with this current user's name
 -(void)saveGameCenterGame:(int)score {
     NSLog(@"Checking for saved game center game");
     //NSLog(@"Pinning this data");
@@ -439,33 +442,34 @@ static const CGFloat scrollSpeed = 80.f;
     // check if this user already has a score
     //NSLog(@"Current leaderboard id: %@", leaderboardId);
     [[ABGameKitHelper sharedHelper] reportScore:score forLeaderboard:leaderboardId];
-    [self getCurrentStopScoreForLeaderboard:leaderboardId];
+   // [self getCurrentStopScoreForLeaderboard:leaderboardId];
     // see if we already have one saved
-    PFQuery *query = [PFQuery queryWithClassName:dClassName];
+    PFQuery *query = [PFQuery queryWithClassName:pClassName];
     [query fromLocalDatastore];
     // make sure it is for the current journey, stop, and player
-    [query whereKey:dJourney equalTo:self.currentJourney];
-    [query whereKey:dLevel equalTo:@(self.currentStop)];
-    [query whereKey:dPlayer equalTo:[PFUser currentUser]];
+    [query whereKey:pJourney equalTo:self.currentJourney];
+    [query whereKey:pStop equalTo:@(self.currentStop)];
+    //[query whereKey:dPlayer equalTo:[PFUser currentUser]];
+    [query whereKey:pPlayerName equalTo:self.player.playerName];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (objects.count > 0) {
             // NSLog(@"Already have an object to update: objects: %@", objects.description);
             PFObject* object = [objects objectAtIndex:0];
             //NSLog(@"Object: %@", object.description);
             //  see if we need to update it
-            if ([object objectForKey:dHighScore]) {
-                int previousScore = [[object objectForKey:dHighScore] intValue];
+            if ([object objectForKey:pHighScore]) {
+                int previousScore = [[object objectForKey:pHighScore] intValue];
                 if (score > previousScore){
-                    [object setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
+                    [object setObject:[NSString stringWithFormat:@"%d", score] forKey:pHighScore];
                 }
             }
             CGFloat previousEnergy = 0;
             // see if we have an energy level
-            if ([object objectForKey:dEnergy]) {
+            if ([object objectForKey:pEnergy]) {
                 // get the energy
-                previousEnergy = [[object objectForKey:dEnergy] floatValue];
+                previousEnergy = [[object objectForKey:pEnergy] floatValue];
                 if (previousEnergy < currentEnergy) {
-                    [object setObject:@(currentEnergy) forKey:dEnergy];
+                    [object setObject:@(currentEnergy) forKey:pEnergy];
                 }
             }
             [object pinInBackground];
@@ -473,12 +477,13 @@ static const CGFloat scrollSpeed = 80.f;
             // NSLog(@"Saving a new object");
             // Create a new one
             NSLog(@"creating new game center game");
-            PFObject* newLevelStop = [PFObject objectWithClassName:dClassName];
-            [newLevelStop setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
-            newLevelStop[dEnergy] = @(currentEnergy);
-            newLevelStop[dJourney] = self.currentJourney;
-            newLevelStop[dLevel] = @(self.currentStop);
-            newLevelStop[dPlayer] = [PFUser currentUser];
+            PFObject* newLevelStop = [PFObject objectWithClassName:pClassName];
+            [newLevelStop setObject:[NSString stringWithFormat:@"%d", score] forKey:pHighScore];
+            newLevelStop[pEnergy] = @(currentEnergy);
+            newLevelStop[pJourney] = self.currentJourney;
+            newLevelStop[pStop] = @(self.currentStop);
+            newLevelStop[pPlayerName] = self.player.playerName;
+            //newLevelStop[pPlayer] = [PFUser currentUser];
             [newLevelStop pinInBackground];
         }
     }];
@@ -495,7 +500,7 @@ static const CGFloat scrollSpeed = 80.f;
                 if (gameScore.gameStop == self.currentStop) {
                     NSLog(@"Found a score for this stop");
                     // see if this score matches the currene player
-                    if ([gameScore.gamePlayerName isEqualToString:self.player.playerName]) {
+                /*    if ([gameScore.gamePlayerName isEqualToString:self.player.playerName]) {
                         NSLog(@"Found a score for this player");
                         if (gameScore.gameEnergy < currentEnergy) {
                             NSLog(@"This game is better than saved one");
@@ -513,7 +518,7 @@ static const CGFloat scrollSpeed = 80.f;
                         NSLog(@"No saved scores for this player");
                         // create a new score
                         [self createNewScore:score];
-                    }
+                    } */
                 } else {
                     NSLog(@"No saved scores for this stop");
                     // create a new score
@@ -547,19 +552,19 @@ static const CGFloat scrollSpeed = 80.f;
          activeScores = [[NSMutableArray alloc] init];
     }
     NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)activeScores.count);
-    for (GameScore* score in activeScores) {
+    /*for (GameScore* score in activeScores) {
         NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
-    }
+    }*/
 
     NSLog(@"creating new score");
     GameScore* newScore = [[GameScore alloc] init];
-    newScore.gamePlayerName = self.player.playerName;
+    //newScore.gamePlayerName = self.player.playerName;
     newScore.gameJourney = self.currentJourney;
     newScore.gameStop = self.currentStop;
     newScore.gameEnergy = currentEnergy;
     newScore.gameScore = (NSInteger)score;
     NSLog(@"New score info: %@", newScore.description);
-    NSLog(@"New score name: %@", newScore.gamePlayerName);
+   // NSLog(@"New score name: %@", newScore.gamePlayerName);
     NSLog(@"New score journey: %@", newScore.gameJourney);
     NSLog(@"New score stop: %ld", (long)newScore.gameStop);
     NSLog(@"New score energy: %f", newScore.gameEnergy);
@@ -591,7 +596,6 @@ static const CGFloat scrollSpeed = 80.f;
             }
         }];
     }
-
 }
 
 
@@ -626,6 +630,7 @@ static const CGFloat scrollSpeed = 80.f;
     }
 }
 
+#pragma  mark - PLAYER MECHANICS
 -(void)swipeRight {
     // make sure we are not done
     if ((!didPause) && (!didFinish)) {

@@ -10,6 +10,19 @@
 
 @implementation Player
 
+// Create a singleton instance
++ (instancetype)sharedGameData {
+    static id sharedInstance = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [self loadInstance];
+    });
+    
+    return sharedInstance;
+}
+
+
 // NSCoder protocol for custom objects to save to NSUser Defaults
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
@@ -21,6 +34,7 @@
         self.highestDStop = [decoder decodeIntegerForKey:@"highestDStop"];
         self.highestEStop = [decoder decodeIntegerForKey:@"highestEStop"];
         self.highestJourney = [decoder decodeIntegerForKey:@"highestJourney"];
+        self.playerScores = [decoder decodeObjectForKey:@"playerScores"];
     }
     return self;
 }
@@ -33,6 +47,31 @@
     [encoder encodeInteger:self.highestDStop forKey:@"highestDStop"];
     [encoder encodeInteger:self.highestEStop forKey:@"highestEStop"];
     [encoder encodeInteger:self.highestJourney forKey:@"highestJourney"];
+    [encoder encodeObject:self.playerScores forKey:@"playerScores"];
 }
 
++(instancetype)loadInstance {
+    NSData* decodedData = [NSData dataWithContentsOfFile: [Player filePath]];
+    if (decodedData) {
+        Player* playerData = [NSKeyedUnarchiver unarchiveObjectWithData:decodedData];
+        return playerData;
+    }
+    
+    return [[Player alloc] init];
+}
+
++(NSString*)filePath {
+    static NSString* filePath = nil;
+    if (!filePath) {
+        filePath =
+        [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+         stringByAppendingPathComponent:@"playerData"];
+    }
+    return filePath;
+}
+
+-(void)save {
+    NSData* encodedData = [NSKeyedArchiver archivedDataWithRootObject: self];
+    [encodedData writeToFile:[Player filePath] atomically:YES];
+}
 @end

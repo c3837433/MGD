@@ -13,10 +13,13 @@
 
 
 //@property Player*   gamePlayer;
-@property NSString* gamePlayerName;
+//@property NSString* gamePlayerName;
 @property NSInteger gameStop;
 @property NSString* gameJourney;
 @property NSInteger gameScore;
-@property NSString* gameLeaderboardName;
+//@property NSString* gameLeaderboardName;
 @property CGFloat gameEnergy;
+
+-(void)save;
+
 @end

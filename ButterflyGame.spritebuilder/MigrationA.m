@@ -85,11 +85,15 @@
             if (self.highestPlayableStop < 3) {
                 self.highestPlayableStop ++;
                 // update the current high stop
-                [Utility updatePlayer:self.player forJourney:@"A" andStop:self.highestPlayableStop];
+  
+                // UPDATE
+                //[Utility updatePlayer:self.player forJourney:@"A" andStop:self.highestPlayableStop];
             } else {
                 if (self.highestPlayableStop == 3) {
                     // unlock the next journey
-                    [Utility updatePlayersHighestJOurney:self.player highestJOurney:2];
+                // UPDATE
+                    
+                    //    [Utility updatePlayersHighestJOurney:self.player highestJOurney:2];
                     //[userDefaults setInteger:2 forKey:mHighestJourneyUnlocked];
                     //[userDefaults synchronize];
                 }
@@ -108,17 +112,17 @@
 -(void) setUpCurrentSavedData {
      NSLog(@"Loading score from Game Center for current user");
     self.totalScore = 0;
-    PFQuery *query = [PFQuery queryWithClassName:dClassName];
+    PFQuery *query = [PFQuery queryWithClassName:pClassName];
     [query fromLocalDatastore];
     // find any scores for this journey
-    [query whereKey:dJourney equalTo:@"A"];
+    [query whereKey:pJourney equalTo:@"A"];
    // [query whereKey:dPlayer equalTo:[PFUser currentUser]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (objects) {
             for (PFObject* object in objects) {
                 NSLog(@"%@", object.description);
                 [self.levelsArray addObject:object];
-                NSInteger score = [[object objectForKey:dHighScore] integerValue];
+                NSInteger score = [[object objectForKey:pHighScore] integerValue];
                 self.totalScore = self.totalScore + score;
                 [self setUpStop:object];
             }
@@ -176,16 +180,16 @@
 -(void) setUpStop:(PFObject*)stop {
 
         // if it has a level stop number
-        if ([stop objectForKey:dLevel]) {
+        if ([stop objectForKey:pStop]) {
             // get it and the current energy level
-            NSInteger stopNum = [[stop objectForKey:dLevel] integerValue];
+            NSInteger stopNum = [[stop objectForKey:pStop] integerValue];
             NSLog(@"Stop number: %ld", (long)stopNum);
             if (stopNum == selectedStop) {
                 // set this button to selected and set the high score
-                _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:dHighScore]];
-                NSLog(@"This high score: %@", [stop objectForKey:dHighScore]);
+                _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:pHighScore]];
+                NSLog(@"This high score: %@", [stop objectForKey:pHighScore]);
             }
-            CGFloat energyLevel = [[stop objectForKey:dEnergy] floatValue];
+            CGFloat energyLevel = [[stop objectForKey:pEnergy] floatValue];
              NSLog(@"This energy level: %f", energyLevel);
             // loop through the stop buttons
             for (CCButton* mapButton in journeyStops) {
@@ -237,14 +241,14 @@
     if (self.sessionThroughGameCenter) {
         NSLog(@"Getting migration a stop score from Parse");
         for (PFObject* object in self.levelsArray) {
-            if ([object objectForKey:dLevel]) {
-                NSInteger stop = [[object objectForKey:dLevel] integerValue];
+            if ([object objectForKey:pStop]) {
+                NSInteger stop = [[object objectForKey:pStop] integerValue];
                 if (stop == selectedStop) {
                     // get the high score and energy level
-                    if ([object objectForKey:dHighScore]) {
-                        _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
+                    if ([object objectForKey:pHighScore]) {
+                        _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:pHighScore]];
                     }
-                    CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
+                    CGFloat energyLevel = [[object objectForKey:pEnergy] floatValue];
                     // Update the button
                     [Utility setButtonImage:button forEnergy:energyLevel];
                 }
@@ -254,9 +258,9 @@
     } else {
         NSLog(@"Getting migration stop score from nsuser defaults.");
         // get the score from utility
-        NSString* scoreString = [Utility getSelectedStopScoreForJourneyStop:@"A" andStop:selectedStop];
-        _scoreLabel.string = scoreString;
-        NSLog(@"score: %@",  scoreString);
+        //NSString* scoreString = [Utility getSelectedStopScoreForJourneyStop:@"A" andStop:selectedStop];
+        //_scoreLabel.string = scoreString;
+        //NSLog(@"score: %@",  scoreString);
     }
 }
 
@@ -285,7 +289,7 @@
 -(void)shouldPlaySelectedLevel {
     // Set the migration level to return to, selected stop to play and highest stop for unlocking and play stop
    // [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A"];
-    [Utility shouldPlaySelectedLevelStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A" withPlayer:self.player andConnection:self.sessionThroughGameCenter];
+ //   [Utility shouldPlaySelectedLevelStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A" withPlayer:self.player andConnection:self.sessionThroughGameCenter];
 }
 
 @end

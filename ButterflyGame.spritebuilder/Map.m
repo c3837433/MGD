@@ -16,7 +16,7 @@
 #import "MigrationD.h"
 #import "MigrationE.h"
 #import "Utility.h"
-
+#import <Parse/Parse.h>
 
 @implementation Map {
     BOOL shouldZoom;
@@ -52,14 +52,16 @@
     NSArray* leaderboardScoreArray;
 }
 
-//static NSString* ButterflyHighestLevel = mHighestJourneyUnlocked;
+// Get this user's highest unlocked journey for the map
 -(void) onEnter {
     [super onEnter];
-    if (!self.connectedToGameCenter) {
+   // if (!self.connectedToGameCenter) {
         // Get the player info
+       // NSLog(@"current player for map: %@", self.player.gamePlayerName);
+        //self.highestLevel = self.player.highestJourney;
         NSLog(@"current player for map: %@", self.currentPlayer.playerName);
         self.highestLevel = self.currentPlayer.highestJourney;
-    } else {
+/*    } else {
         //  NSString* ButterflyHighestLevel = mHighestJourneyUnlocked;
         // check if the user has a highest level saved yet
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -70,10 +72,12 @@
             [userDefaults setInteger:1 forKey:mHighestJourneyUnlocked];
             self.highestLevel = 1;
         }
-    }
+    } */
     NSLog(@"Number of migrations that should be viewable: %ld", (long)self.highestLevel);
     [self setUpMapviewWithButtons];
 }
+
+
 - (void)didLoadFromCCB {
     shouldZoom = false;
     // set the first journey as default
@@ -140,11 +144,29 @@
         }
     } else {
         // get top scores for all local users
-       [self setLocalLeaderboardWithScores:[Utility getTopThreeScoresForJourney:@"A"]];
+       //[self setLocalLeaderboardWithScores:[Utility getTopThreeScoresForJourney:@"A"]];
     }
-    
+}
+
+
+-(void)getLocalScoresForJourney {
+    PFQuery* topUsersQuery = [PFQuery queryWithClassName:pClassName];
+    [topUsersQuery whereKeyExists:pPlayerName];
+    [topUsersQuery whereKeyExists:pHighScore];
+    [topUsersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if ((!error) && (objects.count >+ 1)) {
+            // we have scores
+            [self sortAndOrderLocalScores:objects];
+        }
+    }];
 
 }
+
+-(void) sortAndOrderLocalScores:(NSArray*)scores {
+  NSArray* topScores = [Utility getTopThreeScoresForJourney:@"A" withScores:scores];
+    NSLog(@"Top scores: %@", topScores.description);
+}
+
 -(NSString*) getLeaderBoardTitleForJourney:(NSString*)journey {
     NSString* titleString = @"Migration";
     if ([journey isEqualToString:@"A"]) {
@@ -277,22 +299,27 @@
         MigrationA* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
         migration.player = self.currentPlayer;
+        //migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"B"]) {
         MigrationB* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        migration.player = self.currentPlayer;
+        // migration.player = self.currentPlayer;
+       // migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"C"]) {
         MigrationC* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        migration.player = self.currentPlayer;
+        // migration.player = self.currentPlayer;
+       // migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"D"]) {
         MigrationD* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        migration.player = self.currentPlayer;
+        // migration.player = self.currentPlayer;
+       // migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"E"]) {
         MigrationD* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        migration.player = self.currentPlayer;
+        // migration.player = self.currentPlayer;
+       // migration.player = self.player;
     }
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];

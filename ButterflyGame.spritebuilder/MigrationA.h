@@ -8,6 +8,7 @@
 
 #import "CCNode.h"
 #import "Player.h"
+#import "GamePlayer.h"
 
 @interface MigrationA : CCNode
 
@@ -19,6 +20,8 @@
 @property (nonatomic) NSInteger totalScore;
 @property (nonatomic) BOOL sessionThroughGameCenter;
 @property (nonatomic, strong) Player* player;
+//@property (nonatomic, strong) GamePlayer* player;
+
 @property (nonatomic, strong) NSMutableArray* playerArray;
 
 @end

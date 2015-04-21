@@ -93,6 +93,9 @@
 		99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C415591AAD6B070084DFD4 /* Spider.m */; };
 		99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155C1AAD6B430084DFD4 /* Nectar.m */; };
 		99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C4155F1AAD70920084DFD4 /* SpiderWeb.m */; };
+		99C89AFE1AE6BB97001CDA1A /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C89AFD1AE6BB97001CDA1A /* Score.m */; };
+		99C89B031AE6C0C5001CDA1A /* GamePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C89B021AE6C0C5001CDA1A /* GamePlayer.m */; };
+		99CBDD4A1AE6DFAD00C50697 /* GameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 99CBDD491AE6DFAD00C50697 /* GameData.m */; };
 		99CFFD1F1ADD8FBE0070F5A0 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 99CFFD1E1ADD8FBE0070F5A0 /* Utility.m */; };
 		99CFFD351ADE13400070F5A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CFFD341ADE13400070F5A0 /* StoreKit.framework */; };
 		99CFFD371ADE13430070F5A0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CFFD361ADE13430070F5A0 /* GameKit.framework */; };
@@ -258,6 +261,12 @@
 		99C4155C1AAD6B430084DFD4 /* Nectar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nectar.m; sourceTree = "<group>"; };
 		99C4155E1AAD70920084DFD4 /* SpiderWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpiderWeb.h; sourceTree = "<group>"; };
 		99C4155F1AAD70920084DFD4 /* SpiderWeb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpiderWeb.m; sourceTree = "<group>"; };
+		99C89AFC1AE6BB97001CDA1A /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score.h; sourceTree = "<group>"; };
+		99C89AFD1AE6BB97001CDA1A /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score.m; sourceTree = "<group>"; };
+		99C89B011AE6C0C5001CDA1A /* GamePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlayer.h; sourceTree = "<group>"; };
+		99C89B021AE6C0C5001CDA1A /* GamePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlayer.m; sourceTree = "<group>"; };
+		99CBDD481AE6DFAC00C50697 /* GameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameData.h; sourceTree = "<group>"; };
+		99CBDD491AE6DFAD00C50697 /* GameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameData.m; sourceTree = "<group>"; };
 		99CFFD1D1ADD8FBE0070F5A0 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		99CFFD1E1ADD8FBE0070F5A0 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		99CFFD341ADE13400070F5A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -568,6 +577,17 @@
 			name = Journeys;
 			sourceTree = "<group>";
 		};
+		99CBDD451AE6DF8E00C50697 /* Parse Objects */ = {
+			isa = PBXGroup;
+			children = (
+				99C89AFC1AE6BB97001CDA1A /* Score.h */,
+				99C89AFD1AE6BB97001CDA1A /* Score.m */,
+				99C89B011AE6C0C5001CDA1A /* GamePlayer.h */,
+				99C89B021AE6C0C5001CDA1A /* GamePlayer.m */,
+			);
+			name = "Parse Objects";
+			sourceTree = "<group>";
+		};
 		99EC083D1AA7C4160079AB8A /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,12 +632,15 @@
 				99BFE3CE1ADC2CF5005F2DFD /* Constants.m */,
 				99CFFD1D1ADD8FBE0070F5A0 /* Utility.h */,
 				99CFFD1E1ADD8FBE0070F5A0 /* Utility.m */,
+				99CBDD481AE6DFAC00C50697 /* GameData.h */,
+				99CBDD491AE6DFAD00C50697 /* GameData.m */,
 				99D405A51AE54C3B00BB1007 /* Player.h */,
 				99D405A61AE54C3B00BB1007 /* Player.m */,
 				99D405A01AE1A36A00BB1007 /* LeaderboardPosition.h */,
 				99D405A11AE1A36A00BB1007 /* LeaderboardPosition.m */,
 				99D405A81AE560E400BB1007 /* GameScore.h */,
 				99D405A91AE560E400BB1007 /* GameScore.m */,
+				99CBDD451AE6DF8E00C50697 /* Parse Objects */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1025,15 +1048,18 @@
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
 				99BFE3DB1ADC4B4C005F2DFD /* MigrationC.m in Sources */,
+				99C89AFE1AE6BB97001CDA1A /* Score.m in Sources */,
 				99D405A71AE54C3B00BB1007 /* Player.m in Sources */,
 				99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */,
 				99BFE3D81ADC44C1005F2DFD /* MigrationB.m in Sources */,
 				99BFE3DE1ADC4B60005F2DFD /* MigrationD.m in Sources */,
+				99CBDD4A1AE6DFAD00C50697 /* GameData.m in Sources */,
 				99CFFD1F1ADD8FBE0070F5A0 /* Utility.m in Sources */,
 				99BFE3CF1ADC2CF5005F2DFD /* Constants.m in Sources */,
 				99C4155A1AAD6B070084DFD4 /* Spider.m in Sources */,
 				99C415471AAD01B60084DFD4 /* Rock.m in Sources */,
 				9902BC3C1ACA2C320075E0AD /* Map.m in Sources */,
+				99C89B031AE6C0C5001CDA1A /* GamePlayer.m in Sources */,
 				9936540A1ABB86FF0031E035 /* Tutorial.m in Sources */,
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,

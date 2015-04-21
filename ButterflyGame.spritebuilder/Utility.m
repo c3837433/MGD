@@ -233,7 +233,7 @@
     }
     return nil;
 }
-
+/*
 +(NSArray*) getTopThreeScoresForJourney:(NSString*)journey {
     NSLog(@"Getting top three leaderboard scores");
     // Get the players
@@ -270,6 +270,46 @@
         return journeyScores;
     }
 }
+*/
++(NSArray*) getTopThreeScoresForJourney:(NSString*)journey withScores:(NSArray*)scores {
+    NSLog(@"Getting top three leaderboard scores");
+    NSMutableArray* positionsArray = [[NSMutableArray alloc] init];
+    NSMutableArray* userArray = [[NSMutableArray alloc] init];
+    // get the users founr
+    for (PFObject* score  in scores) {
+        // create an array of people
+        if (![userArray containsObject:[score objectForKey:pPlayerName]]) {
+            [userArray addObject:[score objectForKey:pPlayerName]];
+        }
+    }
+    // sort the scores by user
+    for (NSString* user in userArray) {
+        // Create a leader position
+        LeaderboardPosition* position = [[LeaderboardPosition alloc] init];
+        position.leaderName = user;
+        NSInteger highScore = 0;
+        // and loop through all the scores to get their scores
+        for (PFObject* score in scores) {
+            if ([[score objectForKey:pPlayerName] isEqualToString:user]) {
+                highScore = highScore + [[score objectForKey:pHighScore] integerValue];
+            }
+        }
+        position.leaderScoreValue = highScore;
+        // add to the positions array
+        [positionsArray addObject:position];
+    }
+    // now reduce to the top three
+    NSMutableArray* sortedArray = [self sortLeaderboards:positionsArray];
+    // finally reduce to top three
+    if (sortedArray.count > 3) {
+        NSLog(@"Returning top 3 scores");
+        return [sortedArray subarrayWithRange:NSMakeRange(0, 3)];
+    } else {
+        NSLog(@"returning 0-3 scores");
+        return sortedArray;
+    }
+}
+
 
 +(NSMutableArray*) sortLeaderboards:(NSMutableArray*)allScores {
     

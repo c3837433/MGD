@@ -20,6 +20,8 @@
     self.leaderScore = [decoder decodeObjectForKey:@"leaderScore"];
     self.leaderScoreValue = [decoder decodeIntegerForKey:@"leaderScoreValue"];
     self.leaderBoardStop = [decoder decodeObjectForKey:@"leaderBoardStop"];
+    self.leaderboardName = [decoder decodeObjectForKey:@"leaderboardName"];
+    self.leaderboardRank = [decoder decodeObjectForKey:@"leaderboardRank"];
     }
     return self;
 }
@@ -29,6 +31,8 @@
     [encoder encodeObject:self.leaderScore forKey:@"leaderScore"];
     [encoder encodeInteger:self.leaderScoreValue forKey:@"leaderScoreValue"];
     [encoder encodeObject:self.leaderBoardStop forKey:@"leaderBoardStop"];
+    [encoder encodeObject:self.leaderboardName forKey:@"leaderboardName"];
+    [encoder encodeObject:self.leaderboardRank forKey:@"leaderboardRank"];
 }
 
 @end

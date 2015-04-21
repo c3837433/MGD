@@ -70,17 +70,17 @@
 
 
 -(void) setUpCurrentSavedData {
-    PFQuery *query = [PFQuery queryWithClassName:dClassName];
+    PFQuery *query = [PFQuery queryWithClassName:pClassName];
     [query fromLocalDatastore];
     // find any scores for this journey
-    [query whereKey:dJourney equalTo:@"C"];
+    [query whereKey:pJourney equalTo:@"C"];
     // [query whereKey:dPlayer equalTo:[PFUser currentUser]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (objects) {
             for (PFObject* object in objects) {
                 NSLog(@"%@", object.description);
                 [self.levelsArray addObject:object];
-                NSInteger score = [[object objectForKey:dHighScore] integerValue];
+                NSInteger score = [[object objectForKey:pHighScore] integerValue];
                 self.totalScore = self.totalScore + score;
                 [self setUpStop:object];
             }
@@ -95,16 +95,16 @@
 -(void) setUpStop:(PFObject*)stop {
     
     // if it has a level stop number
-    if ([stop objectForKey:dLevel]) {
+    if ([stop objectForKey:pStop]) {
         // get it and the current energy level
-        NSInteger stopNum = [[stop objectForKey:dLevel] integerValue];
+        NSInteger stopNum = [[stop objectForKey:pStop] integerValue];
         NSLog(@"Stop number: %ld", (long)stopNum);
         if (stopNum == selectedStop) {
             // set this button to selected and set the high score
-           _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:dHighScore]];
-            NSLog(@"This high score: %@", [stop objectForKey:dHighScore]);
+           _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [stop objectForKey:pHighScore]];
+            NSLog(@"This high score: %@", [stop objectForKey:pHighScore]);
         }
-        CGFloat energyLevel = [[stop objectForKey:dEnergy] floatValue];
+        CGFloat energyLevel = [[stop objectForKey:pEnergy] floatValue];
         NSLog(@"This energy level: %f", energyLevel);
         // loop through the stop buttons
         for (CCButton* mapButton in journeyStops) {
@@ -147,14 +147,14 @@
     // set the correct data for the score
     _scoreLabel.string =[NSString stringWithFormat:@"Stop %ld Score \n0", (long)selectedStop];
     for (PFObject* object in self.levelsArray) {
-        if ([object objectForKey:dLevel]) {
-            NSInteger stop = [[object objectForKey:dLevel] integerValue];
+        if ([object objectForKey:pStop]) {
+            NSInteger stop = [[object objectForKey:pStop] integerValue];
             if (stop == selectedStop) {
                 // get the high score and energy level
-                if ([object objectForKey:dHighScore]) {
-                    _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:dHighScore]];
+                if ([object objectForKey:pHighScore]) {
+                    _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%@", (long)selectedStop, [object objectForKey:pHighScore]];
                 }
-                CGFloat energyLevel = [[object objectForKey:dEnergy] floatValue];
+                CGFloat energyLevel = [[object objectForKey:pEnergy] floatValue];
                 // set the current button selected
                 [Utility setButtonImage:button forEnergy:energyLevel];
             }
@@ -198,7 +198,7 @@
 }
 
 -(void)shouldPlaySelectedLevel {
-    [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"C"];
+   // [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"C"];
 }
 
 

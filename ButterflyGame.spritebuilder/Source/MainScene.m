@@ -10,7 +10,7 @@
 #import "LeaderboardPosition.h"
 #import "Constants.h"
 #import "Map.h"
-
+#import "GamePlayer.h"
 @implementation MainScene {
 
     CCSprite* _mainButterfly;
@@ -28,13 +28,39 @@
     
 }
 
-
+#pragma  mark - LOCAL PLAYER SELECTION
 -(void) shouldOpenPlayerView {
+    /*
+    self.playerArray = [[NSMutableArray alloc] init];
+    // Search local data store for all players saved on the device
+    PFQuery* playerQuery = [GamePlayer query];
+    [playerQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            [self.playerArray removeAllObjects];
+            if (objects.count > 0) {
+                NSLog(@"We have saved players");
+                NSArray* buttonArray = [[NSArray alloc] initWithObjects:_playerOneButton, _playerTwoButton, _playerThreeButton, _playerFourButton, nil];
+                for (int i = 0; i < objects.count; i++) {
+                    CCButton* button = buttonArray[i];
+                    GamePlayer* player = objects[i];
+                    button.title = player.gamePlayerName;
+                    [self.playerArray addObject:player];
+                }
+            }
+        }
+    }];
+    _playerSelectNode.visible = true;*/
+    self.playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
     // see if we have a current player set
-    //NSString* currentPlayer = [defaults objectForKey:dLocalCurrentPlayer];
-   // if ((currentPlayer != nil) && ([currentPlayer isEqualToString:@""])) {
-     //   NSLog(@"current player: %@", currentPlayer);
-    //}
+    /*NSString* currentPlayer = [defaults objectForKey:dLocalCurrentPlayer];
+    if ((currentPlayer != nil) && ([currentPlayer isEqualToString:@""])) {
+        NSLog(@"current player: %@", currentPlayer);
+    }*/
+    // Get the available players on the device
+    if (self.playerArray != nil) {
+        
+    }
+    /*
     NSData* playerData = [defaults objectForKey:dLocalPlayerArray];
     if (playerData != nil) {
         NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:playerData];
@@ -42,16 +68,15 @@
             self.playerArray = [[NSMutableArray alloc] initWithArray:dataArray];
         else
             self.playerArray = [[NSMutableArray alloc] init];
-    }
+    }*/
     
     // see if we have player data saved
-   // NSData* playerData = [defaults objectForKey:dLocalPlayerArray];
+    //NSData* playerData = [defaults objectForKey:dLocalPlayerArray];
     //self.playerArray = [NSKeyedUnarchiver unarchiveObjectWithData:playerData];
     NSLog(@"Player array: %@", self.playerArray.description);
     for (Player* player in self.playerArray) {
         NSLog(@"Player: %@", player.description);
     }
-    //self.playerArray = [NSMutableArray arrayWithArray:[defaults objectForKey:dLocalPlayerArray]];
     if (self.playerArray > 0) {
         NSLog(@"We have saved players");
         NSArray* buttonArray = [[NSArray alloc] initWithObjects:_playerOneButton, _playerTwoButton, _playerThreeButton, _playerFourButton, nil];
@@ -92,6 +117,7 @@
     //[[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
 
+// ON NSUSER DEFAULT CHANGE, CHECK IF WE ARE NOT CONNECTED TO GAME CENTER
 - (void)defaultsChanged:(NSNotification *)notification {
     // Get the user defaults
     if ([[defaults objectForKey:@"Butterfly.GameCenter.Connected"] isEqualToString:@"NO"]) {
@@ -102,6 +128,7 @@
     }
 }
 
+// REMOVE NOTIFICATION LISTENER
 -(void) onExit {
     [super onExit];
     // remove the notification center listener
@@ -110,6 +137,7 @@
     [center removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
+/*
 -(void) pullLeaderBoardInfo {
     GKLeaderboardSet* leaderBoardSet = [[GKLeaderboardSet alloc] init];
     leaderBoardSet.identifier = @"Butterfly.All.Stops";
@@ -120,21 +148,6 @@
     playersTopScores = [[NSMutableArray alloc] init];
     if (leaderBoardSet != nil) {
         //NSLog(@"Leaderboards are loading");
-        /*[leaderBoard loadScoresWithCompletionHandler:^(NSArray *scores, NSError *error) {
-         if (error != nil) {
-         //Handle error
-         NSLog(@"Errors: %@", error.description);
-         }
-         else{
-         NSLog(@"Scores %@", scores.description);
-         if (scores != nil) {
-         // and load the scores
-         [self setLeaderboardWithScores:scores];
-         }
-         }
-         
-         }];
-         */
         [leaderBoardSet loadLeaderboardsWithCompletionHandler:^(NSArray *leaderboards, NSError *error) {
             if (leaderboards != nil) {
                 [self getLeaderBoardScores:leaderboards];
@@ -186,21 +199,50 @@
         NSLog(@"Sorted Score: %@", position.leaderScore);
     }
 }
-
+*/
 // When the user presses the play button
 - (void) startGame {
     // if we are not connected to game center make sure we have a current player
     if ((!self.connectedToGameCenter) && (!self.currentPlayerSelected)) {
+        NSLog(@"Trying to start game without player, loading player view");
         // load the player selection anyway
         [self shouldOpenPlayerView];
     } else {
+        NSLog(@"Opening map, getting player");
         CCScene* scene = [CCBReader loadAsScene:@"Map"];
         Map* map = [[scene children] firstObject];
         map.connectedToGameCenter = self.connectedToGameCenter;
         if (!self.connectedToGameCenter) {
             map.currentPlayer = self.player;
+            //map.player = self.currentPlayer;
             NSLog(@"Setting current player to selected player");
+        } else {
+            // see if we have a current player with this alias
+            /*
+            for (GamePlayer* player in self.playerArray) {
+                if ([player.gamePlayerName isEqualToString:[GKLocalPlayer localPlayer].alias]) {
+                    NSLog(@"Found a previous game center player named: %@", [GKLocalPlayer localPlayer].alias);
+                    map.player = player;
+                }
+            }
+            if (map.player == nil) {
+                NSLog(@"No game center player found, creating a new one named: %@", [GKLocalPlayer localPlayer].alias);
+                // create a new player with this alias
+                GamePlayer* newPlayer = [GamePlayer object];
+                newPlayer.gamePlayerName = [GKLocalPlayer localPlayer].alias;
+                newPlayer.highestJourney = 1;
+                newPlayer.highestAStop = 1;
+                newPlayer.highestBStop = 1;
+                newPlayer.highestCStop = 1;
+                newPlayer.highestDStop = 1;
+                newPlayer.highestEStop = 1;
+                [newPlayer pinInBackground];
+                [self.playerArray addObject:newPlayer];
+                map.player = newPlayer;
+
+            } */
         }
+        NSLog(@"Moving to map with player");
         CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
         [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 
@@ -242,11 +284,13 @@
         NSLog(@"Need to load the local leaderboard");
 
     }
-
 }
+
+#pragma  mark - Player select methods
 -(void)selectedPlayerButton:(id)sender {
     selectedPlayerButton = (CCButton*)sender;
     NSString* buttonTitle = selectedPlayerButton.title;
+        NSLog(@"User selected button with title: %@", buttonTitle);
     if ([buttonTitle isEqualToString:@"Add Player"]) {
         // create a new player
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Enter Player Name" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -254,6 +298,14 @@
         [alert show];
     } else {
         // Set the current player
+        /*
+        for (GamePlayer* player in self.playerArray) {
+            // find the matching name
+            if ([player.gamePlayerName isEqualToString:buttonTitle]) {
+                NSLog(@"Found matching player name: %@ for selected name: %@", player.gamePlayerName, buttonTitle);
+                self.currentPlayer = player;
+            }
+        }*/
         for (Player* player in self.playerArray) {
             // find the matching name
             if ([player.playerName isEqualToString:buttonTitle]) {
@@ -273,10 +325,12 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString* enteredText = [[alertView textFieldAtIndex:0] text];
     if (![enteredText isEqualToString:@""]) {
-        NSLog(@"User entered name: %@", enteredText);
+        NSLog(@"Creating a new player for user entered name: %@", enteredText);
         selectedPlayerButton.title = enteredText;
         // Create a new player
+        
         Player* newPlayer = [[Player alloc] init];
+        //GamePlayer* newPlayer = [GamePlayer object];
         newPlayer.playerName = enteredText;
         newPlayer.highestJourney = 1;
         newPlayer.highestAStop = 1;
@@ -284,13 +338,15 @@
         newPlayer.highestCStop = 1;
         newPlayer.highestDStop = 1;
         newPlayer.highestEStop = 1;
-        
+        //[newPlayer pinInBackground];
         // add this player to the array
         [self.playerArray addObject:newPlayer];
+        [[GameData sharedGameData].gamePlayers addObject:newPlayer];
+        [[GameData sharedGameData] save];
         // save this player object to the defaults
-        NSData* playerData = [NSKeyedArchiver archivedDataWithRootObject:self.playerArray];
-        [defaults setObject:playerData forKey:dLocalPlayerArray];
-        [defaults synchronize];
+        //NSData* playerData = [NSKeyedArchiver archivedDataWithRootObject:self.playerArray];
+        //[defaults setObject:playerData forKey:dLocalPlayerArray];
+        //[defaults synchronize];
         self.currentPlayerSelected = true;
         _playerSelectNode.visible = false;
         self.player = newPlayer;
