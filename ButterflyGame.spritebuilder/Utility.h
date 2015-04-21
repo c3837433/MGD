@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Player.h"
+#import "GameScore.h"
 
 @interface Utility : NSObject
 
@@ -18,4 +20,14 @@
 // Navigation
 + (void)shouldReturnToMap;
 + (void)shouldPlaySelectedLevelWithStop:(NSInteger)selectedStop andHighestStop:(NSInteger)highestStop forJourney:(NSString*)journey;
++(void)shouldPlaySelectedLevelStop:(NSInteger)selectedStop andHighestStop:(NSInteger)highestStop forJourney:(NSString*)journey withPlayer:(Player*)player andConnection:(BOOL)isConnected;
+// Local Leaderboard
++ (void) updatePlayer:(Player*)player forJourney:(NSString*)journey andStop:(NSInteger)stop;
++ (void) updatePlayersHighestJOurney:(Player*)player highestJOurney:(NSInteger)journey;
++ (NSMutableArray*)getPlayerArray;
++ (NSMutableArray*)getGameScores;
++ (NSString*) getMigrationJourneyTotalScoreForJourney:(NSString*)journey;
++ (NSString*) getSelectedStopScoreForJourneyStop:(NSString*)journey andStop:(NSInteger) stop;
++ (NSArray*) getTopThreeScoresForJourney:(NSString*)journey;
++(GameScore*) getSelectedGameScoreForJourneyStop:(NSString*)journey andStop:(NSInteger) stop;
 @end

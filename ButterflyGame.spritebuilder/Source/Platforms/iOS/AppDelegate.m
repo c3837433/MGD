@@ -31,6 +31,12 @@
 @implementation AppController
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // settting the default
+    NSLog(@"Setting default to YES");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    // Assume we can connect, and it will change if we cannot
+    [defaults setObject:@"YES" forKey:@"Butterfly.GameCenter.Connected"];
+    [defaults synchronize];
     
     // Configure Cocos2d with the options set in SpriteBuilder
     NSString* configPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Published-iOS"]; // TODO: add support for Published-Android support
@@ -71,11 +77,7 @@
 
     return UIInterfaceOrientationMaskLandscapeLeft;
 } 
- /*
--(NSUInteger)application:(UIApplication*)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return UIInterfaceOrientationLandscapeLeft;
-}
-*/
+
 - (CCScene*) startScene {
     return [CCBReader loadAsScene:@"MainScene"];
 }

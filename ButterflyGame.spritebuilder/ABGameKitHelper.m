@@ -72,6 +72,7 @@
         
         if ([[GKLocalPlayer localPlayer] isAuthenticated])
         {
+            // set the NSUserDefault to Connected
             self.authenticated = YES;
             if (ABGAMEKITHELPER_LOGGING) NSLog(@"ABGameKitHelper: Player successfully authenticated.");
             //Report possible cached scores / achievements
@@ -86,6 +87,11 @@
         {
             self.authenticated = NO;
             if (ABGAMEKITHELPER_LOGGING) NSLog(@"ABGameKitHelper: ERROR -> Player didn't authenticate");
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            // Change the default
+                NSLog(@"Setting default to NO");
+            [defaults setObject:@"NO" forKey:@"Butterfly.GameCenter.Connected"];
+            [defaults synchronize];
         }
         
     };

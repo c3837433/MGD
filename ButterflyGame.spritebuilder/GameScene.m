@@ -15,6 +15,8 @@
 #import "MigrationC.h"
 #import "MigrationD.h"
 #import "MigrationE.h"
+#import "ABGameKitHelper.h"
+#import "GameScore.h"
 
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
@@ -102,96 +104,14 @@ static const CGFloat scrollSpeed = 80.f;
     // Create an instance of the core motion manager
     CMMotionManager* motionManager;
     
+    NSUserDefaults* defaults;
+    
 }
-/*
- - (void)didLoadFromCCB {
- CCLOG(@"Loaded Game");
- 
- [self preloadMusic];
- // preset conditionals for frame updates
- didFinish = false;
- didLand = false;
- didDie = false;
- didBumpTop = false;
- didPause = false;
- nectarWarningRunning = false;
- dropsGathered = 0;
- timeElapsed = 0;
- 
- //Load the first level
- CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
- [_levelNode addChild:level];
- // set it in front of the trunks but behind the floor and canopy
- _levelNode.zOrder = DrawingOrderFrontLayer;
- 
- // ALLOW TOUCH AND MULTI TOUCH
- self.userInteractionEnabled = TRUE;
- [[[CCDirector sharedDirector] view] setMultipleTouchEnabled:YES];
- 
- // set up the background node arrays
- _forestFloors = @[_floor1, _floor2];
- _cloudsLayer = @[_cloud1, _cloud2];
- _forestCanopy =  @[_canopy1, _canopy2];
- _treeTrunks =  @[_trunks1, _trunks2];
- _frontHillLayer = @[_fronthill1, _fronthill2];
- _backHillLayer = @[_backHill1, _backHill2];
- _treeLineLayer = @[_treeline1, _treeline2];
- 
- // INPUT CONTROL LISTENERS
- // Listen for swipes right for dash
- UISwipeGestureRecognizer* swipeRight= [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
- swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
- [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
- 
- // SET BACKGROUND LAYERS FOR PARALLAX EFFECT
- for (CCNode* cloud in _cloudsLayer) {
- cloud.zOrder = DrawingOrderClouds;
- }
- for (CCNode* trunk in _treeTrunks) {
- trunk.zOrder = DrawingOrderTrunks;
- }
- for (CCNode* canopy in _forestCanopy) {
- canopy.zOrder = DrawingOrderCanopy;
- }
- for (CCNode* hill in _backHillLayer) {
- hill.zOrder = DrawingOrderBackHill;
- }
- for (CCNode* hill in _frontHillLayer) {
- hill.zOrder = DrawingOrderFrontHill;
- }
- for (CCNode* trees in _treeLineLayer) {
- trees.zOrder = DrawingOrderTreeline;
- }
- for (CCNode* floor in _forestFloors) {
- floor.physicsBody.collisionType = @"floor";
- floor.zOrder = DrawingOrderFloor;
- }
- 
- currentEnergy = 1;
- 
- // COLLISION DELEGATE
- _gamePhysicNode.collisionDelegate = self;
- 
- // set the buttergly colistion type and drawing order
- _butterfly.physicsBody.collisionType = @"butterfly";
- _butterfly.zOrder = DrawingOrdeButterfly;
- 
- // set the butterfly to start animatting
- [self LaunchButterfly];
- 
- // set Health bar
- CCAnimationManager* animationManager = _healthNectar.animationManager;
- [animationManager runAnimationsForSequenceNamed:@"HealthBar"];
- 
- // set up the accelerometer
- motionManager = [[CMMotionManager alloc] init];
- }
- */
 
 - (void)onEnter {
     [super onEnter];
     
-    CCLOG(@"Loaded Game");
+    //CCLOG(@"Loaded Game");
     
     [self preloadMusic];
     // preset conditionals for frame updates
@@ -273,7 +193,23 @@ static const CGFloat scrollSpeed = 80.f;
     motionManager = [[CMMotionManager alloc] init];
     
     [motionManager startAccelerometerUpdates];
+    
+    
+    // Get access to the current game scores
+    NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
+    if (scoreData != nil) {
+        NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:scoreData];
+        if (dataArray != nil)
+            self.scoresArray = [[NSMutableArray alloc] initWithArray:dataArray];
+        else
+            self.scoresArray = [[NSMutableArray alloc] init];
+    }
+    NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)self.scoresArray.count);
+    for (GameScore* score in self.scoresArray) {
+        NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
+    }
 }
+
 
 // PRELOAD MUSIC
 -(void) preloadMusic {
@@ -291,7 +227,7 @@ static const CGFloat scrollSpeed = 80.f;
 
 // GET THE BUTTERFLY AND BEGIN ANIMATING IT
 -(void)LaunchButterfly {
-    CCLOG(@"Launching Butterfly");
+    //CCLOG(@"Launching Butterfly");
     // start the annimation
     CCAnimationManager* animationManager = _butterfly.animationManager;
     [animationManager runAnimationsForSequenceNamed:@"FlyButterfly"];
@@ -319,7 +255,7 @@ static const CGFloat scrollSpeed = 80.f;
         // NORMAL GAME PLAY, MOVE OBJECTS
         if (didBumpTop) {
             // The user bumped the top canopy
-            CCLOG(@"Bouncing off canopy position");
+            //CCLOG(@"Bouncing off canopy position");
             // set the position to move up slightly
             CGPoint topPos = { _butterfly.position.x, setPostion + .01};
             // create the action to move the butterfly up
@@ -422,7 +358,7 @@ static const CGFloat scrollSpeed = 80.f;
         CGPoint objectPostion = [_gamePhysicNode convertToWorldSpace:_butterfly.position];
         // If the x is less than -50 it has completely disappeared off screen
         if (objectPostion.x < -50) {
-            CCLOG(@"Butterfly is off screen");
+            //CCLOG(@"Butterfly is off screen");
             didDie = YES;
             didFinish = YES;
             _pauseButton.visible = false;
@@ -442,7 +378,7 @@ static const CGFloat scrollSpeed = 80.f;
                 _butterfly.visible = false;
                 [animationManager runAnimationsForSequenceNamed:@"SadButterfly"];
                 audio.bgPaused = TRUE;
-                CCLOG(@"pausing annimation and playing death effect");
+               // CCLOG(@"pausing annimation and playing death effect");
                 [animationManager setPaused:YES];
                 [audio playEffect:@"loseGame.mp3"];
                 didLand = true;
@@ -456,7 +392,7 @@ static const CGFloat scrollSpeed = 80.f;
                 // move to flower
                 _gameWinNode.visible = true;
                 _butterfly.visible = false;
-                CCLOG(@"You win!");
+               // CCLOG(@"You win!");
                 didLand = true;
                 [audio playEffect:@"yahoo.mp3"];
                 _pauseButton.visible = false;
@@ -465,7 +401,7 @@ static const CGFloat scrollSpeed = 80.f;
                 // update the label with a score
                 float updateForTime = 1;
                 int totalScore = timeElapsed * (dropsGathered * 8);
-                CCLOG(@"Total Score: %d", totalScore);
+               // CCLOG(@"Total Score: %d", totalScore);
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     for (int i = 1; i < totalScore; i ++) {
                         //increment the count
@@ -476,15 +412,34 @@ static const CGFloat scrollSpeed = 80.f;
                         });
                     }
                     // check if this is a new high score
-                    [self saveLevelData:totalScore];
+                    [self prepareToSaveLevelData:totalScore];
                 });
             }
         }
     }
 }
 
--(void)saveLevelData:(int) score {
-    NSLog(@"Pinning this data");
+#pragma mark - SAVE GAME DATA
+-(void)prepareToSaveLevelData:(int) score {
+    NSLog(@"USER FINISHED GAME");
+    // see if we are connected to game center or not
+    if (self.sessionConnectedToGC) {
+        NSLog(@"Saving Game Center game");
+        [self saveGameCenterGame:score];
+    } else {
+        NSLog(@"saving local game");
+        [self saveLocalGame:score];
+    }
+}
+
+-(void)saveGameCenterGame:(int)score {
+    NSLog(@"Checking for saved game center game");
+    //NSLog(@"Pinning this data");
+    NSString* leaderboardId = [NSString stringWithFormat:@"com.Smith.Angela.ButterflyGame.Migration.%@.%ld", self.currentJourney, (long)self.currentStop];
+    // check if this user already has a score
+    //NSLog(@"Current leaderboard id: %@", leaderboardId);
+    [[ABGameKitHelper sharedHelper] reportScore:score forLeaderboard:leaderboardId];
+    [self getCurrentStopScoreForLeaderboard:leaderboardId];
     // see if we already have one saved
     PFQuery *query = [PFQuery queryWithClassName:dClassName];
     [query fromLocalDatastore];
@@ -494,15 +449,15 @@ static const CGFloat scrollSpeed = 80.f;
     [query whereKey:dPlayer equalTo:[PFUser currentUser]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (objects.count > 0) {
-            NSLog(@"Already have an object to update: objects: %@", objects.description);
+            // NSLog(@"Already have an object to update: objects: %@", objects.description);
             PFObject* object = [objects objectAtIndex:0];
-            NSLog(@"Object: %@", object.description);
+            //NSLog(@"Object: %@", object.description);
             //  see if we need to update it
             if ([object objectForKey:dHighScore]) {
                 int previousScore = [[object objectForKey:dHighScore] intValue];
-                    if (score > previousScore){
-                        [object setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
-                    }
+                if (score > previousScore){
+                    [object setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
+                }
             }
             CGFloat previousEnergy = 0;
             // see if we have an energy level
@@ -515,8 +470,9 @@ static const CGFloat scrollSpeed = 80.f;
             }
             [object pinInBackground];
         } else {
-            NSLog(@"Saving a new object");
+            // NSLog(@"Saving a new object");
             // Create a new one
+            NSLog(@"creating new game center game");
             PFObject* newLevelStop = [PFObject objectWithClassName:dClassName];
             [newLevelStop setObject:[NSString stringWithFormat:@"%d", score] forKey:dHighScore];
             newLevelStop[dEnergy] = @(currentEnergy);
@@ -527,6 +483,117 @@ static const CGFloat scrollSpeed = 80.f;
         }
     }];
 }
+
+-(void)saveLocalGame:(int)score {
+    NSLog(@"Checking for local game saved");
+    // search all saved scores for this level
+    NSLog(@"Scores array: %lu", (unsigned long)self.scoresArray.count);
+    if (self.scoresArray.count > 0) {
+        for (GameScore* gameScore in self.scoresArray) {
+            if ([gameScore.gameJourney isEqualToString:self.currentJourney]) {
+                NSLog(@"Found a score for this journey");
+                if (gameScore.gameStop == self.currentStop) {
+                    NSLog(@"Found a score for this stop");
+                    // see if this score matches the currene player
+                    if ([gameScore.gamePlayerName isEqualToString:self.player.playerName]) {
+                        NSLog(@"Found a score for this player");
+                        if (gameScore.gameEnergy < currentEnergy) {
+                            NSLog(@"This game is better than saved one");
+                            gameScore.gameScore = (NSInteger)score;
+                            gameScore.gameEnergy = currentEnergy;
+                            // update the array with this data
+                            NSData* scoreData = [NSKeyedArchiver archivedDataWithRootObject:self.scoresArray];
+                            [defaults setObject:scoreData forKey:dLocalScoresArray];
+                            [defaults synchronize];
+                        }
+                        else {
+                            // leave the current score as best
+                        }
+                    } else {
+                        NSLog(@"No saved scores for this player");
+                        // create a new score
+                        [self createNewScore:score];
+                    }
+                } else {
+                    NSLog(@"No saved scores for this stop");
+                    // create a new score
+                    [self createNewScore:score];
+                }
+            } else {
+                NSLog(@"No saved scores for this journey");
+                // create a new score
+                [self createNewScore:score];
+            }
+        }
+    } else {
+        NSLog(@"No saved scores");
+        // create a new score
+        [self createNewScore:score];
+    }
+}
+
+-(void)createNewScore:(int)score {
+    NSMutableArray* activeScores;
+    NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
+    if (scoreData != nil) {
+        NSLog(@"There is score data");
+        NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:scoreData];
+        if (dataArray != nil)
+            activeScores = [[NSMutableArray alloc] initWithArray:dataArray];
+        else
+            activeScores = [[NSMutableArray alloc] init];
+    } else {
+        NSLog(@"There is no score data");
+         activeScores = [[NSMutableArray alloc] init];
+    }
+    NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)activeScores.count);
+    for (GameScore* score in activeScores) {
+        NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
+    }
+
+    NSLog(@"creating new score");
+    GameScore* newScore = [[GameScore alloc] init];
+    newScore.gamePlayerName = self.player.playerName;
+    newScore.gameJourney = self.currentJourney;
+    newScore.gameStop = self.currentStop;
+    newScore.gameEnergy = currentEnergy;
+    newScore.gameScore = (NSInteger)score;
+    NSLog(@"New score info: %@", newScore.description);
+    NSLog(@"New score name: %@", newScore.gamePlayerName);
+    NSLog(@"New score journey: %@", newScore.gameJourney);
+    NSLog(@"New score stop: %ld", (long)newScore.gameStop);
+    NSLog(@"New score energy: %f", newScore.gameEnergy);
+    NSLog(@"New score score: %ld", (long)newScore.gameScore);
+    [activeScores addObject:newScore];
+    NSLog(@"Score array with new score: %@ count: %lu", activeScores.description, (unsigned long)activeScores.count);
+    // save this player object to the defaults
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:activeScores] forKey:dLocalScoresArray];
+   // NSData* scoreData = [NSKeyedArchiver archivedDataWithRootObject:self.scoresArray];
+   // [defaults setObject:scoreData forKey:dLocalScoresArray];
+    [defaults synchronize];
+}
+
+-(void)getCurrentStopScoreForLeaderboard:(NSString*)leaderboardID {
+    NSLog(@"Creating Leaderboard to search");
+    GKLeaderboard* leaderBoard = [[GKLeaderboard alloc] init];
+    leaderBoard.identifier = leaderboardID;
+    if (leaderBoard != nil) {
+        NSLog(@"Leaderboard is loading");
+        [leaderBoard loadScoresWithCompletionHandler:^(NSArray *scores, NSError *error){
+            if (error != nil) {
+                //Handle error
+                NSLog(@"Errors: %@", error.description);
+            }
+            else{
+                NSLog(@"Scores %@", scores.description);
+                GKScore* localScore = leaderBoard.localPlayerScore;
+                NSLog(@"Local player score: %@", localScore);
+            }
+        }];
+    }
+
+}
+
 
 #pragma MARK - BACKGROUND LOOPING FOR PARALLAX EFFECT
 // Loop the background objects in a regular node
@@ -614,14 +681,14 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly end:(CCNode *)end {
-    CCLOG(@"user finished the level");
+   // CCLOG(@"user finished the level");
     didFinish = true;
     _pauseButton.visible = false;
     return TRUE;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly spider:(CCNode *)spider {
-    NSLog(@"The butterfly hit the spider");
+   // NSLog(@"The butterfly hit the spider");
     [audio playEffect:@"enemy.mp3"];
     // stop the annimation
     didDie = true;
@@ -631,7 +698,7 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair butterfly:(CCNode *)butterfly web:(CCNode *)web {
-    NSLog(@"The butterfly hit the spider web");
+   // NSLog(@"The butterfly hit the spider web");
     [audio playEffect:@"enemy.mp3"];
     // stop the annimation
     didDie = true;
@@ -673,6 +740,8 @@ static const CGFloat scrollSpeed = 80.f;
     gameScene.currentStop = self.currentStop;
     gameScene.forUnlock = self.forUnlock;
     gameScene.currentJourney = self.currentJourney;
+    gameScene.player = self.player;
+    gameScene.sessionConnectedToGC = self.sessionConnectedToGC;
     [[CCDirector sharedDirector] replaceScene:scene];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
@@ -681,7 +750,7 @@ static const CGFloat scrollSpeed = 80.f;
 
 #pragma  mark - PAUSE MENU METHODS
 -(void) shouldPause {
-    CCLOG(@"User paused the game");
+    //CCLOG(@"User paused the game");
     // pause the physic node
     _gamePhysicNode.paused = true;
     didPause = true;
@@ -690,11 +759,11 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(void) shouldExitFromPause {
-    CCLOG(@"User wants to exit from game");
+  //  CCLOG(@"User wants to exit from game");
     // Return to map scene
     CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", self.currentJourney]];
     if ((self.forUnlock) && (currentEnergy >= 0.5)) {
-        NSLog(@"Next stop SHOULD unlock");
+       // NSLog(@"Next stop SHOULD unlock");
         // we need to raise the current highest level for the migration journey
         if ([self.currentJourney isEqualToString:@"A"]) {
             MigrationA* migration = [[scene children] firstObject];
@@ -713,7 +782,7 @@ static const CGFloat scrollSpeed = 80.f;
             migration.unlockJourney = true;
         }
     } else {
-         NSLog(@"Next stop SHOULD NOT unlock");
+        // NSLog(@"Next stop SHOULD NOT unlock");
         if ([self.currentJourney isEqualToString:@"A"]) {
             MigrationA* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
@@ -738,7 +807,7 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(void)shouldRestartFromPause {
-    CCLOG(@"User wants to restart game");
+   // CCLOG(@"User wants to restart game");
     // pause game layer
     [self shouldResumeFromPause];
     // restart game
@@ -746,7 +815,7 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 -(void) shouldResumeFromPause {
-    CCLOG(@"User wants to resume  game");
+  //  CCLOG(@"User wants to resume  game");
     // show the pause menu
     _gamePauseNode.visible = NO;
     didPause = false;
@@ -756,28 +825,28 @@ static const CGFloat scrollSpeed = 80.f;
 
 #pragma  mark - WIN / LOSS MENU METHODS
 -(void) winShouldReload {
-    CCLOG(@"User won, should reload game");
+   // CCLOG(@"User won, should reload game");
     // hide the win layer and reload the game
     _gameWinNode.visible = false;
     [self reloadGame];
 }
 
 -(void)winShouldExit {
-    CCLOG(@"User won, and wants to exit");
+    //CCLOG(@"User won, and wants to exit");
     // hid the win layer and move back to the main view
     _gameWinNode.visible = false;
     [self shouldExitFromPause];
 }
 
 -(void)loseShouldReload {
-    CCLOG(@"User lost, and wants to try again");
+   // CCLOG(@"User lost, and wants to try again");
     // hide the lose layer and reload
     _gameLoseNode.visible = false;
     [self reloadGame];
 }
 
 -(void)loseShouldExit {
-    CCLOG(@"User lost, and wants to exit");
+  //  CCLOG(@"User lost, and wants to exit");
     // return to the main
     [self shouldExitFromPause];
 }

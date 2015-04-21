@@ -97,6 +97,9 @@
 		99CFFD351ADE13400070F5A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CFFD341ADE13400070F5A0 /* StoreKit.framework */; };
 		99CFFD371ADE13430070F5A0 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99CFFD361ADE13430070F5A0 /* GameKit.framework */; };
 		99CFFD481ADE1FD60070F5A0 /* ABGameKitHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 99CFFD471ADE1FD60070F5A0 /* ABGameKitHelper.m */; };
+		99D405A21AE1A36A00BB1007 /* LeaderboardPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 99D405A11AE1A36A00BB1007 /* LeaderboardPosition.m */; };
+		99D405A71AE54C3B00BB1007 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 99D405A61AE54C3B00BB1007 /* Player.m */; };
+		99D405AA1AE560E400BB1007 /* GameScore.m in Sources */ = {isa = PBXBuildFile; fileRef = 99D405A91AE560E400BB1007 /* GameScore.m */; };
 		99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DB0E641ABCD7F20047EFBE /* Credits.m */; };
 		99EC08411AA7C5350079AB8A /* bounce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083E1AA7C5350079AB8A /* bounce.mp3 */; };
 		99EC08421AA7C5350079AB8A /* drop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 99EC083F1AA7C5350079AB8A /* drop.mp3 */; };
@@ -261,6 +264,12 @@
 		99CFFD361ADE13430070F5A0 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		99CFFD461ADE1FD60070F5A0 /* ABGameKitHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABGameKitHelper.h; sourceTree = "<group>"; };
 		99CFFD471ADE1FD60070F5A0 /* ABGameKitHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABGameKitHelper.m; sourceTree = "<group>"; };
+		99D405A01AE1A36A00BB1007 /* LeaderboardPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardPosition.h; sourceTree = "<group>"; };
+		99D405A11AE1A36A00BB1007 /* LeaderboardPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardPosition.m; sourceTree = "<group>"; };
+		99D405A51AE54C3B00BB1007 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		99D405A61AE54C3B00BB1007 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		99D405A81AE560E400BB1007 /* GameScore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScore.h; sourceTree = "<group>"; };
+		99D405A91AE560E400BB1007 /* GameScore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScore.m; sourceTree = "<group>"; };
 		99DB0E631ABCD7F20047EFBE /* Credits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Credits.h; sourceTree = "<group>"; };
 		99DB0E641ABCD7F20047EFBE /* Credits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Credits.m; sourceTree = "<group>"; };
 		99EC083E1AA7C5350079AB8A /* bounce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bounce.mp3; sourceTree = "<group>"; };
@@ -603,6 +612,12 @@
 				99BFE3CE1ADC2CF5005F2DFD /* Constants.m */,
 				99CFFD1D1ADD8FBE0070F5A0 /* Utility.h */,
 				99CFFD1E1ADD8FBE0070F5A0 /* Utility.m */,
+				99D405A51AE54C3B00BB1007 /* Player.h */,
+				99D405A61AE54C3B00BB1007 /* Player.m */,
+				99D405A01AE1A36A00BB1007 /* LeaderboardPosition.h */,
+				99D405A11AE1A36A00BB1007 /* LeaderboardPosition.m */,
+				99D405A81AE560E400BB1007 /* GameScore.h */,
+				99D405A91AE560E400BB1007 /* GameScore.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1010,6 +1025,7 @@
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
 				99BFE3DB1ADC4B4C005F2DFD /* MigrationC.m in Sources */,
+				99D405A71AE54C3B00BB1007 /* Player.m in Sources */,
 				99DB0E651ABCD7F20047EFBE /* Credits.m in Sources */,
 				99BFE3D81ADC44C1005F2DFD /* MigrationB.m in Sources */,
 				99BFE3DE1ADC4B60005F2DFD /* MigrationD.m in Sources */,
@@ -1022,7 +1038,9 @@
 				99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */,
 				99C415601AAD70920084DFD4 /* SpiderWeb.m in Sources */,
 				7A046D8C19E8A20E004C4763 /* MainScene.m in Sources */,
+				99D405A21AE1A36A00BB1007 /* LeaderboardPosition.m in Sources */,
 				99BFE3E11ADC4B69005F2DFD /* MigrationE.m in Sources */,
+				99D405AA1AE560E400BB1007 /* GameScore.m in Sources */,
 				5B121038197487F2004C1E1D /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

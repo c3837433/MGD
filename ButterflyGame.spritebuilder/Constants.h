@@ -29,7 +29,6 @@
 #define dPlayer @"player"
 
 #pragma mark MAP LEVEL DEFAULTS
-
 extern NSString* const mHighestJourneyUnlocked;
 extern NSString* const mHighestJourneyAStopUnlocked;
 extern NSString* const mHighestJourneyBStopUnlocked;
@@ -37,3 +36,15 @@ extern NSString* const mHighestJourneyCStopUnlocked;
 extern NSString* const mHighestJourneyDStopUnlocked;
 extern NSString* const mHighestJourneyEStopUnlocked;
 
+
+#pragma mark Game Center
+extern NSString* const gLeaderBoardTotal;
+extern NSString* const gLeaderBoardMigrationA;
+extern NSString* const gLeaderBoardMigrationB;
+extern NSString* const gLeaderBoardMigrationC;
+extern NSString* const gLeaderBoardMigrationD;
+extern NSString* const gLeaderBoardMigrationE;
+
+extern NSString* const dLocalPlayerArray;
+extern NSString* const dLocalScoresArray;
+extern NSString* const dLocalCurrentPlayer;

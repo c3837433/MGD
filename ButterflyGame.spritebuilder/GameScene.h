@@ -7,7 +7,7 @@
 //
 
 #import "CCNode.h"
-
+#import "Player.h"
 @interface GameScene : CCNode <CCPhysicsCollisionDelegate>
 
 typedef NS_ENUM(NSInteger, DrawingOrder) {
@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
 @property (nonatomic, strong) NSString* currentJourney;
 @property (nonatomic) NSInteger currentStop;
 @property (nonatomic) BOOL forUnlock;
+@property (nonatomic) Player* player;
+@property (nonatomic) BOOL sessionConnectedToGC;
+@property (nonatomic, strong) NSMutableArray* scoresArray;
 
 #define HORIZ_SWIPE_DRAG_MIN  12
 #define VERT_SWIPE_DRAG_MAX    4

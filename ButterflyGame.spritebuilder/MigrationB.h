@@ -7,7 +7,7 @@
 //
 
 #import "CCNode.h"
-
+#import "Player.h"
 @interface MigrationB : CCNode
 
 @property (nonatomic) NSInteger highestPlayableStop;
@@ -15,5 +15,7 @@
 @property (nonatomic, strong) NSMutableArray* levelsArray;
 @property (nonatomic) BOOL unlockJourney;
 @property (nonatomic) NSInteger totalScore;
+@property (nonatomic) BOOL sessionThroughGameCenter;
+@property (nonatomic, strong) Player* player;
 
 @end
