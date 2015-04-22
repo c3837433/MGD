@@ -22,6 +22,7 @@
     self.leaderBoardStop = [decoder decodeObjectForKey:@"leaderBoardStop"];
     self.leaderboardName = [decoder decodeObjectForKey:@"leaderboardName"];
     self.leaderboardRank = [decoder decodeObjectForKey:@"leaderboardRank"];
+    self.leaderIsCurrentUser = [decoder decodeBoolForKey:@"leaderIsCurrentUser"];
     }
     return self;
 }

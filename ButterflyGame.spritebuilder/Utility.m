@@ -73,7 +73,7 @@
     }
     return leaderPositionArray;
 }
-
+/*
 // update the player
 +(void)updateLocalPlayersDataWithUserData {
     // take the current info in the current player and update that player in the player list
@@ -100,7 +100,7 @@
     NSLog(@"Game Data Player array: %lu", (unsigned long)[GameData sharedGameData].gamePlayers.count);
     NSLog(@"Player array: %lu", (unsigned long)players.count);
 
-}
+}*/
 
 +(void)increasePlayerJourney:(Player*) player forStop:(NSInteger)stop {
     // get all the players in the game data array

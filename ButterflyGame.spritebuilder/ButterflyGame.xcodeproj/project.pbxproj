@@ -80,6 +80,7 @@
 		993E1D351ADC6E220070DB8E /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 993E1D341ADC6E220070DB8E /* Accounts.framework */; };
 		9971BE801AAEAAEC005544C8 /* yahoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */; };
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
+		997FC26B1AE81CC800CAFCC1 /* LocalLeaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 997FC26A1AE81CC800CAFCC1 /* LocalLeaderboard.m */; };
 		99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99888D161ABB2AF1003D30FE /* CoreMotion.framework */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
 		99BFE3CF1ADC2CF5005F2DFD /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3CE1ADC2CF5005F2DFD /* Constants.m */; };
@@ -236,6 +237,8 @@
 		993E1D341ADC6E220070DB8E /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		9971BE7F1AAEAAEC005544C8 /* yahoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yahoo.mp3; sourceTree = "<group>"; };
 		9971BE811AAEAE66005544C8 /* loseGame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loseGame.mp3; sourceTree = "<group>"; };
+		997FC2691AE81CC800CAFCC1 /* LocalLeaderboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLeaderboard.h; sourceTree = "<group>"; };
+		997FC26A1AE81CC800CAFCC1 /* LocalLeaderboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLeaderboard.m; sourceTree = "<group>"; };
 		99888D161ABB2AF1003D30FE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
@@ -641,6 +644,8 @@
 				99D405A81AE560E400BB1007 /* GameScore.h */,
 				99D405A91AE560E400BB1007 /* GameScore.m */,
 				99CBDD451AE6DF8E00C50697 /* Parse Objects */,
+				997FC2691AE81CC800CAFCC1 /* LocalLeaderboard.h */,
+				997FC26A1AE81CC800CAFCC1 /* LocalLeaderboard.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -1045,6 +1050,7 @@
 				99C4155D1AAD6B430084DFD4 /* Nectar.m in Sources */,
 				99CFFD481ADE1FD60070F5A0 /* ABGameKitHelper.m in Sources */,
 				99BFE3D51ADC44B6005F2DFD /* MigrationA.m in Sources */,
+				997FC26B1AE81CC800CAFCC1 /* LocalLeaderboard.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				99C415541AAD63960084DFD4 /* End.m in Sources */,
 				99BFE3DB1ADC4B4C005F2DFD /* MigrationC.m in Sources */,

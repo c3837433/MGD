@@ -35,5 +35,5 @@
 +(void)increasePlayerJourney:(Player*) player toJourney:(NSInteger)journey;
 +(void)increasePlayerJourney:(Player*) player forStop:(NSInteger)stop;
 +(NSMutableArray*) getTopThreePlayersScoresForMigration:(NSString*)journey;
-+(void)updateLocalPlayersDataWithUserData;
+//+(void)updateLocalPlayersDataWithUserData;
 @end

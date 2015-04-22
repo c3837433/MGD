@@ -58,8 +58,10 @@
     [super onEnter];
 
     if (self.connectedToGameCenter) {
+        NSLog(@"Map connected through game center who has %ld journeys available", (long)[GameData sharedGameData].gameCenterPlayer.highestJourney);
         self.highestLevel = [GameData sharedGameData].gameCenterPlayer.highestJourney;
     } else {
+        NSLog(@"Map loaded with local player who has %ld journeys available", (long)[GameData sharedGameData].gameLocalPlayer.highestJourney);
         self.highestLevel = [GameData sharedGameData].gameLocalPlayer.highestJourney;
     }
     //NSLog(@"current player for map: %@", self.currentPlayer.playerName);
@@ -99,7 +101,7 @@
         }
     }
 }
-
+/*
 -(void)getTopScoresForFriendsForMigration:(NSString*)journey {
     // set the title
     _leaderBoardTitle.string = [self getLeaderBoardTitleForJourney:journey];
@@ -239,7 +241,7 @@
         position.leaderScoreLabel.string = position.leaderScore;
     }
 }
-
+*/
 -(void) touchBegan:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     // Get the position in the map
     nodePostion = [touch locationInNode:_mapNode];
@@ -251,21 +253,21 @@
         activePoint.x = 1.0 - _journey1.position.x + 0.45;
         activePoint.y = 1.0 - _journey1.position.y - 0.35;
         _playButton.visible = YES;
-        [self getTopScoresForFriendsForMigration:@"A"];
+        //[self getTopScoresForFriendsForMigration:@"A"];
     } else if ((CGRectContainsPoint([_journey2 boundingBox], nodePostion)) && (_journey2.visible)) {
         CCLOG(@"User tapped second journey");
         journeyToLoad = @"B";
         activePoint.x = 1.0 - _journey2.position.x + 0.45;
         activePoint.y = 1.0 - _journey2.position.y - 0.25;
         _playButton.visible = YES;
-        [self getTopScoresForFriendsForMigration:@"B"];
+        //[self getTopScoresForFriendsForMigration:@"B"];
     } else if ((CGRectContainsPoint([_journey3 boundingBox], nodePostion)) && (_journey3.visible)) {
         CCLOG(@"User tapped third journey");
         journeyToLoad = @"C";
         activePoint.x = 1.0 - _journey3.position.x + 0.3;
         activePoint.y = 1.0 - _journey3.position.y - 0.45;
         _playButton.visible = YES;
-        [self getTopScoresForFriendsForMigration:@"C"];
+       // [self getTopScoresForFriendsForMigration:@"C"];
     } else if ((CGRectContainsPoint([_journey4 boundingBox], nodePostion)) && (_journey4.visible)) {
         CCLOG(@"User tapped fourth journey");
         journeyToLoad = @"D";
@@ -278,7 +280,7 @@
         activePoint.x = 1.0 - _journey5.position.x - 0.4;
         activePoint.y = 1.0 - _journey5.position.y - 0.45;
         _playButton.visible = YES;
-        [self getTopScoresForFriendsForMigration:@"E"];
+       // [self getTopScoresForFriendsForMigration:@"E"];
     }
 
 }

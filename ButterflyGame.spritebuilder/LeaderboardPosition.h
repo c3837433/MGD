@@ -14,6 +14,7 @@
 @property CCNode* leaderNode;
 @property CCLabelTTF* leaderNameLabel;
 @property CCLabelTTF* leaderScoreLabel;
+@property CCLabelTTF* leaderLevelLabel;
 @property NSString* leaderName;
 @property Player*   leaderPlayer;
 @property NSString* leaderScore;
@@ -21,4 +22,6 @@
 @property NSInteger leaderScoreValue;
 @property NSString* leaderboardName;
 @property NSString* leaderboardRank;
+@property BOOL leaderIsCurrentUser;
+@property CCButton* leaderShareButton;
 @end

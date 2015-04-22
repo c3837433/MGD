@@ -740,36 +740,46 @@ static const CGFloat scrollSpeed = 80.f;
         if ([self.currentJourney isEqualToString:@"A"]) {
             MigrationA* migration = [[scene children] firstObject];
             migration.unlockJourney = true;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"B"]) {
             MigrationB* migration = [[scene children] firstObject];
             migration.unlockJourney = true;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"C"]) {
             MigrationC* migration = [[scene children] firstObject];
             migration.unlockJourney = true;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"D"]) {
             MigrationD* migration = [[scene children] firstObject];
             migration.unlockJourney = true;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"E"]) {
             MigrationD* migration = [[scene children] firstObject];
             migration.unlockJourney = true;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         }
     } else {
         // NSLog(@"Next stop SHOULD NOT unlock");
         if ([self.currentJourney isEqualToString:@"A"]) {
             MigrationA* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"B"]) {
             MigrationB* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"C"]) {
             MigrationC* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"D"]) {
             MigrationD* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         } else if ([self.currentJourney isEqualToString:@"E"]) {
             MigrationD* migration = [[scene children] firstObject];
             migration.unlockJourney = false;
+            migration.sessionThroughGameCenter = self.sessionConnectedToGC;
         }
 
         self.forUnlock = false;

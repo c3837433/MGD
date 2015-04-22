@@ -14,6 +14,7 @@
 @property (nonatomic) NSInteger boardsChecked;
 @property (nonatomic, strong) NSMutableArray* playerArray;
 @property (nonatomic) BOOL connectedToGameCenter;
+@property (nonatomic) BOOL selectedNonGameCenterPlayer;
 @property (nonatomic) BOOL currentPlayerSelected;
 @property (nonatomic, strong) Player* player;
 @property (nonatomic, strong) Player* gameCenterPlayer;
