@@ -20,7 +20,7 @@
     CCLabelTTF* _scoreLabel;
     NSInteger selectedStop;
     NSArray* journeyStops;
-    CCLabelTTF* _totalScoreLabel;
+  //  CCLabelTTF* _totalScoreLabel;
     
 }
 
@@ -30,7 +30,7 @@
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
-    _totalScoreLabel.string = @"";
+  //  _totalScoreLabel.string = @"";
     journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, _stop4, nil];
     selectedStop = 1;
     
@@ -85,7 +85,7 @@
                 [self setUpStop:object];
             }
         }
-        _totalScoreLabel.string = [NSString stringWithFormat:@"Total Score \n%ld", (long)self.totalScore];
+      //  _totalScoreLabel.string = [NSString stringWithFormat:@"Total Score \n%ld", (long)self.totalScore];
 
         
     }];

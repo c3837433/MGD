@@ -27,12 +27,18 @@
     self = [super init];
     if (self != nil) {
         self.gamePlayers = [decoder decodeObjectForKey:@"gamePlayers"];
+        self.gameScores = [decoder decodeObjectForKey:@"gameScores"];
+        self.gameCenterPlayer = [decoder decodeObjectForKey:@"gameCenterPlayer"];
+        self.gameLocalPlayer = [decoder decodeObjectForKey:@"gameLocalPlayer"];
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:self.gamePlayers forKey:@"gamePlayers"];
+    [encoder encodeObject:self.gameScores forKey:@"gameScores"];
+    [encoder encodeObject:self.gameCenterPlayer forKey:@"gameCenterPlayer"];
+    [encoder encodeObject:self.gameLocalPlayer forKey:@"gameLocalPlayer"];
 }
 
 +(instancetype)loadInstance {

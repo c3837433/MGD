@@ -17,6 +17,7 @@
 #import "MigrationE.h"
 #import "Utility.h"
 #import <Parse/Parse.h>
+#import "GameData.h"
 
 @implementation Map {
     BOOL shouldZoom;
@@ -55,24 +56,15 @@
 // Get this user's highest unlocked journey for the map
 -(void) onEnter {
     [super onEnter];
-   // if (!self.connectedToGameCenter) {
-        // Get the player info
-       // NSLog(@"current player for map: %@", self.player.gamePlayerName);
-        //self.highestLevel = self.player.highestJourney;
-        NSLog(@"current player for map: %@", self.currentPlayer.playerName);
-        self.highestLevel = self.currentPlayer.highestJourney;
-/*    } else {
-        //  NSString* ButterflyHighestLevel = mHighestJourneyUnlocked;
-        // check if the user has a highest level saved yet
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults objectForKey:mHighestJourneyUnlocked]) {
-            self.highestLevel = [userDefaults integerForKey:mHighestJourneyUnlocked];
-        } else {
-            // set the default
-            [userDefaults setInteger:1 forKey:mHighestJourneyUnlocked];
-            self.highestLevel = 1;
-        }
-    } */
+
+    if (self.connectedToGameCenter) {
+        self.highestLevel = [GameData sharedGameData].gameCenterPlayer.highestJourney;
+    } else {
+        self.highestLevel = [GameData sharedGameData].gameLocalPlayer.highestJourney;
+    }
+    //NSLog(@"current player for map: %@", self.currentPlayer.playerName);
+    //self.highestLevel = self.currentPlayer.highestJourney;
+
     NSLog(@"Number of migrations that should be viewable: %ld", (long)self.highestLevel);
     [self setUpMapviewWithButtons];
 }
@@ -139,12 +131,12 @@
                         [self setLeaderboardWithScores:scores];
                     }
                 }
-                
             }];
         }
     } else {
         // get top scores for all local users
-       //[self setLocalLeaderboardWithScores:[Utility getTopThreeScoresForJourney:@"A"]];
+        NSMutableArray* topScorers =  [Utility getTopThreePlayersScoresForMigration:@"A"];
+        [self SetLeaderboardWithPositions:topScorers];
     }
 }
 
@@ -208,6 +200,25 @@
    
 
 
+}
+-(void)SetLeaderboardWithPositions:(NSArray*)positions {
+    NSLog(@"There are no currently saved scores for this migration");
+    NSMutableArray* leaderboards = [[NSMutableArray alloc] init];
+    for (int i = 0; i < positions.count; i++) {
+        LeaderboardPosition* position = positions[i];
+        LeaderboardPosition* leader = [[LeaderboardPosition alloc] init];
+        leader.leaderNode = leaderboardNodeArray[i];
+        leader.leaderNameLabel = leaderboardNameArray[i];
+        leader.leaderScoreLabel = leaderboardScoreArray[i];
+        leader.leaderName = position.leaderName;
+        leader.leaderScore = [NSString stringWithFormat:@"%lu", position.leaderScoreValue];
+        [leaderboards addObject:leader];
+    }
+    for (LeaderboardPosition* position in leaderboards) {
+        position.leaderNode.visible = true;
+        position.leaderNameLabel.string = position.leaderName;
+        position.leaderScoreLabel.string = position.leaderScore;
+    }
 }
 
 -(void)setLeaderboardWithScores:(NSArray*)scores {
@@ -280,16 +291,7 @@
     // run the sequence
     [_mapNode runAction:sequence];
 }
-/*
--(void) zoomToJourneyPosition:(CGPoint) pointPosition {
-    CCActionScaleTo* scale = [CCActionScaleTo actionWithDuration:0.7f scale:3.0f];
-    CCAction* move = [CCActionMoveTo actionWithDuration:0.7 position:pointPosition];
-    [_mapNode runAction:scale];
-    CCActionSequence *sequence = [CCActionSequence actionWithArray:@[move, [CCActionCallFunc actionWithTarget:self selector:@selector(shouldStartJourney)]]];
-    // run the sequence
-    [_mapNode runAction:sequence];
 
-}*/
 
 - (void)shouldStartJourney {
     // See which journey to load
@@ -298,7 +300,7 @@
     if ([journeyToLoad isEqualToString:@"A"]) {
         MigrationA* migration = [[scene children] firstObject];
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        migration.player = self.currentPlayer;
+        //migration.player = self.currentPlayer;
         //migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"B"]) {
         MigrationB* migration = [[scene children] firstObject];

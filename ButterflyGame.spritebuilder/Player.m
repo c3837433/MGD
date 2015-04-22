@@ -22,7 +22,6 @@
     return sharedInstance;
 }
 
-
 // NSCoder protocol for custom objects to save to NSUser Defaults
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
@@ -34,7 +33,8 @@
         self.highestDStop = [decoder decodeIntegerForKey:@"highestDStop"];
         self.highestEStop = [decoder decodeIntegerForKey:@"highestEStop"];
         self.highestJourney = [decoder decodeIntegerForKey:@"highestJourney"];
-        self.playerScores = [decoder decodeObjectForKey:@"playerScores"];
+       // self.playerScores = [decoder decodeObjectForKey:@"playerScores"];
+        self.gameCenterPlayer = [decoder decodeBoolForKey:@"gameCenterPlayer"];
     }
     return self;
 }
@@ -47,7 +47,8 @@
     [encoder encodeInteger:self.highestDStop forKey:@"highestDStop"];
     [encoder encodeInteger:self.highestEStop forKey:@"highestEStop"];
     [encoder encodeInteger:self.highestJourney forKey:@"highestJourney"];
-    [encoder encodeObject:self.playerScores forKey:@"playerScores"];
+  //  [encoder encodeObject:self.playerScores forKey:@"playerScores"];
+    [encoder encodeBool:self.gameCenterPlayer forKey:@"gameCenterPlayer"];
 }
 
 +(instancetype)loadInstance {

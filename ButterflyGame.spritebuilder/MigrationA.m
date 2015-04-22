@@ -11,6 +11,7 @@
 #import "GameScene.h"
 #import <Parse/Parse.h>
 #import "Utility.h"
+#import "GameData.h"
 
 @implementation MigrationA  {
     CCButton* _stop1;
@@ -18,7 +19,6 @@
     CCButton* _stop3;
     
     CCLabelTTF* _scoreLabel;
-    CCLabelTTF* _totalScoreLabel;
     NSInteger selectedStop;
     NSArray* journeyStops;
     
@@ -26,24 +26,60 @@
 
 
 -(void) onEnter {
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSData* playerData = [userDefaults objectForKey:dLocalPlayerArray];
-    if (playerData != nil) {
-        NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:playerData];
-        if (dataArray != nil)
-            self.playerArray = [[NSMutableArray alloc] initWithArray:dataArray];
-        else
-            self.playerArray = [[NSMutableArray alloc] init];
-    }
-    NSLog(@"Player array:%@", self.playerArray.description);
+    
+    //NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSLog(@"Migration A Loaded");
     [super onEnter];
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
-    _totalScoreLabel.string = @"";
+
     journeyStops = [[NSArray alloc] initWithObjects:_stop1, _stop2, _stop3, nil];
 
+    if (self.sessionThroughGameCenter) {
+        self.highestPlayableStop = [GameData sharedGameData].gameCenterPlayer.highestAStop;
+        selectedStop = self.highestPlayableStop;
+        if (self.unlockJourney) {
+            // need to unlock another stop on the map
+            if (self.highestPlayableStop < 3) {
+                self.highestPlayableStop ++;
+                [GameData sharedGameData].gameCenterPlayer.highestAStop ++;
+            } else {
+                if (self.highestPlayableStop == 3) {
+                    // unlock the next journey
+                    [GameData sharedGameData].gameCenterPlayer.highestJourney = 2;
+                }
+            }
+            self.unlockJourney = false;
+        }
+        [Utility setActiveButtons:journeyStops withHighestStop:self.highestPlayableStop];
+        // get any saved data for the journey
+        //[self setUpCurrentSavedData];
+        [self setUpCurrentDataFromLocalLEaderboard];
+        [[GameData sharedGameData] save];
+    } else {
+        self.highestPlayableStop = [GameData sharedGameData].gameLocalPlayer.highestAStop;
+        selectedStop = self.highestPlayableStop;
+        if (self.unlockJourney) {
+            // need to unlock another stop on the map
+            if (self.highestPlayableStop < 3) {
+                self.highestPlayableStop ++;
+                [GameData sharedGameData].gameLocalPlayer.highestAStop ++;
+            } else {
+                if (self.highestPlayableStop == 3) {
+                    // unlock the next journey
+                    [GameData sharedGameData].gameLocalPlayer.highestJourney = 2;
+                }
+            }
+            self.unlockJourney = false;
+        }
+        [Utility setActiveButtons:journeyStops withHighestStop:self.highestPlayableStop];
+        // get any saved data for the journey
+        [self setUpCurrentDataFromLocalLEaderboard];
+        [[GameData sharedGameData] save];
+        [Utility updateLocalPlayersDataWithUserData];
+    }
+    /*
     if (self.sessionThroughGameCenter) {
         // check if the user has a highest stop saved yet
         if ([userDefaults objectForKey:mHighestJourneyAStopUnlocked]) {
@@ -85,11 +121,12 @@
             if (self.highestPlayableStop < 3) {
                 self.highestPlayableStop ++;
                 // update the current high stop
-  
+                [Utility increasePlayerJourney:self.player forStop:1];
                 // UPDATE
                 //[Utility updatePlayer:self.player forJourney:@"A" andStop:self.highestPlayableStop];
             } else {
                 if (self.highestPlayableStop == 3) {
+                    [Utility increasePlayerJourney:self.player toJourney:2];
                     // unlock the next journey
                 // UPDATE
                     
@@ -105,9 +142,26 @@
         // get any saved data for the journey
         [self setUpCurrentDataFromLocalLEaderboard];
     
-    }
+    }*/
 }
 
+
+/*
+-(void)findScoreForStop:(NSInteger) stop andButton:(CCButton*)button {
+    
+    NSArray* scores = [GameData sharedGameData].gameScores;
+    NSLog(@"scores found: %lu %@", scores.count, scores.description);
+    for (GameScore* score in scores) {
+        // set up the label
+        NSLog(@"Score journey: %@ stop:%lu", score.gameJourney, score.gameStop);
+        if (([score.gameJourney isEqualToString:@"A"]) && (score.gameStop == stop)) {
+            _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%ld", score.gameStop, (long)score.gameScore];
+            [Utility setButtonImage:button forEnergy:score.gameEnergy];
+        }
+    }
+}
+*/
+/*
 // set data for game center
 -(void) setUpCurrentSavedData {
      NSLog(@"Loading score from Game Center for current user");
@@ -131,14 +185,17 @@
         
     }];
 }
-
+*/
 // set data for local leaderboard
 -(void)setUpCurrentDataFromLocalLEaderboard {
     NSLog(@"Loading score from local leaderboard for current user");
-    _totalScoreLabel.string = [Utility getMigrationJourneyTotalScoreForJourney:@"A"];
     // get the current stop score for the selected stop
-    GameScore* score = [Utility getSelectedGameScoreForJourneyStop:@"A" andStop:selectedStop];
-    [self setUpLocalStop:score];
+   //GameScore* score = [Utility getSelectedGameScoreForJourneyStop:@"A" andStop:selectedStop];
+    if (self.sessionThroughGameCenter) {
+        [self getTopScoreForStop:selectedStop andPlayer:[GameData sharedGameData].gameCenterPlayer];
+    } else {
+        [self getTopScoreForStop:selectedStop andPlayer:[GameData sharedGameData].gameLocalPlayer];
+    }
 }
 
 -(void)setUpLocalStop:(GameScore*)stop {
@@ -171,12 +228,9 @@
         }
         // currently select the highest playable stop
         mapButton.selected = ([buttonNum integerValue] == self.highestPlayableStop) ? true : false;
-        
     }
-
-
 }
-
+/*
 -(void) setUpStop:(PFObject*)stop {
 
         // if it has a level stop number
@@ -225,19 +279,49 @@
 
         }
 }
+*/
 
--(void )selectedFirstStop {
-    NSLog(@"User selected a stop");
-    selectedStop = 1;
-    [self setButtonAndStop:_stop1];
+-(void)getTopScoreForStop: (NSInteger)stop andPlayer:(Player*)player {
+    NSArray* scores = [GameData sharedGameData].gameScores;
+    NSLog(@"scores found: %lu %@", scores.count, scores.description);
+    for (GameScore* score in scores) {
+        // set up the label
+        NSLog(@"Score journey: %@ stop:%lu", score.gameJourney, score.gameStop);
+        if (([score.gameJourney isEqualToString:@"A"]) && (score.gameStop == stop) && ([score.gamePlayer isEqual:player])) {
+            _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%ld", score.gameStop, (long)score.gameScore];
+            [self setUpLocalStop:score];
+        }
+    }
+
+}
+-(void)getPlayersStopScore:(NSInteger) stop andButton:(CCButton*)button forPlayer:(Player*)player {
+    NSArray* scores = [GameData sharedGameData].gameScores;
+    NSLog(@"scores found: %lu %@", scores.count, scores.description);
+    for (GameScore* score in scores) {
+        // set up the label
+        NSLog(@"Score journey: %@ stop:%lu", score.gameJourney, score.gameStop);
+        if (([score.gameJourney isEqualToString:@"A"]) && (score.gameStop == stop) && ([score.gamePlayer isEqual:player])) {
+            _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld Score \n%ld", score.gameStop, (long)score.gameScore];
+            [Utility setButtonImage:button forEnergy:score.gameEnergy];
+        }
+    }
 }
 
 -(void) setButtonAndStop:(CCButton*) button {
+    NSLog(@"User selected stop: %ld", selectedStop);
+     _scoreLabel.string = [NSString stringWithFormat:@"Stop %ld", selectedStop];
     // unselect all the buttons
     for (CCButton* button in journeyStops) {
         button.selected = false;
     }
-    _scoreLabel.string =[NSString stringWithFormat:@"Stop %ld Score \n0", (long)selectedStop];
+    if (self.sessionThroughGameCenter) {
+        [self getPlayersStopScore:selectedStop andButton:button forPlayer:[GameData sharedGameData].gameCenterPlayer];
+    } else {
+        [self getPlayersStopScore:selectedStop andButton:button forPlayer:[GameData sharedGameData].gameLocalPlayer];
+    }
+
+    //_scoreLabel.string = [self get]
+    /*
     if (self.sessionThroughGameCenter) {
         NSLog(@"Getting migration a stop score from Parse");
         for (PFObject* object in self.levelsArray) {
@@ -256,14 +340,19 @@
         }
 
     } else {
-        NSLog(@"Getting migration stop score from nsuser defaults.");
+        NSLog(@"Getting migration stop score from file.");
         // get the score from utility
+       // [self findScoreForStop:selectedStop andButton:button];
         //NSString* scoreString = [Utility getSelectedStopScoreForJourneyStop:@"A" andStop:selectedStop];
         //_scoreLabel.string = scoreString;
         //NSLog(@"score: %@",  scoreString);
-    }
+    }*/
 }
 
+-(void )selectedFirstStop {
+    selectedStop = 1;
+    [self setButtonAndStop:_stop1];
+}
 
 -(void) selectedSecondStop {
     if (self.highestPlayableStop >= 2) {
@@ -289,7 +378,7 @@
 -(void)shouldPlaySelectedLevel {
     // Set the migration level to return to, selected stop to play and highest stop for unlocking and play stop
    // [Utility shouldPlaySelectedLevelWithStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A"];
- //   [Utility shouldPlaySelectedLevelStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A" withPlayer:self.player andConnection:self.sessionThroughGameCenter];
+    [Utility shouldPlaySelectedLevelStop:selectedStop andHighestStop:self.highestPlayableStop forJourney:@"A" withPlayer:self.player andConnection:self.sessionThroughGameCenter];
 }
 
 @end

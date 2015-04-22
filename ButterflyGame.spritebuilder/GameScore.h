@@ -12,7 +12,7 @@
 @interface GameScore : NSObject <NSCoding>
 
 
-//@property Player*   gamePlayer;
+@property Player*   gamePlayer;
 //@property NSString* gamePlayerName;
 @property NSInteger gameStop;
 @property NSString* gameJourney;
@@ -21,5 +21,6 @@
 @property CGFloat gameEnergy;
 
 -(void)save;
++ (instancetype)sharedGameData;
 
 @end

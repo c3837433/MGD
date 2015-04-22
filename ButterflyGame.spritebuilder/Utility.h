@@ -31,4 +31,9 @@
 + (NSString*) getSelectedStopScoreForJourneyStop:(NSString*)journey andStop:(NSInteger) stop;
 + (NSArray*) getTopThreeScoresForJourney:(NSString*)journey withScores:(NSArray*)scores;
 + (GameScore*) getSelectedGameScoreForJourneyStop:(NSString*)journey andStop:(NSInteger) stop;
+
++(void)increasePlayerJourney:(Player*) player toJourney:(NSInteger)journey;
++(void)increasePlayerJourney:(Player*) player forStop:(NSInteger)stop;
++(NSMutableArray*) getTopThreePlayersScoresForMigration:(NSString*)journey;
++(void)updateLocalPlayersDataWithUserData;
 @end

@@ -17,6 +17,8 @@
 #import "MigrationE.h"
 #import "ABGameKitHelper.h"
 #import "GameScore.h"
+#import "GameData.h"
+#import "Player.h"
 
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
@@ -194,7 +196,7 @@ static const CGFloat scrollSpeed = 80.f;
     
     [motionManager startAccelerometerUpdates];
     
-    
+    /*
     // Get access to the current game scores
     NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
     if (scoreData != nil) {
@@ -205,12 +207,10 @@ static const CGFloat scrollSpeed = 80.f;
             self.scoresArray = [[NSMutableArray alloc] init];
     }
     NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)self.scoresArray.count);
-    /*for (GameScore* score in self.scoresArray) {
-        NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
-    }*/
-    
-}
 
+    self.scoresArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];*/
+    self.scoresArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];
+}
 
 // PRELOAD MUSIC
 -(void) preloadMusic {
@@ -413,26 +413,20 @@ static const CGFloat scrollSpeed = 80.f;
                         });
                     }
                     // check if this is a new high score
-                    [self prepareToSaveLevelData:totalScore];
+                    if (self.sessionConnectedToGC) {
+                        NSLog(@"Saving Game Center game");
+                        [self saveGameCenterGame:totalScore];
+                    } else {
+                        NSLog(@"saving local game");
+                        [self saveLocalGame:totalScore];
+                    }
                 });
             }
         }
     }
 }
 
-#pragma mark - SAVE GAME DATA
--(void)prepareToSaveLevelData:(int) score {
-    NSLog(@"USER FINISHED GAME");
-    [self saveGameCenterGame:score];
-    // see if we are connected to game center or not
-    if (self.sessionConnectedToGC) {
-        NSLog(@"Saving Game Center game");
-        [self saveGameCenterGame:score];
-    } else {
-        NSLog(@"saving local game");
-        [self saveLocalGame:score];
-    }
-}
+
 
 // save the score to the local data store with this current user's name
 -(void)saveGameCenterGame:(int)score {
@@ -442,6 +436,7 @@ static const CGFloat scrollSpeed = 80.f;
     // check if this user already has a score
     //NSLog(@"Current leaderboard id: %@", leaderboardId);
     [[ABGameKitHelper sharedHelper] reportScore:score forLeaderboard:leaderboardId];
+    /*
    // [self getCurrentStopScoreForLeaderboard:leaderboardId];
     // see if we already have one saved
     PFQuery *query = [PFQuery queryWithClassName:pClassName];
@@ -486,57 +481,31 @@ static const CGFloat scrollSpeed = 80.f;
             //newLevelStop[pPlayer] = [PFUser currentUser];
             [newLevelStop pinInBackground];
         }
-    }];
+    }];*/
+    // Also save to the local board
+    [self saveLocalGame:score];
 }
 
 -(void)saveLocalGame:(int)score {
-    NSLog(@"Checking for local game saved");
-    // search all saved scores for this level
-    NSLog(@"Scores array: %lu", (unsigned long)self.scoresArray.count);
-    if (self.scoresArray.count > 0) {
-        for (GameScore* gameScore in self.scoresArray) {
-            if ([gameScore.gameJourney isEqualToString:self.currentJourney]) {
-                NSLog(@"Found a score for this journey");
-                if (gameScore.gameStop == self.currentStop) {
-                    NSLog(@"Found a score for this stop");
-                    // see if this score matches the currene player
-                /*    if ([gameScore.gamePlayerName isEqualToString:self.player.playerName]) {
-                        NSLog(@"Found a score for this player");
-                        if (gameScore.gameEnergy < currentEnergy) {
-                            NSLog(@"This game is better than saved one");
-                            gameScore.gameScore = (NSInteger)score;
-                            gameScore.gameEnergy = currentEnergy;
-                            // update the array with this data
-                            NSData* scoreData = [NSKeyedArchiver archivedDataWithRootObject:self.scoresArray];
-                            [defaults setObject:scoreData forKey:dLocalScoresArray];
-                            [defaults synchronize];
-                        }
-                        else {
-                            // leave the current score as best
-                        }
-                    } else {
-                        NSLog(@"No saved scores for this player");
-                        // create a new score
-                        [self createNewScore:score];
-                    } */
-                } else {
-                    NSLog(@"No saved scores for this stop");
-                    // create a new score
-                    [self createNewScore:score];
-                }
-            } else {
-                NSLog(@"No saved scores for this journey");
-                // create a new score
-                [self createNewScore:score];
-            }
-        }
+    // create the new score
+    NSLog(@"Creating and saving a new score");
+    GameScore* newScore = [[GameScore alloc] init];
+    newScore.gameJourney = self.currentJourney;
+    newScore.gameStop = self.currentStop;
+    newScore.gameEnergy = currentEnergy;
+    newScore.gameScore = (NSInteger)score;
+    if (self.sessionConnectedToGC) {
+        newScore.gamePlayer = [GameData sharedGameData].gameCenterPlayer;
     } else {
-        NSLog(@"No saved scores");
-        // create a new score
-        [self createNewScore:score];
+        newScore.gamePlayer = [GameData sharedGameData].gameLocalPlayer;
     }
-}
 
+    [self.scoresArray addObject:newScore];
+    // set the new array to the game scores and save them
+    [GameData sharedGameData].gameScores = self.scoresArray;
+    [[GameData sharedGameData] save];
+}
+/*
 -(void)createNewScore:(int)score {
     NSMutableArray* activeScores;
     NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
@@ -552,9 +521,6 @@ static const CGFloat scrollSpeed = 80.f;
          activeScores = [[NSMutableArray alloc] init];
     }
     NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)activeScores.count);
-    /*for (GameScore* score in activeScores) {
-        NSLog(@"Player: %@ score: %ld", score.gamePlayerName, (long)score.gameScore);
-    }*/
 
     NSLog(@"creating new score");
     GameScore* newScore = [[GameScore alloc] init];
@@ -577,7 +543,8 @@ static const CGFloat scrollSpeed = 80.f;
    // [defaults setObject:scoreData forKey:dLocalScoresArray];
     [defaults synchronize];
 }
-
+*/
+/*
 -(void)getCurrentStopScoreForLeaderboard:(NSString*)leaderboardID {
     NSLog(@"Creating Leaderboard to search");
     GKLeaderboard* leaderBoard = [[GKLeaderboard alloc] init];
@@ -596,7 +563,7 @@ static const CGFloat scrollSpeed = 80.f;
             }
         }];
     }
-}
+}*/
 
 
 #pragma MARK - BACKGROUND LOOPING FOR PARALLAX EFFECT

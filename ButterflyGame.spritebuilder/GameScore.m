@@ -26,7 +26,7 @@
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     if (self != nil) {
-       // self.gamePlayerName = [decoder decodeObjectForKey:@"gamePlayerName"];
+        self.gamePlayer = [decoder decodeObjectForKey:@"gamePlayer"];
         self.gameScore = [decoder decodeIntegerForKey:@"gameScore"];
         self.gameStop = [decoder decodeIntegerForKey:@"gameStop"];
         self.gameJourney = [decoder decodeObjectForKey:@"gameJourney"];
@@ -38,7 +38,7 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-  //  [encoder encodeObject:self.gamePlayerName forKey:@"gamePlayerName"];
+    [encoder encodeObject:self.gamePlayer forKey:@"gamePlayer"];
     [encoder encodeInteger:self.gameScore forKey:@"gameScore"];
     [encoder encodeInteger:self.gameStop forKey:@"gameStop"];
     [encoder encodeObject:self.gameJourney forKey:@"gameJourney"];

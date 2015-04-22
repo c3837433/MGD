@@ -10,8 +10,125 @@
 #import "GameScene.h"
 #import "Constants.h"
 #import "LeaderboardPosition.h"
+#import "GameData.h"
+#import "Player.h"
+#import "Score.h"
 
 @implementation Utility
+
+
+#pragma mark - GAME DATA METHODS
+
++(void)increasePlayerJourney:(Player*) player toJourney:(NSInteger)journey {
+    // get all the players in the game data array
+     NSLog(@"Total players in game player array: %lu", [GameData sharedGameData].gamePlayers.count);
+    NSMutableArray* playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
+    // remove the old player data
+    NSLog(@"Total players in game player array: %lu", playerArray.count);
+    [playerArray removeObject:player];
+    // increase the unlocked journey
+    player.highestJourney = journey;
+    // add the new data
+    [playerArray addObject:player];
+     NSLog(@"Total players in game player array: %lu", playerArray.count);
+    // set and save
+    [GameData sharedGameData].gamePlayers = playerArray;
+     NSLog(@"Total players in game player array: %lu", [GameData sharedGameData].gamePlayers.count);
+    [[GameData sharedGameData] save];
+     NSLog(@"Total players in game player array: %lu", [GameData sharedGameData].gamePlayers.count);
+}
+
++(NSMutableArray*) getTopThreePlayersScoresForMigration:(NSString*)journey {
+    NSMutableArray* gameScores = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];
+    NSMutableArray* playerArray = [[NSMutableArray alloc] init];
+    NSMutableArray* leaderPositionArray = [[NSMutableArray alloc] init];
+    for (GameScore* score in gameScores) {
+        // create an array of users
+        if (![playerArray containsObject:score.gamePlayer]) {
+            [playerArray addObject:score.gamePlayer];
+        }
+    }
+    // then loop through each of the players and create a leader position for them
+    for (Player* player in playerArray) {
+        LeaderboardPosition* position = [[LeaderboardPosition alloc] init];
+        position.leaderName = player.playerName;
+        NSInteger totalScore = 0;
+        for (GameScore* score in gameScores) {
+            if ([score.gamePlayer isEqual:player]) {
+                totalScore = totalScore + score.gameScore;
+            }
+        }
+        // set the total score
+        position.leaderScoreValue = totalScore;
+        [leaderPositionArray addObject:position];
+        // [NSString stringWithFormat:@"%ld", (long)totalScore];
+    }
+    
+    // filter and reduce to top three players
+    NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"leaderScoreValue" ascending:NO];
+    [leaderPositionArray sortUsingDescriptors:[NSArray arrayWithObject:sorter]];
+    
+    for (LeaderboardPosition* position in leaderPositionArray) {
+        NSLog(@"Sorted Score: %@", position.leaderScore);
+    }
+    return leaderPositionArray;
+}
+
+// update the player
++(void)updateLocalPlayersDataWithUserData {
+    // take the current info in the current player and update that player in the player list
+    NSString* currentName = [GameData sharedGameData].gameLocalPlayer.playerName;
+    NSLog(@"Current player name: %@", currentName);
+    NSMutableArray* players = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
+    NSLog(@"Game Data Player array: %lu", (unsigned long)[GameData sharedGameData].gamePlayers.count);
+    NSLog(@"Player array: %lu", (unsigned long)players.count);
+    for (Player* player in players) {
+        NSLog(@"Checking player name: %@", player.playerName);
+        if ([player.playerName isEqualToString:[GameData sharedGameData].gameLocalPlayer.playerName]) {
+            NSLog(@"player name matches, removing player object");
+            [players removeObject:player];
+        }
+        NSLog(@"Game Data Player array: %lu", (unsigned long)[GameData sharedGameData].gamePlayers.count);
+        NSLog(@"Player array: %lu", (unsigned long)players.count);
+    }
+    NSLog(@"Adding current player to list");
+    [players addObject:[GameData sharedGameData].gameLocalPlayer];
+    [GameData sharedGameData].gamePlayers = players;
+    NSLog(@"Game Data Player array: %lu", (unsigned long)[GameData sharedGameData].gamePlayers.count);
+    NSLog(@"Player array: %lu", (unsigned long)players.count);
+    [[GameData sharedGameData] save];
+    NSLog(@"Game Data Player array: %lu", (unsigned long)[GameData sharedGameData].gamePlayers.count);
+    NSLog(@"Player array: %lu", (unsigned long)players.count);
+
+}
+
++(void)increasePlayerJourney:(Player*) player forStop:(NSInteger)stop {
+    // get all the players in the game data array
+    NSMutableArray* playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
+    [playerArray removeObject:[Player sharedGameData]];
+    switch (stop) {
+        case 1:
+            [Player sharedGameData].highestAStop++;
+            break;
+        case 2:
+            [Player sharedGameData].highestBStop++;
+            break;
+        case 3:
+            [Player sharedGameData].highestCStop++;
+            break;
+        case 4:
+            [Player sharedGameData].highestDStop++;
+            break;
+        case 5:
+            [Player sharedGameData].highestEStop++;
+            break;
+        default:
+            break;
+    }
+    [playerArray addObject:[Player sharedGameData]];
+    [GameData sharedGameData].gamePlayers = playerArray;
+    [[GameData sharedGameData] save];
+}
 
 #pragma mark - BUTTON METHODS
 + (void) setButtonImage:(CCButton*)button forEnergy:(CGFloat)energy {
@@ -66,6 +183,7 @@
         }
     }
 }
+
 
 
 + (void)shouldReturnToMap  {

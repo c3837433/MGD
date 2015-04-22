@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Player.h"
 @interface GameData : NSObject <NSCoding>
 
-@property (nonatomic, strong) NSMutableArray* gamePlayers;
+@property (nonatomic, strong) NSArray* gamePlayers;
+@property (nonatomic, strong) Player* gameCenterPlayer;
+@property (nonatomic, strong) Player* gameLocalPlayer;
+@property (nonatomic, strong) NSArray* gameScores;
 
 +(instancetype)sharedGameData;
 -(void)save;

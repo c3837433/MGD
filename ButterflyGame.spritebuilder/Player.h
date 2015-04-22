@@ -17,6 +17,8 @@
 @property (nonatomic) NSInteger highestCStop;
 @property (nonatomic) NSInteger highestDStop;
 @property (nonatomic) NSInteger highestEStop;
-@property (nonatomic, strong) NSArray* playerScores;
+@property (nonatomic, assign) BOOL gameCenterPlayer;
+//@property (nonatomic, strong) NSMutableArray* playerScores;
 -(void)save;
++ (instancetype)sharedGameData;
 @end
