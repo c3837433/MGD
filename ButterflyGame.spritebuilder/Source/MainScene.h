@@ -10,7 +10,6 @@
 
 @interface MainScene : CCNode
 
-
 @property (nonatomic) NSInteger boardsChecked;
 @property (nonatomic, strong) NSMutableArray* playerArray;
 @property (nonatomic) BOOL connectedToGameCenter;

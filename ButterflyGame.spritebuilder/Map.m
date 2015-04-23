@@ -207,6 +207,11 @@
     mainScene.connectedToGameCenter = self.connectedToGameCenter;
     // stop it from needing to get a selected player
     mainScene.currentPlayerSelected = true;
+    if (self.connectedToGameCenter) {
+        mainScene.player = [GameData sharedGameData].gameCenterPlayer;
+    } else {
+        mainScene.player = [GameData sharedGameData].gameLocalPlayer;
+    }
     mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];

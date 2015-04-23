@@ -15,6 +15,7 @@
 #import "GameScore.h"
 #import "LocalLeaderboard.h"
 
+
 @implementation MainScene {
 
     CCSprite* _mainButterfly;
@@ -37,7 +38,6 @@
     CCButton* _loadGameCenterButton;
     NSArray* mainButtons;
     
-    
 }
 
 #pragma mark - LOAD AND UNLOAD
@@ -45,7 +45,9 @@
 - (void)didLoadFromCCB {
     
     mainButtons = [[NSArray alloc] initWithObjects:_loadGameCenterButton, _tutorialButton, _creditsButton, _playersButton, _leaderBoardButton, _achievementButton, nil];
+    
     if (!self.returnFromMap) {
+        NSLog(@"Not returning from map");
         // Fresh load, set defaults
         self.currentPlayerSelected = NO;
         self.connectedToGameCenter = YES;
