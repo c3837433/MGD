@@ -15,9 +15,9 @@
 #import "MigrationC.h"
 #import "MigrationD.h"
 #import "MigrationE.h"
-#import "Utility.h"
 #import <Parse/Parse.h>
 #import "GameData.h"
+#import "MainScene.h"
 
 @implementation Map {
     BOOL shouldZoom;
@@ -34,7 +34,7 @@
     CCNode* _mapNode;
     NSString* journeyToLoad;
     CGPoint activePoint;
-    CCButton* _playButton;
+    //CCButton* _playButton;
     
     CCLabelTTF* _leaderBoardTitle;
     CCLabelTTF* _leaderName1;
@@ -101,147 +101,7 @@
         }
     }
 }
-/*
--(void)getTopScoresForFriendsForMigration:(NSString*)journey {
-    // set the title
-    _leaderBoardTitle.string = [self getLeaderBoardTitleForJourney:journey];
-    if (self.connectedToGameCenter) {
-        // rehide the leaderboards
-        for (CCNode* leaderNode in leaderboardNodeArray) {
-            leaderNode.visible = false;
-        }
-        // get the leaderboard id
-        NSString* migration = [NSString stringWithFormat:@"Butterfly.Migration.%@", journey];
-        // ButterflyGame.Migration.A.Set
-        GKLeaderboard* leaderBoard = [[GKLeaderboard alloc] init];
-        leaderBoard.identifier = migration;
-        // Get just our friends
-        leaderBoard.playerScope = GKLeaderboardPlayerScopeFriendsOnly;
-        // and only top three
-        leaderBoard.range = NSMakeRange(1, 3);
-        if (leaderBoard != nil) {
-            NSLog(@"Leaderboard is loading");
-            [leaderBoard loadScoresWithCompletionHandler:^(NSArray *scores, NSError *error) {
-                if (error != nil) {
-                    //Handle error
-                    NSLog(@"Errors: %@", error.description);
-                }
-                else{
-                    NSLog(@"Scores %@", scores.description);
-                    if (scores != nil) {
-                        // and load the scores
-                        [self setLeaderboardWithScores:scores];
-                    }
-                }
-            }];
-        }
-    } else {
-        // get top scores for all local users
-        NSMutableArray* topScorers =  [Utility getTopThreePlayersScoresForMigration:@"A"];
-        [self SetLeaderboardWithPositions:topScorers];
-    }
-}
 
-
--(void)getLocalScoresForJourney {
-    PFQuery* topUsersQuery = [PFQuery queryWithClassName:pClassName];
-    [topUsersQuery whereKeyExists:pPlayerName];
-    [topUsersQuery whereKeyExists:pHighScore];
-    [topUsersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if ((!error) && (objects.count >+ 1)) {
-            // we have scores
-            [self sortAndOrderLocalScores:objects];
-        }
-    }];
-
-}
-
--(void) sortAndOrderLocalScores:(NSArray*)scores {
-  NSArray* topScores = [Utility getTopThreeScoresForJourney:@"A" withScores:scores];
-    NSLog(@"Top scores: %@", topScores.description);
-}
-
--(NSString*) getLeaderBoardTitleForJourney:(NSString*)journey {
-    NSString* titleString = @"Migration";
-    if ([journey isEqualToString:@"A"]) {
-        titleString = @"Prismo Beach Migration";
-    } else if ([journey isEqualToString:@"B"]) {
-        titleString = @"Ellwood Grove Migration";
-    } else if ([journey isEqualToString:@"C"]) {
-        titleString = @"El Rosario Migration";
-    } else if ([journey isEqualToString:@"D"]) {
-        titleString = @"Sierra Chincua Migration";
-    } else if ([journey isEqualToString:@"E"]) {
-        titleString = @"Yucatan Migration";
-    }
-    return titleString;
-}
-
--(void)setLocalLeaderboardWithScores:(NSArray*)positions {
-    if (positions.count > 0) {
-        NSLog(@"We have %lu saved user scores for this migration", (unsigned long)positions.count);
-        NSMutableArray* leaderboards = [[NSMutableArray alloc] init];
-        for (int i = 0; i < positions.count; i++) {
-            LeaderboardPosition* position = [positions objectAtIndex:i];
-            LeaderboardPosition* leader = [[LeaderboardPosition alloc] init];
-            leader.leaderNode = leaderboardNodeArray[i];
-            leader.leaderNameLabel = leaderboardNameArray[i];
-            leader.leaderScoreLabel = leaderboardScoreArray[i];
-            leader.leaderName = position.leaderName;
-            leader.leaderScore = position.leaderScore;
-            [leaderboards addObject:leader];
-        }
-        for (LeaderboardPosition* position in leaderboards) {
-            position.leaderNode.visible = true;
-            position.leaderNameLabel.string = position.leaderName;
-            position.leaderScoreLabel.string = position.leaderScore;
-        }
-    } else {
-        NSLog(@"There are no currently saved scores for this migration");
-    }
-   
-
-
-}
--(void)SetLeaderboardWithPositions:(NSArray*)positions {
-    NSLog(@"There are no currently saved scores for this migration");
-    NSMutableArray* leaderboards = [[NSMutableArray alloc] init];
-    for (int i = 0; i < positions.count; i++) {
-        LeaderboardPosition* position = positions[i];
-        LeaderboardPosition* leader = [[LeaderboardPosition alloc] init];
-        leader.leaderNode = leaderboardNodeArray[i];
-        leader.leaderNameLabel = leaderboardNameArray[i];
-        leader.leaderScoreLabel = leaderboardScoreArray[i];
-        leader.leaderName = position.leaderName;
-        leader.leaderScore = [NSString stringWithFormat:@"%lu", position.leaderScoreValue];
-        [leaderboards addObject:leader];
-    }
-    for (LeaderboardPosition* position in leaderboards) {
-        position.leaderNode.visible = true;
-        position.leaderNameLabel.string = position.leaderName;
-        position.leaderScoreLabel.string = position.leaderScore;
-    }
-}
-
--(void)setLeaderboardWithScores:(NSArray*)scores {
-    NSMutableArray* leaderboards = [[NSMutableArray alloc] init];
-    for (int i = 0; i < scores.count; i++) {
-        GKScore* score = scores[i];
-        LeaderboardPosition* leader = [[LeaderboardPosition alloc] init];
-        leader.leaderNode = leaderboardNodeArray[i];
-        leader.leaderNameLabel = leaderboardNameArray[i];
-        leader.leaderScoreLabel = leaderboardScoreArray[i];
-        leader.leaderName = score.player.alias;
-        leader.leaderScore = score.formattedValue;
-        [leaderboards addObject:leader];
-    }
-    for (LeaderboardPosition* position in leaderboards) {
-        position.leaderNode.visible = true;
-        position.leaderNameLabel.string = position.leaderName;
-        position.leaderScoreLabel.string = position.leaderScore;
-    }
-}
-*/
 -(void) touchBegan:(CCTouch *)touch withEvent:(CCTouchEvent *)event {
     // Get the position in the map
     nodePostion = [touch locationInNode:_mapNode];
@@ -252,35 +112,40 @@
         CCLOG(@"User tapped first journey");
         activePoint.x = 1.0 - _journey1.position.x + 0.45;
         activePoint.y = 1.0 - _journey1.position.y - 0.35;
-        _playButton.visible = YES;
+        //_playButton.visible = YES;
+        [self shouldPlaySelectedJourney];
         //[self getTopScoresForFriendsForMigration:@"A"];
     } else if ((CGRectContainsPoint([_journey2 boundingBox], nodePostion)) && (_journey2.visible)) {
         CCLOG(@"User tapped second journey");
         journeyToLoad = @"B";
         activePoint.x = 1.0 - _journey2.position.x + 0.45;
         activePoint.y = 1.0 - _journey2.position.y - 0.25;
-        _playButton.visible = YES;
+        //_playButton.visible = YES;
+        [self shouldPlaySelectedJourney];
         //[self getTopScoresForFriendsForMigration:@"B"];
     } else if ((CGRectContainsPoint([_journey3 boundingBox], nodePostion)) && (_journey3.visible)) {
         CCLOG(@"User tapped third journey");
         journeyToLoad = @"C";
         activePoint.x = 1.0 - _journey3.position.x + 0.3;
         activePoint.y = 1.0 - _journey3.position.y - 0.45;
-        _playButton.visible = YES;
+        //_playButton.visible = YES;
+        [self shouldPlaySelectedJourney];
        // [self getTopScoresForFriendsForMigration:@"C"];
     } else if ((CGRectContainsPoint([_journey4 boundingBox], nodePostion)) && (_journey4.visible)) {
         CCLOG(@"User tapped fourth journey");
         journeyToLoad = @"D";
         activePoint.x = 1.0 - _journey4.position.x - 0.2;
         activePoint.y = 1.0 - _journey4.position.y - 0.2;
-        _playButton.visible = YES;
+        //_playButton.visible = YES;
+        [self shouldPlaySelectedJourney];
     } else if ((CGRectContainsPoint([_journey5 boundingBox], nodePostion)) && (_journey5.visible)) {
         CCLOG(@"User tapped fifth journey");
         journeyToLoad = @"E";
         activePoint.x = 1.0 - _journey5.position.x - 0.4;
         activePoint.y = 1.0 - _journey5.position.y - 0.45;
-        _playButton.visible = YES;
+        //_playButton.visible = YES;
        // [self getTopScoresForFriendsForMigration:@"E"];
+        [self shouldPlaySelectedJourney];
     }
 
 }
@@ -327,10 +192,6 @@
     }
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
-    /*
-    CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", journeyToLoad]];
-    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];*/
 }
 
 
@@ -341,6 +202,12 @@
 -(void) shouldReturnToMain {
     // return to the main menu
     CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
+    MainScene* mainScene = [[scene children] firstObject];
+    // send the connection property back
+    mainScene.connectedToGameCenter = self.connectedToGameCenter;
+    // stop it from needing to get a selected player
+    mainScene.currentPlayerSelected = true;
+    mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }

@@ -82,6 +82,9 @@
 		9971BE821AAEAE66005544C8 /* loseGame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9971BE811AAEAE66005544C8 /* loseGame.mp3 */; };
 		997FC26B1AE81CC800CAFCC1 /* LocalLeaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 997FC26A1AE81CC800CAFCC1 /* LocalLeaderboard.m */; };
 		99888D171ABB2AF1003D30FE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99888D161ABB2AF1003D30FE /* CoreMotion.framework */; };
+		99A58A371AE84373003C8DD5 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99A58A341AE84373003C8DD5 /* FBSDKCoreKit.framework */; };
+		99A58A381AE84373003C8DD5 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99A58A351AE84373003C8DD5 /* FBSDKLoginKit.framework */; };
+		99A58A391AE84373003C8DD5 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99A58A361AE84373003C8DD5 /* FBSDKMessengerShareKit.framework */; };
 		99A6E52E1AACD71D00D01C67 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A6E52D1AACD71D00D01C67 /* GameScene.m */; };
 		99BFE3CF1ADC2CF5005F2DFD /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3CE1ADC2CF5005F2DFD /* Constants.m */; };
 		99BFE3D51ADC44B6005F2DFD /* MigrationA.m in Sources */ = {isa = PBXBuildFile; fileRef = 99BFE3D41ADC44B6005F2DFD /* MigrationA.m */; };
@@ -240,6 +243,9 @@
 		997FC2691AE81CC800CAFCC1 /* LocalLeaderboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalLeaderboard.h; sourceTree = "<group>"; };
 		997FC26A1AE81CC800CAFCC1 /* LocalLeaderboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalLeaderboard.m; sourceTree = "<group>"; };
 		99888D161ABB2AF1003D30FE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		99A58A341AE84373003C8DD5 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		99A58A351AE84373003C8DD5 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		99A58A361AE84373003C8DD5 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		99A6E52C1AACD71D00D01C67 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		99A6E52D1AACD71D00D01C67 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		99BFE3CD1ADC2CF5005F2DFD /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -381,6 +387,7 @@
 				993E1D2B1ADC6C000070DB8E /* Security.framework in Frameworks */,
 				993E1D2D1ADC6C000070DB8E /* SystemConfiguration.framework in Frameworks */,
 				B77F1B4017B978D7009739AE /* CoreGraphics.framework in Frameworks */,
+				99A58A381AE84373003C8DD5 /* FBSDKLoginKit.framework in Frameworks */,
 				B77F1B3217B978D7009739AE /* QuartzCore.framework in Frameworks */,
 				B77F1B3817B978D7009739AE /* AudioToolbox.framework in Frameworks */,
 				993E1D201ADC6BB20070DB8E /* Bolts.framework in Frameworks */,
@@ -389,8 +396,10 @@
 				7A97911819E631CD001FFC4D /* libcocos2d.a in Frameworks */,
 				8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */,
 				B77F1B3417B978D7009739AE /* OpenGLES.framework in Frameworks */,
+				99A58A391AE84373003C8DD5 /* FBSDKMessengerShareKit.framework in Frameworks */,
 				B77F1B3617B978D7009739AE /* OpenAL.framework in Frameworks */,
 				B77F1B3A17B978D7009739AE /* AVFoundation.framework in Frameworks */,
+				99A58A371AE84373003C8DD5 /* FBSDKCoreKit.framework in Frameworks */,
 				B77F1B3C17B978D7009739AE /* UIKit.framework in Frameworks */,
 				B77F1B3E17B978D7009739AE /* Foundation.framework in Frameworks */,
 				B77F1B4217B978D7009739AE /* CoreText.framework in Frameworks */,
@@ -696,6 +705,9 @@
 		B77F1B3017B978D7009739AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				99A58A341AE84373003C8DD5 /* FBSDKCoreKit.framework */,
+				99A58A351AE84373003C8DD5 /* FBSDKLoginKit.framework */,
+				99A58A361AE84373003C8DD5 /* FBSDKMessengerShareKit.framework */,
 				99CFFD361ADE13430070F5A0 /* GameKit.framework */,
 				99CFFD341ADE13400070F5A0 /* StoreKit.framework */,
 				993E1D341ADC6E220070DB8E /* Accounts.framework */,
@@ -1362,6 +1374,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/angelasmith/Development/parse-library-1/parse-library-1.7.1",
+					/Users/angelasmith/Documents/FacebookSDK,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1401,6 +1414,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/angelasmith/Development/parse-library-1/parse-library-1.7.1",
+					/Users/angelasmith/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/Prefix.pch;

@@ -103,6 +103,8 @@ static const CGFloat scrollSpeed = 80.f;
     
     CCLabelTTF* _winScoreLabel;
     
+    CCButton* _winMapButton;
+    CCButton* _winPlayAgainButton;
     // Create an instance of the core motion manager
     CMMotionManager* motionManager;
     
@@ -393,6 +395,9 @@ static const CGFloat scrollSpeed = 80.f;
                 // move to flower
                 _gameWinNode.visible = true;
                 _butterfly.visible = false;
+                // temporarily disable the buttons
+                NSLog(@"Disabling the buttons");
+                [self enableButtons:false];
                // CCLOG(@"You win!");
                 didLand = true;
                 [audio playEffect:@"yahoo.mp3"];
@@ -410,6 +415,10 @@ static const CGFloat scrollSpeed = 80.f;
                         dispatch_async(dispatch_get_main_queue(), ^{
                             // update the score
                             _winScoreLabel.string = [NSString stringWithFormat:@"Score %d", i];
+                            if (i == totalScore-1) {
+                                NSLog(@"completed score run");
+                                [self enableButtons:true];
+                            }
                         });
                     }
                     // check if this is a new high score
@@ -427,6 +436,10 @@ static const CGFloat scrollSpeed = 80.f;
 }
 
 
+-(void)enableButtons:(BOOL)enable {
+    _winPlayAgainButton.enabled = enable;
+    _winMapButton.enabled = enable;
+}
 
 // save the score to the local data store with this current user's name
 -(void)saveGameCenterGame:(int)score {
@@ -505,65 +518,8 @@ static const CGFloat scrollSpeed = 80.f;
     [GameData sharedGameData].gameScores = self.scoresArray;
     [[GameData sharedGameData] save];
 }
-/*
--(void)createNewScore:(int)score {
-    NSMutableArray* activeScores;
-    NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
-    if (scoreData != nil) {
-        NSLog(@"There is score data");
-        NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:scoreData];
-        if (dataArray != nil)
-            activeScores = [[NSMutableArray alloc] initWithArray:dataArray];
-        else
-            activeScores = [[NSMutableArray alloc] init];
-    } else {
-        NSLog(@"There is no score data");
-         activeScores = [[NSMutableArray alloc] init];
-    }
-    NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)activeScores.count);
 
-    NSLog(@"creating new score");
-    GameScore* newScore = [[GameScore alloc] init];
-    //newScore.gamePlayerName = self.player.playerName;
-    newScore.gameJourney = self.currentJourney;
-    newScore.gameStop = self.currentStop;
-    newScore.gameEnergy = currentEnergy;
-    newScore.gameScore = (NSInteger)score;
-    NSLog(@"New score info: %@", newScore.description);
-   // NSLog(@"New score name: %@", newScore.gamePlayerName);
-    NSLog(@"New score journey: %@", newScore.gameJourney);
-    NSLog(@"New score stop: %ld", (long)newScore.gameStop);
-    NSLog(@"New score energy: %f", newScore.gameEnergy);
-    NSLog(@"New score score: %ld", (long)newScore.gameScore);
-    [activeScores addObject:newScore];
-    NSLog(@"Score array with new score: %@ count: %lu", activeScores.description, (unsigned long)activeScores.count);
-    // save this player object to the defaults
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:activeScores] forKey:dLocalScoresArray];
-   // NSData* scoreData = [NSKeyedArchiver archivedDataWithRootObject:self.scoresArray];
-   // [defaults setObject:scoreData forKey:dLocalScoresArray];
-    [defaults synchronize];
-}
-*/
-/*
--(void)getCurrentStopScoreForLeaderboard:(NSString*)leaderboardID {
-    NSLog(@"Creating Leaderboard to search");
-    GKLeaderboard* leaderBoard = [[GKLeaderboard alloc] init];
-    leaderBoard.identifier = leaderboardID;
-    if (leaderBoard != nil) {
-        NSLog(@"Leaderboard is loading");
-        [leaderBoard loadScoresWithCompletionHandler:^(NSArray *scores, NSError *error){
-            if (error != nil) {
-                //Handle error
-                NSLog(@"Errors: %@", error.description);
-            }
-            else{
-                NSLog(@"Scores %@", scores.description);
-                GKScore* localScore = leaderBoard.localPlayerScore;
-                NSLog(@"Local player score: %@", localScore);
-            }
-        }];
-    }
-}*/
+
 
 
 #pragma MARK - BACKGROUND LOOPING FOR PARALLAX EFFECT

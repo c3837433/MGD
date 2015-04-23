@@ -7,6 +7,7 @@
 //
 
 #import "Tutorial.h"
+#import "MainScene.h"
 
 @implementation Tutorial {
 
@@ -23,9 +24,9 @@
 }
 
 -(void)shouldCloseTutorial {
-    CCLOG(@"User done with tutorial, load game");
+    CCLOG(@"User done with tutorial, load main scene");
     // Start Game
-    CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
+    CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 

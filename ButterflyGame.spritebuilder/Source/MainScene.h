@@ -16,6 +16,7 @@
 @property (nonatomic) BOOL connectedToGameCenter;
 @property (nonatomic) BOOL selectedNonGameCenterPlayer;
 @property (nonatomic) BOOL currentPlayerSelected;
+@property (nonatomic) BOOL returnFromMap;
 @property (nonatomic, strong) Player* player;
 @property (nonatomic, strong) Player* gameCenterPlayer;
 //@property (nonatomic, strong) GamePlayer* currentPlayer;

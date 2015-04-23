@@ -7,6 +7,7 @@
 //
 
 #import "Credits.h"
+#import "MainScene.h"
 
 @implementation Credits
 

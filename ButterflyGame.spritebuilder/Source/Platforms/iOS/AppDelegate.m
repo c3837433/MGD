@@ -29,8 +29,14 @@
 #import "CCBuilderReader.h"
 #import "GamePlayer.h"
 #import "Score.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 
 @implementation AppController
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FBSDKAppEvents activateApp];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // settting the default
@@ -75,7 +81,20 @@
     
     [self setupCocos2dWithOptions:cocos2dSetup];
     
-    return YES;
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                    didFinishLaunchingWithOptions:launchOptions];
+    //return YES;
+    
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
 }
 
 -(NSUInteger)supportedInterfaceOrientations {

@@ -46,8 +46,21 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string></string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>FacebookAppID</key>
+	<string>831415043611471</string>
+	<key>FacebookDisplayName</key>
+	<string>Monarch Migration</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIPrerenderedIcon</key>
@@ -62,7 +75,7 @@
 		<true/>
 	</dict>
 	<key>UIStatusBarHidden</key>
-	<true/>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>

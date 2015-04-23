@@ -10,6 +10,10 @@
 #import "GameData.h"
 #import "LeaderboardPosition.h"
 #import "GameScore.h"
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
+#import "AppDelegate.h"
+#import "MainScene.h"
 
 @implementation LocalLeaderboard {
     CCNode* _position1;
@@ -76,7 +80,7 @@
     
      NSMutableArray* leaderScores = [[NSMutableArray alloc] init];
      if (allScores.count >+ 1) {
-     NSLog(@"We have %lu scores", allScores.count);
+     //NSLog(@"We have %lu scores", allScores.count);
      // sort by score
      for (GameScore* score in allScores) {
          if ([score.gamePlayer isEqual:self.currentPlayer]) {
@@ -90,9 +94,7 @@
         }
      }
      NSArray* sortedArray = [self sortLeaderboards:leaderScores];
-     for (LeaderboardPosition* position in sortedArray) {
-         NSLog(@"Sorted and reduced user's scores: %@", position.leaderScore);
-     }
+
     // set sorted positions in leaderboard
     [self setScoresInLeaderboard:sortedArray];
 }
@@ -114,31 +116,22 @@
         }
     }
     NSArray* sortedArray = [self sortLeaderboards:leaderScores];
-    for (LeaderboardPosition* position in sortedArray) {
-        NSLog(@"Sorted and reduced  all scores: %@", position.leaderScore);
-    }
     // set sorted positions in leaderboard
     [self setScoresInLeaderboard:sortedArray];
 }
 
 -(NSArray*) sortLeaderboards:(NSMutableArray*)leaders {
-    NSLog(@"Finished loading leaders: %@", leaders.description);
-    for (LeaderboardPosition* position in leaders) {
-        NSLog(@"Score: %@", position.leaderScore);
-    }
+   // NSLog(@"Finished loading leaders: %@", leaders.description);
     
     NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"leaderScoreValue" ascending:NO];
     [leaders sortUsingDescriptors:[NSArray arrayWithObject:sorter]];
     //NSLog(@"Sorted array count: %lu", (unsigned long)playersTopScores.count);
-    for (LeaderboardPosition* position in leaders) {
-        NSLog(@"Sorted Score: %@", position.leaderScore);
-    }
     // now reduce to top five
     if (leaders.count > 5) {
-        NSLog(@"Returning top 5 scores");
+      //  NSLog(@"Returning top 5 scores");
         return [leaders subarrayWithRange:NSMakeRange(0, 5)];
     } else {
-        NSLog(@"returning 0-3 scores");
+      //  NSLog(@"returning 0-3 scores");
         return leaders;
     }
 }
@@ -208,6 +201,10 @@
 -(void)shouldReturnToMain {
     // return to the main menu
     CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
+    MainScene* mainScene = [[scene children] firstObject];
+    // stop it from needing to get a selected player
+    mainScene.currentPlayerSelected = true;
+    mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
@@ -235,6 +232,40 @@
         position = boardScores[4];
     }
     NSLog(@"User: %@ wants to share: %@ score: %@", position.leaderName, position.leaderScore, position.leaderBoardStop);
+    [self postToFacebook:position];
+}
+
+// Post to Facebook
+- (void)postToFacebook:(LeaderboardPosition*)position {
+  
+    // See if we have access to facebook
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        
+        // Get access to the controller
+        AppController* appController = (((AppController*)[UIApplication sharedApplication].delegate));
+        // And create the compose view
+        SLComposeViewController* composeView = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        // set completion handler
+        [composeView setCompletionHandler:^(SLComposeViewControllerResult result) {
+            NSString* message = (result == SLComposeViewControllerResultDone) ? @"Post was successful" : @"Post was canceled";
+            NSLog(@"%@", message);
+            [appController.navController dismissViewControllerAnimated:YES completion:Nil];
+        }];
+
+        // Get the message
+        NSString* message = [NSString stringWithFormat:@"I scored %@ points on Monarch Migration's %@!", position.leaderScore, position.leaderBoardStop];
+        [composeView setInitialText:message];
+        // Add a generic link to itunes
+        [composeView addURL:[NSURL URLWithString:@"http://www.itunes.com"]];
+        
+        // show the compose view
+        [appController.navController presentViewController:composeView animated:YES completion:Nil];
+        
+    } else {
+        NSLog(@"Unable to connect to facebook");
+        [[[UIAlertView alloc] initWithTitle:@"On no!" message:@"We are unable to share your score. Please check your Facebook account is logged in and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+    }
 }
 
 @end
