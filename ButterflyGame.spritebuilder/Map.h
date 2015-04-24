@@ -13,7 +13,6 @@
 
 
 @property (nonatomic) NSInteger highestLevel;
-//@property (nonatomic, strong) Player* currentPlayer;
 @property (nonatomic) BOOL connectedToGameCenter;
 
 @end

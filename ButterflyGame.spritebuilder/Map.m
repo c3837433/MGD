@@ -34,7 +34,7 @@
     CCNode* _mapNode;
     NSString* journeyToLoad;
     CGPoint activePoint;
-    //CCButton* _playButton;
+    CCButton* _playButton;
     
     CCLabelTTF* _leaderBoardTitle;
     CCLabelTTF* _leaderName1;
@@ -56,7 +56,8 @@
 // Get this user's highest unlocked journey for the map
 -(void) onEnter {
     [super onEnter];
-
+    self.highestLevel = [GameData sharedGameData].gameActivePlayer.highestJourney;
+    /*
     if (self.connectedToGameCenter) {
         NSLog(@"Map connected through game center who has %ld journeys available", (long)[GameData sharedGameData].gameCenterPlayer.highestJourney);
         self.highestLevel = [GameData sharedGameData].gameCenterPlayer.highestJourney;
@@ -66,7 +67,7 @@
     }
     //NSLog(@"current player for map: %@", self.currentPlayer.playerName);
     //self.highestLevel = self.currentPlayer.highestJourney;
-
+     */
     NSLog(@"Number of migrations that should be viewable: %ld", (long)self.highestLevel);
     [self setUpMapviewWithButtons];
 }
@@ -163,10 +164,11 @@
 - (void)shouldStartJourney {
     // See which journey to load
     CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", journeyToLoad]];
+    /*
     // set the player and session info
     if ([journeyToLoad isEqualToString:@"A"]) {
         MigrationA* migration = [[scene children] firstObject];
-        migration.sessionThroughGameCenter = self.connectedToGameCenter;
+       // migration.sessionThroughGameCenter = self.connectedToGameCenter;
         //migration.player = self.currentPlayer;
         //migration.player = self.player;
     } else if ([journeyToLoad isEqualToString:@"B"]) {
@@ -189,7 +191,7 @@
         migration.sessionThroughGameCenter = self.connectedToGameCenter;
         // migration.player = self.currentPlayer;
        // migration.player = self.player;
-    }
+    }*/
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
@@ -202,17 +204,17 @@
 -(void) shouldReturnToMain {
     // return to the main menu
     CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
-    MainScene* mainScene = [[scene children] firstObject];
+   // MainScene* mainScene = [[scene children] firstObject];
     // send the connection property back
-    mainScene.connectedToGameCenter = self.connectedToGameCenter;
+    //mainScene.connectedToGameCenter = self.connectedToGameCenter;
     // stop it from needing to get a selected player
-    mainScene.currentPlayerSelected = true;
+  /*  mainScene.currentPlayerSelected = true;
     if (self.connectedToGameCenter) {
-        mainScene.player = [GameData sharedGameData].gameCenterPlayer;
+     //   mainScene.player = [GameData sharedGameData].gameCenterPlayer;
     } else {
-        mainScene.player = [GameData sharedGameData].gameLocalPlayer;
-    }
-    mainScene.returnFromMap = true;
+      //  mainScene.player = [GameData sharedGameData].gameLocalPlayer;
+    }*/
+   // mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }

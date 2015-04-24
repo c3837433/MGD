@@ -30,13 +30,10 @@
 #import "GamePlayer.h"
 #import "Score.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-
+#import "ABGameKitHelper.h"
 
 @implementation AppController
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FBSDKAppEvents activateApp];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // settting the default
@@ -79,23 +76,16 @@
     // Do any extra configuration of Cocos2d here (the example line changes the pixel format for faster rendering, but with less colors)
     //[cocos2dSetup setObject:kEAGLColorFormatRGB565 forKey:CCConfigPixelFormat];
     
-    [self setupCocos2dWithOptions:cocos2dSetup];
     
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                    didFinishLaunchingWithOptions:launchOptions];
-    //return YES;
+    // attempt to connect to game center
+    [ABGameKitHelper sharedHelper];
+    
+    [self setupCocos2dWithOptions:cocos2dSetup];
+
+    return YES;
     
 }
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                          openURL:url
-                                                sourceApplication:sourceApplication
-                                                       annotation:annotation];
-}
 
 -(NSUInteger)supportedInterfaceOrientations {
 
@@ -105,7 +95,7 @@
 - (CCScene*) startScene {
     return [CCBReader loadAsScene:@"MainScene"];
 }
-                                                                     
+
 
 
 @end

@@ -72,13 +72,13 @@
 
 
 // Load the game scene
-+(void)shouldPlaySelectedLevelStop:(NSInteger)selectedStop andHighestStop:(NSInteger)highestStop forJourney:(NSString*)journey withPlayer:(Player*)player andConnection:(BOOL)isConnected {
++(void)shouldPlaySelectedLevelStop:(NSInteger)selectedStop andHighestStop:(NSInteger)highestStop forJourney:(NSString*)journey withPlayer:(Player*)player  {
     // Just load the same game
     CCScene* scene = [CCBReader loadAsScene:@"GameScene"];
     GameScene* gameScene = [[scene children] firstObject];
     gameScene.currentStop = selectedStop;
-    gameScene.player = player;
-    gameScene.sessionConnectedToGC = isConnected;
+    //gameScene.player = player;
+    //gameScene.sessionConnectedToGC = isConnected;
     if (selectedStop == highestStop) {
         gameScene.forUnlock = YES;
         NSLog(@"This is for unlocking");

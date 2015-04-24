@@ -69,6 +69,7 @@
     // Get all the scores
     allScores = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];
     boardScores = [[NSMutableArray alloc] init];
+    self.currentPlayer = [GameData sharedGameData].gameActivePlayer;
     // set up the current players scores
     [self shouldLoadPlayerScores];
     
@@ -83,7 +84,7 @@
      //NSLog(@"We have %lu scores", allScores.count);
      // sort by score
      for (GameScore* score in allScores) {
-         if ([score.gamePlayer isEqual:self.currentPlayer]) {
+         if ([score.gamePlayer.playerName isEqualToString:self.currentPlayer.playerName]) {
              LeaderboardPosition* positionScore = [[LeaderboardPosition alloc] init];
              positionScore.leaderScore = [NSString stringWithFormat:@"%lu", score.gameScore];
              positionScore.leaderScoreValue = score.gameScore;
@@ -204,7 +205,7 @@
     MainScene* mainScene = [[scene children] firstObject];
     // stop it from needing to get a selected player
     mainScene.currentPlayerSelected = true;
-    mainScene.returnFromMap = true;
+    //mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }

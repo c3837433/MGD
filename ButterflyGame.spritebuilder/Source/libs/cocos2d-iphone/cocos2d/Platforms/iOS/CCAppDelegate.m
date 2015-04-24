@@ -320,6 +320,7 @@ FindPOTScale(CGFloat size, CGFloat fixedSize)
 	if([CCDirector sharedDirector].animating) {
 		[[CCDirector sharedDirector] stopAnimation];
 	}
+    
 	[[CCPackageManager sharedManager] savePackages];
 }
 

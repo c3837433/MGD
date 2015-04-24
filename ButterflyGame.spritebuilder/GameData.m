@@ -30,6 +30,9 @@
         self.gameScores = [decoder decodeObjectForKey:@"gameScores"];
         self.gameCenterPlayer = [decoder decodeObjectForKey:@"gameCenterPlayer"];
         self.gameLocalPlayer = [decoder decodeObjectForKey:@"gameLocalPlayer"];
+        self.gameActivePlayer = [decoder decodeObjectForKey:@"gameActivePlayer"];
+        self.activePlayerConnectedToGameCenter = [decoder decodeBoolForKey:@"activePlayerConnectedToGameCenter"];
+        self.connectedToGameCenter = [decoder decodeBoolForKey:@"connectedToGameCenter"];
     }
     return self;
 }
@@ -39,6 +42,9 @@
     [encoder encodeObject:self.gameScores forKey:@"gameScores"];
     [encoder encodeObject:self.gameCenterPlayer forKey:@"gameCenterPlayer"];
     [encoder encodeObject:self.gameLocalPlayer forKey:@"gameLocalPlayer"];
+    [encoder encodeObject:self.gameActivePlayer forKey:@"gameActivePlayer"];
+    [encoder encodeBool:self.activePlayerConnectedToGameCenter forKey:@"activePlayerConnectedToGameCenter"];
+    [encoder encodeBool:self.connectedToGameCenter forKey:@"connectedToGameCenter"];
 }
 
 +(instancetype)loadInstance {

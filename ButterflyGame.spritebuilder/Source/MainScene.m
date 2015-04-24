@@ -45,15 +45,8 @@
 - (void)didLoadFromCCB {
     
     mainButtons = [[NSArray alloc] initWithObjects:_loadGameCenterButton, _tutorialButton, _creditsButton, _playersButton, _leaderBoardButton, _achievementButton, nil];
-    
-    if (!self.returnFromMap) {
-        NSLog(@"Not returning from map");
-        // Fresh load, set defaults
-        self.currentPlayerSelected = NO;
-        self.connectedToGameCenter = YES;
-    }
-
-    self.selectedNonGameCenterPlayer = false;
+    // search for the matching player name in the local players
+    self.playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
     defaults = [NSUserDefaults standardUserDefaults];
     // Add the listener for the return on whether we connected or not (default set in app delegate)
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -61,8 +54,7 @@
                selector:@selector(defaultsChanged:)
                    name:NSUserDefaultsDidChangeNotification
                  object:nil];
-    // attempt to connect to game center
-    [ABGameKitHelper sharedHelper];
+    
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     animationManager = _mainButterfly.animationManager;
@@ -70,7 +62,7 @@
     if ([[defaults objectForKey:@"Butterfly.GameCenter.Connected"] isEqualToString:@"NO"]) {
         // make sure the players button is visible
         _playersButton.visible = true;
-        self.connectedToGameCenter = NO;
+       // self.connectedToGameCenter = NO;
         NSLog(@"User is not connected to game center");
     }
     // Preload the music
@@ -79,14 +71,49 @@
 
 // ON NSUSER DEFAULT CHANGE, CHECK IF WE ARE NOT CONNECTED TO GAME CENTER
 - (void)defaultsChanged:(NSNotification *)notification {
-    // Get the user defaults
+    [self setActivePlayer];
+}
+
+
+-(void)setActivePlayer {
     if ([[defaults objectForKey:@"Butterfly.GameCenter.Connected"] isEqualToString:@"NO"]) {
-        // make sure the players button is visible
-        _playersButton.visible = true;
-        self.connectedToGameCenter = NO;
         NSLog(@"User is not connected to game center");
+        [GameData sharedGameData].connectedToGameCenter = false;
+        [[GameData sharedGameData] save];
+        _gameCenterButton.visible = false;
+        NSString* localPlayerName = [GameData sharedGameData].gameLocalPlayer.playerName;
+        if (![localPlayerName isEqualToString:@""]) {
+            NSLog(@"Local player name set");
+            [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameLocalPlayer;
+            [[GameData sharedGameData] save];
+            self.usingGameCenterPlayer = false;
+            self.currentPlayerSelected = true;
+        } else {
+            NSLog(@"Local player name not set");
+            self.currentPlayerSelected = false;
+        }
         // Hide the game center button
         _gameCenterButton.visible = false;
+        self.usingGameCenterPlayer = false;
+    } else if ([[defaults objectForKey:@"Butterfly.GameCenter.Connected"] isEqualToString:@"YES"]) {
+        [GameData sharedGameData].connectedToGameCenter = true;
+        [[GameData sharedGameData] save];
+        // Check to make sure we have the game center player set
+        NSString* gameCenterPlayerName = [GameData sharedGameData].gameCenterPlayer.playerName;
+        if ([gameCenterPlayerName isEqualToString:[GKLocalPlayer localPlayer].alias]) {
+            NSLog(@"Game player name: %@", gameCenterPlayerName);
+            // Set the active player as the current game center player
+            [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameCenterPlayer;
+            NSLog(@"User is connected to game center");
+            [[GameData sharedGameData] save];
+        } else {
+            NSLog(@"Game Center player name not set");
+            [self getGameCenterPlayerSetUpforActive:true];
+        }
+        // Hide the game center button
+        _gameCenterButton.visible = true;
+        self.usingGameCenterPlayer = true;
+        self.currentPlayerSelected = true;
     }
 }
 
@@ -108,17 +135,23 @@
     }
     // If we are switching users, update the saved data with the local user's current data
     [self updatePlayerArrayWithLocalUsersCurrentData];
-    if (self.connectedToGameCenter) {
-        // Set up game center player
-        [self getGameCenterPlayerSetUp];
-        _gameCenterButton.visible = true;
-        _gameCenterButton.title = [GKLocalPlayer localPlayer].alias;
+    if ([GameData sharedGameData].connectedToGameCenter) {
+        NSLog(@"This user is active to game center");
+        if (![[GameData sharedGameData].gameCenterPlayer.playerName isEqualToString:[GKLocalPlayer localPlayer].alias]) {
+            [self getGameCenterPlayerSetUpforActive:false];
+            _gameCenterButton.visible = true;
+            _gameCenterButton.title = [GameData sharedGameData].gameCenterPlayer.playerName;
+        } else {
+            _gameCenterButton.visible = true;
+            _gameCenterButton.title = [GameData sharedGameData].gameCenterPlayer.playerName;
+        }
     } else {
         _gameCenterButton.visible = false;
+        NSLog(@"This user is not active to game center");
     }
     // Get the available players on the device
     if (self.playerArray != nil) {
-        //NSLog(@"Player array: %@ total:%lu", self.playerArray.description, self.playerArray.count);
+    NSLog(@"Player array: %@ total:%lu", self.playerArray.description, self.playerArray.count);
        
         if (self.playerArray.count >= 1) {
           //  NSLog(@"We have saved players");
@@ -134,7 +167,7 @@
     _playerSelectNode.visible = true;
 }
 
--(void)getGameCenterPlayerSetUp {
+-(void)getGameCenterPlayerSetUpforActive:(BOOL)forActive {
     Player* gameCenterPlayer = [GameData sharedGameData].gameCenterPlayer;
     if (![gameCenterPlayer.playerName isEqualToString:[GKLocalPlayer localPlayer].alias]) {
         // set this as a new player
@@ -150,33 +183,47 @@
         newPlayer.playerName = [GKLocalPlayer localPlayer].alias;
         [GameData sharedGameData].gameCenterPlayer = newPlayer;
         [[GameData sharedGameData] save];
+        if (forActive) {
+            [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameCenterPlayer;
+            [GameData sharedGameData].activePlayerConnectedToGameCenter = true;
+        }
+        [[GameData sharedGameData] save];
     }
 
 }
 
 // WHEN USER SWITCHES PLAYERS, MAKE SURE ANY NEW DATA IS SAVED
 -(void)updatePlayerArrayWithLocalUsersCurrentData {
+    Player* activePlayer = [GameData sharedGameData].gameActivePlayer;
+    Player* gameCenterPlayer = [GameData sharedGameData].gameCenterPlayer;
     Player* localPlayer = [GameData sharedGameData].gameLocalPlayer;
-    if (localPlayer.playerName != nil) {
-      //  NSLog(@"Retrieved local player: %@", localPlayer.playerName);
-        // search for the matching player name in the local players
-        self.playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
-      //  NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
-        for (Player* player in self.playerArray) {
-            if ([player.playerName isEqualToString:localPlayer.playerName]) {
-        //        NSLog(@"Found local player in player array: %@", player.playerName);
-                [self.playerArray removeObject:player];
-          //      NSLog(@"Player objects: %lu", self.playerArray.count);
-                break;
-            }
-        }
-        // add the current local player back to the player array
-        [self.playerArray addObject:localPlayer];
-        NSLog(@"Player objects: %lu", self.playerArray.count);
-        [GameData sharedGameData].gamePlayers = self.playerArray;
-        NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
+    // See if we need to update the game center player
+    if ([activePlayer.playerName isEqualToString:gameCenterPlayer.playerName]) {
+        NSLog(@"Updating game center player data");
+        [GameData sharedGameData].gameCenterPlayer = [GameData sharedGameData].gameActivePlayer;
         [[GameData sharedGameData] save];
-        NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
+    }
+    // otherwise see if we need to update a local player
+    else if ([activePlayer.playerName isEqualToString:localPlayer.playerName]) {
+        [GameData sharedGameData].gameLocalPlayer = [GameData sharedGameData].gameActivePlayer;
+        [[GameData sharedGameData] save];
+        if (localPlayer.playerName != nil) {
+            //  NSLog(@"Retrieved local player: %@", localPlayer.playerName);
+            //  NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
+            for (Player* player in self.playerArray) {
+                if ([player.playerName isEqualToString:localPlayer.playerName]) {
+                    [self.playerArray removeObject:player];
+                    break;
+                }
+            }
+            // add the current local player back to the player array
+            [self.playerArray addObject:localPlayer];
+            NSLog(@"Player objects: %lu", self.playerArray.count);
+            [GameData sharedGameData].gamePlayers = self.playerArray;
+            NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
+            [[GameData sharedGameData] save];
+            NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
+        }
     }
 }
 
@@ -184,6 +231,11 @@
 // When the user presses the play button
 #pragma mark - NAVIGATION
 - (void) startGame {
+    CCScene* scene = [CCBReader loadAsScene:@"Map"];
+    NSLog(@"Moving to map with player");
+    CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
+    [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
+    /*
     // if we are not connected to game center make sure we have a current player
     if (!self.currentPlayerSelected) {
         if (self.connectedToGameCenter) {
@@ -191,7 +243,7 @@
             [self getGameCenterPlayerSetUp];
             CCScene* scene = [CCBReader loadAsScene:@"Map"];
             Map* map = [[scene children] firstObject];
-            map.connectedToGameCenter = self.connectedToGameCenter;
+            //map.connectedToGameCenter = self.connectedToGameCenter;
             CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
             [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
         } else {
@@ -220,7 +272,7 @@
         CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
         [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 
-    }
+    }*/
 }
 
 -(void)shouldStartTutorial {
@@ -245,15 +297,15 @@
 
 -(void) shouldOpenLeaderboards {
     CCLOG(@"User clicked leaderboard button");
-    if (self.currentPlayerSelected) {
-        CCScene* scene = [CCBReader loadAsScene:@"LocalLeaderboard"];
-        LocalLeaderboard* leaderboard = [[scene children] firstObject];
-        leaderboard.currentPlayer = self.player;
-        NSLog(@"Moving to map with player");
+    NSString* activePlayerName = [GameData sharedGameData].gameActivePlayer.playerName;
+    if (![activePlayerName isEqualToString:@""]) {
+        NSLog(@"Active player is set");
+         CCScene* scene = [CCBReader loadAsScene:@"LocalLeaderboard"];
+        NSLog(@"Moving to leaderboard with player");
         CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
         [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
     } else {
-        // have user select a player first
+        NSLog(@"No player is set");
         [self shouldOpenPlayerView];
     }
 }
@@ -265,32 +317,37 @@
         NSLog(@"User selected button with title: %@", buttonTitle);
     if ([buttonTitle isEqualToString:@"Add Player"]) {
         // create a new player
+        NSLog(@"USer selected to create a player");
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Enter Player Name" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         [alert show];
     } else if ([selectedPlayerButton.name isEqualToString:@"GameCenter"]) {
+        NSLog(@"USer selected the game center player");
         self.currentPlayerSelected = true;
         // close the view
+        [GameData sharedGameData].activePlayerConnectedToGameCenter = true;
+         [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameCenterPlayer;
+        // Update the active player
+        [[GameData sharedGameData] save];
         [self shouldClosePlayerView];
-        self.selectedNonGameCenterPlayer = false;
-        self.player = [GameData sharedGameData].gameCenterPlayer;
     } else {
+        NSLog(@"USer selected a local player");
         // Find the current player
         for (Player* player in self.playerArray) {
             // find the matching name
             if ([player.playerName isEqualToString:buttonTitle]) {
                 NSLog(@"Found matching player name: %@ for selected name: %@", player.playerName, buttonTitle);
-                self.player = player;
+               // self.player = player;
+                [GameData sharedGameData].activePlayerConnectedToGameCenter = false;
+                 [GameData sharedGameData].gameLocalPlayer = player;
+                 [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameLocalPlayer;
+                [[GameData sharedGameData] save];
             }
         }
         self.currentPlayerSelected = true;
         // close the view
         [self shouldClosePlayerView];
-        if (self.connectedToGameCenter) {
-            self.selectedNonGameCenterPlayer = true;
-        }
     }
-    
 }
 
 // WHEN USER SELECTS AN EMPTY SLOT CREATE A NEW PLAYER
@@ -310,17 +367,17 @@
         newPlayer.highestJourney = 1;
         [self.playerArray addObject:newPlayer];
         [GameData sharedGameData].gamePlayers = self.playerArray;
+        // Save the players
         [[GameData sharedGameData] save];
-        self.player = newPlayer;
-        NSLog(@"Game data:%@", newPlayer.description);
-        NSLog(@"Total players: %lu", [GameData sharedGameData].gamePlayers.count);
-        NSLog(@"Current Player:%@", self.player.playerName);
-
+        [GameData sharedGameData].gameLocalPlayer = newPlayer;
+        // Save the local player
+        [[GameData sharedGameData] save];
+        [GameData sharedGameData].activePlayerConnectedToGameCenter = false;
+        [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameLocalPlayer;
+        // Save the active player
+        [[GameData sharedGameData] save];
         self.currentPlayerSelected = true;
         [self shouldClosePlayerView];
-        if (self.connectedToGameCenter) {
-            self.selectedNonGameCenterPlayer = true;
-        }
     }
 }
 -(void) shouldClosePlayerView {
@@ -331,10 +388,9 @@
 }
 
 -(void) shouldOpenGameCenter {
-    if (self.connectedToGameCenter) {
-        // load game center
-        [[ABGameKitHelper sharedHelper] showLeaderboard:@"com.Smith.Angela.ButterflyGame.Scores"];
-    }
+
+    [[ABGameKitHelper sharedHelper] showLeaderboard:@"com.Smith.Angela.ButterflyGame.Scores"];
+
 }
 
 @end

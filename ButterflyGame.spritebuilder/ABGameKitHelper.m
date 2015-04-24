@@ -65,26 +65,27 @@
     
     void (^authBlock)(UIViewController *, NSError *) = ^(UIViewController *viewController, NSError *error) {
         
-        if (viewController)
-        {
+        if (viewController) {
             [[self topViewController] presentViewController:viewController animated:YES completion:nil];
         }
         
-        if ([[GKLocalPlayer localPlayer] isAuthenticated])
-        {
+        if ([[GKLocalPlayer localPlayer] isAuthenticated]) {
             // set the NSUserDefault to Connected
             self.authenticated = YES;
             if (ABGAMEKITHELPER_LOGGING) NSLog(@"ABGameKitHelper: Player successfully authenticated.");
             //Report possible cached scores / achievements
             if([self hasConnectivity]){
-                
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                // Change the default
+                NSLog(@"Setting default to YES");
+                [defaults setObject:@"YES" forKey:@"Butterfly.GameCenter.Connected"];
+                [defaults synchronize];
                 [self reportCachedAchievements];
                 [self reportCachedScores];
             }
         }
         
-        if (error)
-        {
+        if (error) {
             self.authenticated = NO;
             if (ABGAMEKITHELPER_LOGGING) NSLog(@"ABGameKitHelper: ERROR -> Player didn't authenticate");
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
