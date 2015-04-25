@@ -293,6 +293,7 @@
 
 -(void) shouldOpenAchievements {
     CCLOG(@"User clicked achievements button");
+     [[ABGameKitHelper sharedHelper] showAchievements];
 }
 
 -(void) shouldOpenLeaderboards {
