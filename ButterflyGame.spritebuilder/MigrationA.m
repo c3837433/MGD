@@ -13,6 +13,7 @@
 #import "Utility.h"
 #import "GameData.h"
 #import "Map.h"
+#import "ABGameKitHelper.h"
 
 @implementation MigrationA  {
     CCButton* _stop1;
@@ -39,20 +40,29 @@
     self.highestPlayableStop = [GameData sharedGameData].gameActivePlayer.highestAStop;
     selectedStop = self.highestPlayableStop;
     if (self.unlockJourney) {
+        // if this user is connected to game center and hasn't yet achieved the first unlock, but just did
+        if (([GameData sharedGameData].activePlayerConnectedToGameCenter) && (![GameData sharedGameData].gameActivePlayer.completedUnlock)) {
+            // the user has achieved the first unlock
+            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Unlock.First.Level" percentComplete:100.0f];
+        }
+        CGFloat percentComplete = 0.0f;
         // need to unlock another stop on the map
         if (self.highestPlayableStop < 3) {
+            percentComplete = self.highestPlayableStop * 33;
             NSLog(@"increasing game center player available stops");
             self.highestPlayableStop ++;
             [GameData sharedGameData].gameActivePlayer.highestAStop ++;
             [[GameData sharedGameData] save];
-            
         } else if (self.highestPlayableStop == 3) {
             NSLog(@"increasing game center player available journeys");
             // unlock the next journey
             [GameData sharedGameData].gameActivePlayer.highestJourney = 2;
             [[GameData sharedGameData] save];
+            percentComplete = 100.0f;
         }
-        
+        if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.A" percentComplete:percentComplete];
+        }
         self.unlockJourney = false;
     }
     [Utility setActiveButtons:journeyStops withHighestStop:self.highestPlayableStop];

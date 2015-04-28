@@ -19,6 +19,7 @@
 #import "GameScore.h"
 #import "GameData.h"
 #import "Player.h"
+#import "Utility.h"
 
 // Standard scroll speed
 static const CGFloat scrollSpeed = 80.f;
@@ -110,13 +111,16 @@ static const CGFloat scrollSpeed = 80.f;
     
     NSUserDefaults* defaults;
     
+    NSMutableArray* achievementsWon;
+    BOOL hitSpider;
+    BOOL hitNectar;
+    NSInteger nectarGathered;
 }
 
 - (void)onEnter {
+//    [[ABGameKitHelper sharedHelper] resetAchievements];
     [super onEnter];
-    
     //CCLOG(@"Loaded Game");
-    
     [self preloadMusic];
     // preset conditionals for frame updates
     didFinish = false;
@@ -124,9 +128,15 @@ static const CGFloat scrollSpeed = 80.f;
     didDie = false;
     didBumpTop = false;
     didPause = false;
+    hitSpider = false;
+    hitNectar = false;
     nectarWarningRunning = false;
+    self.showAchievementNode = false;
     dropsGathered = 0;
     timeElapsed = 0;
+    nectarGathered = 0;
+    
+    achievementsWon = [[NSMutableArray alloc] init];
     
     //Load the first level
     CCScene *level = [CCBReader loadAsScene:@"Levels/Level1"];
@@ -198,19 +208,6 @@ static const CGFloat scrollSpeed = 80.f;
     
     [motionManager startAccelerometerUpdates];
     
-    /*
-    // Get access to the current game scores
-    NSData* scoreData = [defaults objectForKey:dLocalScoresArray];
-    if (scoreData != nil) {
-        NSArray* dataArray = [NSKeyedUnarchiver unarchiveObjectWithData:scoreData];
-        if (dataArray != nil)
-            self.scoresArray = [[NSMutableArray alloc] initWithArray:dataArray];
-        else
-            self.scoresArray = [[NSMutableArray alloc] init];
-    }
-    NSLog(@"Game Scene: Pulled %lu scores from defaults", (unsigned long)self.scoresArray.count);
-
-    self.scoresArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];*/
     self.scoresArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gameScores];
 }
 
@@ -254,6 +251,15 @@ static const CGFloat scrollSpeed = 80.f;
     } else  if (!didFinish) {
         timeElapsed = timeElapsed + delta;
         // CCLOG(@"Time elapsed: %f", timeElapsed);
+        if (hitNectar) {
+            nectarGathered = nectarGathered ++;
+
+               // NSInteger currentNectar = [GameData sharedGameData].gameActivePlayer.numberOfNectarGathered;
+                // Update the number of nectar drops collected
+                [GameData sharedGameData].gameActivePlayer.numberOfNectarGathered ++;
+                [[GameData sharedGameData] save];
+                hitNectar = false;
+        }
         
         // NORMAL GAME PLAY, MOVE OBJECTS
         if (didBumpTop) {
@@ -371,10 +377,12 @@ static const CGFloat scrollSpeed = 80.f;
     } else {
         // THE GAME HAS ENDED FROM WIN OR LOSS
         if (didDie) {
+            //NSLog(@"User died");
             // make sure the accelerometer stops
             [motionManager stopAccelerometerUpdates];
             // Player died; check if it has landed yet
             if (!didLand) {
+                NSLog(@"User hasn't landed");
                 // Get the annimation manager
                 CCAnimationManager* animationManager = _loseButterfly.animationManager;
                 _gameLoseNode.visible = true;
@@ -385,9 +393,18 @@ static const CGFloat scrollSpeed = 80.f;
                 [animationManager setPaused:YES];
                 [audio playEffect:@"loseGame.mp3"];
                 didLand = true;
+                // Set up achievement
+                if (hitSpider) {
+                    NSLog(@"User hit a spider");
+                    hitSpider = false;
+                    NSInteger currentDeaths = [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths;
+                    [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths ++;
+                    [[GameData sharedGameData] save];
+                    NSInteger updatedDeaths = [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths;
+                    NSLog(@"User started with %ld deaths and now has %ld deaths", (long)currentDeaths, (long)updatedDeaths);
+                    [self checkForDeathAchievement];
+                }
             }
-            
-            
         } else {
             CCAnimationManager* animationManager = _winButterfly.animationManager;
             // The Player Won; if it hasn't landed on the flower yet
@@ -398,6 +415,10 @@ static const CGFloat scrollSpeed = 80.f;
                 // temporarily disable the buttons
                 NSLog(@"Disabling the buttons");
                 [self enableButtons:false];
+                if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                    NSLog(@"User connected to game center, checking nectar achievement.");
+                    [self checkForNectarAchievement];
+                }
                // CCLOG(@"You win!");
                 didLand = true;
                 [audio playEffect:@"yahoo.mp3"];
@@ -423,7 +444,6 @@ static const CGFloat scrollSpeed = 80.f;
                     }
                     // check if this is a new high score
                     if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
-                   // if (self.sessionConnectedToGC) {
                         NSLog(@"Saving Game Center game");
                         [self saveGameCenterGame:totalScore];
                     } else {
@@ -450,52 +470,6 @@ static const CGFloat scrollSpeed = 80.f;
     // check if this user already has a score
     //NSLog(@"Current leaderboard id: %@", leaderboardId);
     [[ABGameKitHelper sharedHelper] reportScore:score forLeaderboard:leaderboardId];
-    /*
-   // [self getCurrentStopScoreForLeaderboard:leaderboardId];
-    // see if we already have one saved
-    PFQuery *query = [PFQuery queryWithClassName:pClassName];
-    [query fromLocalDatastore];
-    // make sure it is for the current journey, stop, and player
-    [query whereKey:pJourney equalTo:self.currentJourney];
-    [query whereKey:pStop equalTo:@(self.currentStop)];
-    //[query whereKey:dPlayer equalTo:[PFUser currentUser]];
-    [query whereKey:pPlayerName equalTo:self.player.playerName];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (objects.count > 0) {
-            // NSLog(@"Already have an object to update: objects: %@", objects.description);
-            PFObject* object = [objects objectAtIndex:0];
-            //NSLog(@"Object: %@", object.description);
-            //  see if we need to update it
-            if ([object objectForKey:pHighScore]) {
-                int previousScore = [[object objectForKey:pHighScore] intValue];
-                if (score > previousScore){
-                    [object setObject:[NSString stringWithFormat:@"%d", score] forKey:pHighScore];
-                }
-            }
-            CGFloat previousEnergy = 0;
-            // see if we have an energy level
-            if ([object objectForKey:pEnergy]) {
-                // get the energy
-                previousEnergy = [[object objectForKey:pEnergy] floatValue];
-                if (previousEnergy < currentEnergy) {
-                    [object setObject:@(currentEnergy) forKey:pEnergy];
-                }
-            }
-            [object pinInBackground];
-        } else {
-            // NSLog(@"Saving a new object");
-            // Create a new one
-            NSLog(@"creating new game center game");
-            PFObject* newLevelStop = [PFObject objectWithClassName:pClassName];
-            [newLevelStop setObject:[NSString stringWithFormat:@"%d", score] forKey:pHighScore];
-            newLevelStop[pEnergy] = @(currentEnergy);
-            newLevelStop[pJourney] = self.currentJourney;
-            newLevelStop[pStop] = @(self.currentStop);
-            newLevelStop[pPlayerName] = self.player.playerName;
-            //newLevelStop[pPlayer] = [PFUser currentUser];
-            [newLevelStop pinInBackground];
-        }
-    }];*/
     // Also save to the local board
     [self saveLocalGame:score];
 }
@@ -508,12 +482,6 @@ static const CGFloat scrollSpeed = 80.f;
     newScore.gameStop = self.currentStop;
     newScore.gameEnergy = currentEnergy;
     newScore.gameScore = (NSInteger)score;
-    /*
-    if (self.sessionConnectedToGC) {
-        newScore.gamePlayer = [GameData sharedGameData].gameCenterPlayer;
-    } else {
-        newScore.gamePlayer = [GameData sharedGameData].gameLocalPlayer;
-    }*/
     newScore.gamePlayer = [GameData sharedGameData].gameActivePlayer;
 
     [self.scoresArray addObject:newScore];
@@ -625,6 +593,7 @@ static const CGFloat scrollSpeed = 80.f;
     didDie = true;
     didFinish = true;
     _pauseButton.visible = false;
+    hitSpider = true;
     return TRUE;
 }
 
@@ -634,6 +603,7 @@ static const CGFloat scrollSpeed = 80.f;
     // stop the annimation
     didDie = true;
     didFinish = true;
+    hitSpider = true;
     _pauseButton.visible = false;
     return TRUE;
 }
@@ -655,6 +625,8 @@ static const CGFloat scrollSpeed = 80.f;
             // otherwise add to the bar
             [_healthColorBar setScaleX:_healthColorBar.scaleX + .14];
         }
+        // update the nectar count
+        hitNectar = true;
         
     }];
     [animationManager runAnimationsForSequenceNamed:@"NectarSpriteSheetAnnimation"];
@@ -792,5 +764,78 @@ static const CGFloat scrollSpeed = 80.f;
     [self shouldExitFromPause];
 }
 
+-(void)checkForNectarAchievement {
+    CGFloat percentComplete = 0.0f;
+    // See if they have completed the 10
+    NSInteger totalDrops = [GameData sharedGameData].gameActivePlayer.numberOfNectarGathered;
+    if (![GameData sharedGameData].gameActivePlayer.completedNectar10) {
+        NSLog(@"Ten is not done");
+        // see how many nectar drops this user has
+        if (totalDrops >= 10) {
+            percentComplete = 100.0f;
+            NSLog(@"Total drops 10 pr more: %ld", (long)totalDrops);
+            // they have completed the first achievement
+            [GameData sharedGameData].gameActivePlayer.completedNectar10 = true;
+            [[GameData sharedGameData] save];
+           
+        } else {
+            percentComplete = totalDrops * 10;
+            NSLog(@"Total drops less than 10: %ld", (long)totalDrops);
+        }
+        [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Gather.A" percentComplete:percentComplete];
+    }
+    // if the 10 is done, check the 50
+    if (([GameData sharedGameData].gameActivePlayer.completedNectar10) && (![GameData sharedGameData].gameActivePlayer.completedNectar50)) {
+        NSLog(@"50 is not done");
+        if (totalDrops >= 50) {
+            // they have completed the second achievement
+            percentComplete = 100.0f;
+            NSLog(@"Total drops 50 or more: %ld", (long)totalDrops);
+            [GameData sharedGameData].gameActivePlayer.completedNectar50 = true;
+             [[GameData sharedGameData] save];
+        } else {
+            percentComplete = totalDrops * 2;
+            NSLog(@"Total drops b less than 50: %ld", (long)totalDrops);
+        }
+        [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Gather.B" percentComplete:percentComplete];
+    }
+    // if the 50 is done check the 100
+    if (([GameData sharedGameData].gameActivePlayer.completedNectar50) && (![GameData sharedGameData].gameActivePlayer.completedNectar100)) {
+        NSLog(@"100 is not done");
+        if (totalDrops >= 100) {
+            // they have completed the final achievement
+            [GameData sharedGameData].gameActivePlayer.completedNectar100 = true;
+            [[GameData sharedGameData] save];
+            percentComplete = 100.0;
+            NSLog(@"Total drops 100 or more: %ld", (long)totalDrops);
+        } else {
+            percentComplete = totalDrops;
+            NSLog(@"Total drops less than 100: %ld", (long)totalDrops);
+        }
+        [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Gather.C" percentComplete:percentComplete];
+    }
+}
+
+-(void)checkForDeathAchievement {
+    CGFloat percentComplete = 0.0f;
+    if (![GameData sharedGameData].gameActivePlayer.completedDeath) {
+        // see if they completed it
+        if ([GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths >=10) {
+           // NSLog(@"The death achievement is now complete.");
+            percentComplete = 100.0f;
+            [GameData sharedGameData].gameActivePlayer.completedDeath = true;
+            [[GameData sharedGameData] save];
+        } else {
+            // just update the percent
+            percentComplete = [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths * 10;
+           // NSLog(@"The death achievement is now %f complete.", percentComplete);
+        }
+        if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+            // report the score
+            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Death" percentComplete:percentComplete];
+           // NSLog(@"Reporting  %f death achievement to game center", percentComplete);
+        }
+    }
+}
 
 @end

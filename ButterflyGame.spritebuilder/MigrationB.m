@@ -12,6 +12,7 @@
 #import <Parse/Parse.h>
 #import "Map.h"
 #import "GameData.h"
+#import "ABGameKitHelper.h"
 
 @implementation MigrationB  {
     CCButton* _stop1;
@@ -36,8 +37,10 @@
     self.highestPlayableStop = [GameData sharedGameData].gameActivePlayer.highestBStop;
     selectedStop = self.highestPlayableStop;
     if (self.unlockJourney) {
+         CGFloat percentComplete = 0.0f;
         // need to unlock another stop on the map
         if (self.highestPlayableStop < 3) {
+            percentComplete = self.highestPlayableStop * 33;
             NSLog(@"increasing game center player available stops");
             self.highestPlayableStop ++;
             [GameData sharedGameData].gameActivePlayer.highestBStop ++;
@@ -48,6 +51,10 @@
             // unlock the next journey
             [GameData sharedGameData].gameActivePlayer.highestJourney = 3;
             [[GameData sharedGameData] save];
+            percentComplete = 100.0f;
+        }
+        if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.B" percentComplete:percentComplete];
         }
         
         self.unlockJourney = false;

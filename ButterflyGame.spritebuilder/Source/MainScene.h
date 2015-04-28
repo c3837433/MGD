@@ -16,9 +16,6 @@
 //@property (nonatomic) BOOL selectedNonGameCenterPlayer;
 @property (nonatomic) BOOL currentPlayerSelected;
 @property (nonatomic) BOOL usingGameCenterPlayer;
-//@property (nonatomic) BOOL returnFromMap;
-//@property (nonatomic, strong) Player* player;
-//@property (nonatomic, strong) Player* gameCenterPlayer;
-//@property (nonatomic) BOOL getUserForLeaderbaord;
-//@property (nonatomic, strong) GamePlayer* currentPlayer;
+@property(nonatomic, retain) NSMutableDictionary* usersAchievements;
+
 @end

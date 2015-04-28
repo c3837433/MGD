@@ -33,8 +33,18 @@
         self.highestDStop = [decoder decodeIntegerForKey:@"highestDStop"];
         self.highestEStop = [decoder decodeIntegerForKey:@"highestEStop"];
         self.highestJourney = [decoder decodeIntegerForKey:@"highestJourney"];
-       // self.playerScores = [decoder decodeObjectForKey:@"playerScores"];
         self.gameCenterPlayer = [decoder decodeBoolForKey:@"gameCenterPlayer"];
+        // Achievements
+        self.completedUnlock = [decoder decodeBoolForKey:@"completedUnlock"];
+        self.completedDeath = [decoder decodeBoolForKey:@"completedDeath"];
+        self.completedJourney1 = [decoder decodeBoolForKey:@"completedJourney1"];
+        self.completedJourney2 = [decoder decodeBoolForKey:@"completedJourney2"];
+        self.completedJourney3 = [decoder decodeBoolForKey:@"completedJourney3"];
+        self.completedJOurney4 = [decoder decodeBoolForKey:@"completedJOurney4"];
+        self.completedJourney5 = [decoder decodeBoolForKey:@"completedJourney5"];
+        self.completedNectar10 = [decoder decodeBoolForKey:@"completedNectar10"];
+        self.completedNectar50 = [decoder decodeBoolForKey:@"completedNectar50"];
+        self.completedNectar100 = [decoder decodeBoolForKey:@"completedNectar100"];
     }
     return self;
 }
@@ -47,8 +57,18 @@
     [encoder encodeInteger:self.highestDStop forKey:@"highestDStop"];
     [encoder encodeInteger:self.highestEStop forKey:@"highestEStop"];
     [encoder encodeInteger:self.highestJourney forKey:@"highestJourney"];
-  //  [encoder encodeObject:self.playerScores forKey:@"playerScores"];
     [encoder encodeBool:self.gameCenterPlayer forKey:@"gameCenterPlayer"];
+    // Achievements
+    [encoder encodeBool:self.completedUnlock forKey:@"completedUnlock"];
+    [encoder encodeBool:self.completedDeath forKey:@"completedDeath"];
+    [encoder encodeBool:self.completedJourney1 forKey:@"completedJourney1"];
+    [encoder encodeBool:self.completedJourney2 forKey:@"completedJourney2"];
+    [encoder encodeBool:self.completedJourney3 forKey:@"completedJourney3"];
+    [encoder encodeBool:self.completedJOurney4 forKey:@"completedJOurney4"];
+    [encoder encodeBool:self.completedJourney5 forKey:@"completedJourney5"];
+    [encoder encodeBool:self.completedNectar10 forKey:@"completedNectar10"];
+    [encoder encodeBool:self.completedNectar50 forKey:@"completedNectar50"];
+    [encoder encodeBool:self.completedNectar100 forKey:@"completedNectar100"];
 }
 
 +(instancetype)loadInstance {

@@ -28,6 +28,12 @@
 #define pEnergy @"energy"
 #define pPlayerName @"playerName"
 
+#pragma  mark ACHIEVEMENTS IMAGES
+#define aUnlock = @"menuAssets/aUnlock.png"
+#define aNectar = @"menuAssets/aNectar.png"
+#define aCompletion = @"menuAssets/aCompletion.png"
+#define aDeath = @"menuAssets/aDeath.png"
+
 #pragma mark MAP LEVEL DEFAULTS
 extern NSString* const mHighestJourneyUnlocked;
 extern NSString* const mHighestJourneyAStopUnlocked;

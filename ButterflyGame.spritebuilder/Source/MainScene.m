@@ -65,6 +65,7 @@
        // self.connectedToGameCenter = NO;
         NSLog(@"User is not connected to game center");
     }
+    self.usersAchievements = [[NSMutableDictionary alloc] init];
     // Preload the music
     //[[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
@@ -180,7 +181,22 @@
         newPlayer.highestDStop = 1;
         newPlayer.highestEStop = 1;
         newPlayer.highestJourney = 1;
+        newPlayer.numberOfNectarGathered = 0;
+        newPlayer.numberOfSpiderDeaths = 0;
         newPlayer.playerName = [GKLocalPlayer localPlayer].alias;
+        // for now set default achievements
+        // set default achievements
+        newPlayer.completedDeath = false;
+        newPlayer.completedJourney1 = false;
+        newPlayer.completedJourney2 = false;
+        newPlayer.completedJourney3 = false;
+        newPlayer.completedJOurney4 = false;
+        newPlayer.completedJourney5 = false;
+        newPlayer.completedNectar10 = false;
+        newPlayer.completedNectar100 = false;
+        newPlayer.completedNectar50 = false;
+        newPlayer.completedUnlock = false;
+        
         [GameData sharedGameData].gameCenterPlayer = newPlayer;
         [[GameData sharedGameData] save];
         if (forActive) {
@@ -205,6 +221,7 @@
     }
     // otherwise see if we need to update a local player
     else if ([activePlayer.playerName isEqualToString:localPlayer.playerName]) {
+           NSLog(@"Updating local player data");
         [GameData sharedGameData].gameLocalPlayer = [GameData sharedGameData].gameActivePlayer;
         [[GameData sharedGameData] save];
         if (localPlayer.playerName != nil) {
@@ -224,6 +241,17 @@
             [[GameData sharedGameData] save];
             NSLog(@"Player objects: %lu", [GameData sharedGameData].gamePlayers.count);
         }
+    } else {
+        for (Player* player in self.playerArray) {
+            if ([player.playerName isEqualToString:activePlayer.playerName]) {
+                NSLog(@"Updating active player data");
+                [self.playerArray removeObject:player];
+                [self.playerArray addObject:[GameData sharedGameData].gameActivePlayer];
+                [GameData sharedGameData].gamePlayers = self.playerArray;
+                [[GameData sharedGameData] save];
+                break;
+            }
+        }
     }
 }
 
@@ -235,44 +263,6 @@
     NSLog(@"Moving to map with player");
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
-    /*
-    // if we are not connected to game center make sure we have a current player
-    if (!self.currentPlayerSelected) {
-        if (self.connectedToGameCenter) {
-            NSLog(@"Starting with current game center player");
-            [self getGameCenterPlayerSetUp];
-            CCScene* scene = [CCBReader loadAsScene:@"Map"];
-            Map* map = [[scene children] firstObject];
-            //map.connectedToGameCenter = self.connectedToGameCenter;
-            CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-            [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
-        } else {
-            NSLog(@"Trying to start game without player, loading player view");
-            [self shouldOpenPlayerView];
-        }
-    }
-    else {
-        CCScene* scene = [CCBReader loadAsScene:@"Map"];
-        Map* map = [[scene children] firstObject];
-        map.connectedToGameCenter = self.connectedToGameCenter;
-        if (self.connectedToGameCenter && self.selectedNonGameCenterPlayer) {
-            //[GameData sharedGameData].gameCenterPlayer = self.gameCenterPlayer;
-            map.connectedToGameCenter = false;
-            [GameData sharedGameData].gameLocalPlayer = self.player;
-            NSLog(@"Connected to game center, but playing with local player");
-        } else if (!self.connectedToGameCenter){
-            NSLog(@"playing with local player");
-            [GameData sharedGameData].gameLocalPlayer = self.player;
-        } else {
-            NSLog(@"playing with game center player");
-            
-        }
-        
-        NSLog(@"Moving to map with player");
-        CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
-        [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
-
-    }*/
 }
 
 -(void)shouldStartTutorial {
@@ -366,6 +356,20 @@
         newPlayer.highestDStop = 1;
         newPlayer.highestEStop = 1;
         newPlayer.highestJourney = 1;
+        newPlayer.numberOfNectarGathered = 0;
+        newPlayer.numberOfSpiderDeaths = 0;
+        // set default achievements
+        newPlayer.completedDeath = false;
+        newPlayer.completedJourney1 = false;
+        newPlayer.completedJourney2 = false;
+        newPlayer.completedJourney3 = false;
+        newPlayer.completedJOurney4 = false;
+        newPlayer.completedJourney5 = false;
+        newPlayer.completedNectar10 = false;
+        newPlayer.completedNectar100 = false;
+        newPlayer.completedNectar50 = false;
+        newPlayer.completedUnlock = false;
+        
         [self.playerArray addObject:newPlayer];
         [GameData sharedGameData].gamePlayers = self.playerArray;
         // Save the players
@@ -389,9 +393,91 @@
 }
 
 -(void) shouldOpenGameCenter {
-
     [[ABGameKitHelper sharedHelper] showLeaderboard:@"com.Smith.Angela.ButterflyGame.Scores"];
-
 }
+/*
+-(void) pullCurrentGameCenterData {
+    [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
+         if (error == nil) {
+             for (GKAchievement* achievement in achievements)
+                 [self.usersAchievements setObject: achievement forKey: achievement.identifier];
+         }
+     }];
+}
+
+-(void)updateLocalGameCenterUserWithAchievementData:(NSMutableDictionary*)achievements {
+    // update the unlock achievement
+    GKAchievement* unlock = [self.usersAchievements objectForKey:@"Butterfly.Unlock"];
+    if (unlock != nil) {
+        [GameData sharedGameData].gameActivePlayer.completedUnlock = (unlock.percentComplete == 100.0) ? true : false;
+        [[GameData sharedGameData] save];
+    }
+    
+    GKAchievement* completeA = [self.usersAchievements objectForKey:@"Butterfly.Completion.A"];
+    if (completeA != nil) {
+        [GameData sharedGameData].gameActivePlayer.completedJourney1 = (unlock.percentComplete == 100.0) ? true : false;
+        [[GameData sharedGameData] save];
+    }
+    
+    // Gather nectar
+    NSInteger nectar1 = 0;
+    GKAchievement* nectarA = [self.usersAchievements objectForKey:@"Butterfly.Gather.A"];
+    if (nectarA != nil) {
+        nectar1 = nectarA.percentComplete / 10;
+        if (nectarA.percentComplete == 100.0) {
+            [GameData sharedGameData].gameActivePlayer.completedNectar10 = true;
+            [[GameData sharedGameData] save];
+        } else {
+            [GameData sharedGameData].gameActivePlayer.completedNectar10 = false;
+            [[GameData sharedGameData] save];
+        }
+    }
+    
+    NSInteger nectar2 = 0;
+    GKAchievement* nectarB = [self.usersAchievements objectForKey:@"Butterfly.Gather.B"];
+    if (nectarB != nil) {
+          nectar2 = nectarB.percentComplete / 2;
+        if (nectarB.percentComplete == 100.0) {
+            [GameData sharedGameData].gameActivePlayer.completedNectar50 = true;
+            [[GameData sharedGameData] save];
+        } else {
+            [GameData sharedGameData].gameActivePlayer.completedNectar50 = false;
+            [[GameData sharedGameData] save];
+        }
+    }
+    
+    NSInteger nectar3 = 0;
+    GKAchievement* nectarC = [self.usersAchievements objectForKey:@"Butterfly.Gather.C"];
+    if (nectarC != nil) {
+        nectar3 = nectarC.percentComplete;
+        if (nectarC.percentComplete == 100.0) {
+            [GameData sharedGameData].gameActivePlayer.completedNectar100 = true;
+            [[GameData sharedGameData] save];
+        } else {
+            [GameData sharedGameData].gameActivePlayer.completedNectar100 = false;
+            [[GameData sharedGameData] save];
+        }
+    }
+    NSArray* nectarNumbers = [[NSArray alloc] initWithObjects:[NSNumber numberWithInteger:nectar1], [NSNumber numberWithInteger:nectar2], [NSNumber numberWithInteger:nectar3], nil];
+    // get the top number
+    nectarNumbers = [nectarNumbers sortedArrayUsingSelector:@selector(compare:)];
+    NSLog(@"Setting %ld for number of nectar drops for player", (long)[[nectarNumbers lastObject] integerValue]);
+    [GameData sharedGameData].gameActivePlayer.numberOfNectarGathered = [[nectarNumbers lastObject] integerValue];
+    [[GameData sharedGameData] save];
+    
+    GKAchievement* spider = [self.usersAchievements objectForKey:@"Butterfly.Death"];
+    if (spider != nil) {
+        if (spider.percentComplete == 100.0) {
+            [GameData sharedGameData].gameActivePlayer.completedDeath = true;
+            [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths = 10;
+            [[GameData sharedGameData] save];
+        } else {
+            [GameData sharedGameData].gameActivePlayer.completedUnlock = false;
+            [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths = unlock.percentComplete/ 10;
+            [[GameData sharedGameData] save];
+        }
+    }
+ 
+}*/
 
 @end

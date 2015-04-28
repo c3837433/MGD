@@ -30,7 +30,6 @@
         self.gameScore = [decoder decodeIntegerForKey:@"gameScore"];
         self.gameStop = [decoder decodeIntegerForKey:@"gameStop"];
         self.gameJourney = [decoder decodeObjectForKey:@"gameJourney"];
-       // self.gameLeaderboardName = [decoder decodeObjectForKey:@"gameLeaderboardName"];
         self.gameEnergy = [decoder decodeFloatForKey:@"gameEnergy"];
 
     }
@@ -42,7 +41,6 @@
     [encoder encodeInteger:self.gameScore forKey:@"gameScore"];
     [encoder encodeInteger:self.gameStop forKey:@"gameStop"];
     [encoder encodeObject:self.gameJourney forKey:@"gameJourney"];
-   // [encoder encodeObject:self.gameLeaderboardName forKey:@"gameLeaderboardName"];
     [encoder encodeFloat:self.gameEnergy forKey:@"gameEnergy"];
 }
 

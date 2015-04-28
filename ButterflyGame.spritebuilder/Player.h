@@ -18,7 +18,22 @@
 @property (nonatomic) NSInteger highestDStop;
 @property (nonatomic) NSInteger highestEStop;
 @property (nonatomic, assign) BOOL gameCenterPlayer;
+@property (nonatomic) NSInteger numberOfSpiderDeaths;
+@property (nonatomic) NSInteger numberOfNectarGathered;
 //@property (nonatomic, strong) NSMutableArray* playerScores;
+
+// Player Achievements
+@property (nonatomic, assign) BOOL completedUnlock;
+@property (nonatomic, assign) BOOL completedNectar10;
+@property (nonatomic, assign) BOOL completedNectar50;
+@property (nonatomic, assign) BOOL completedNectar100;
+@property (nonatomic, assign) BOOL completedJourney1;
+@property (nonatomic, assign) BOOL completedJourney2;
+@property (nonatomic, assign) BOOL completedJourney3;
+@property (nonatomic, assign) BOOL completedJOurney4;
+@property (nonatomic, assign) BOOL completedJourney5;
+@property (nonatomic, assign) BOOL completedDeath;
+
 -(void)save;
 + (instancetype)sharedGameData;
 @end

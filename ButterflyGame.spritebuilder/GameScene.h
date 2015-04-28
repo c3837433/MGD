@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, DrawingOrder) {
 @property (nonatomic) BOOL forUnlock;
 @property (nonatomic) Player* player;
 @property (nonatomic) BOOL sessionConnectedToGC;
+@property (nonatomic) BOOL showAchievementNode;
 @property (nonatomic, strong) NSMutableArray* scoresArray;
 
 #define HORIZ_SWIPE_DRAG_MIN  12

@@ -188,6 +188,8 @@
 		<dict/>
 		<key>menuAssets</key>
 		<dict>
+			<key>isDirty</key>
+			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
