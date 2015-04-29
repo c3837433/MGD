@@ -10,6 +10,7 @@
 #import "Player.h"
 #import "GameScore.h"
 #import <Parse/Parse.h>
+#import "ABGameKitHelper.h"
 
 @interface Utility : NSObject
 
@@ -18,6 +19,5 @@
 + (void) setActiveButtons:(NSArray*)buttonArray withHighestStop:(NSInteger) highestStop;
 
 +(void)shouldPlaySelectedLevelStop:(NSInteger)selectedStop andHighestStop:(NSInteger)highestStop forJourney:(NSString*)journey withPlayer:(Player*)player;
-
-
++(void) updateGameCenterPlayerWithGameCenterData;
 @end

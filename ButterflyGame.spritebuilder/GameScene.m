@@ -115,13 +115,18 @@ static const CGFloat scrollSpeed = 80.f;
     BOOL hitSpider;
     BOOL hitNectar;
     NSInteger nectarGathered;
+    
+    CCSprite* _deathAchievement;
+    CCSprite* _nectarAchievement;
+    
 }
 
 - (void)onEnter {
-//    [[ABGameKitHelper sharedHelper] resetAchievements];
     [super onEnter];
     //CCLOG(@"Loaded Game");
     [self preloadMusic];
+    _deathAchievement.visible = false;
+    _nectarAchievement.visible = false;
     // preset conditionals for frame updates
     didFinish = false;
     didLand = false;
@@ -238,7 +243,7 @@ static const CGFloat scrollSpeed = 80.f;
     _pauseButton.visible = true;
     
     //IF YOU WANT BACKGROUND MUSIC PLAYING
-    //[audio playBg:@"background_music.mp3"];
+    [audio playBg:@"background_music.mp3"];
 }
 
 #pragma MARK - FRAME UPDATES
@@ -777,6 +782,7 @@ static const CGFloat scrollSpeed = 80.f;
             // they have completed the first achievement
             [GameData sharedGameData].gameActivePlayer.completedNectar10 = true;
             [[GameData sharedGameData] save];
+            _nectarAchievement.visible = true;
            
         } else {
             percentComplete = totalDrops * 10;
@@ -793,6 +799,7 @@ static const CGFloat scrollSpeed = 80.f;
             NSLog(@"Total drops 50 or more: %ld", (long)totalDrops);
             [GameData sharedGameData].gameActivePlayer.completedNectar50 = true;
              [[GameData sharedGameData] save];
+            _nectarAchievement.visible = true;
         } else {
             percentComplete = totalDrops * 2;
             NSLog(@"Total drops b less than 50: %ld", (long)totalDrops);
@@ -808,6 +815,7 @@ static const CGFloat scrollSpeed = 80.f;
             [[GameData sharedGameData] save];
             percentComplete = 100.0;
             NSLog(@"Total drops 100 or more: %ld", (long)totalDrops);
+            _nectarAchievement.visible = true;
         } else {
             percentComplete = totalDrops;
             NSLog(@"Total drops less than 100: %ld", (long)totalDrops);
@@ -825,6 +833,7 @@ static const CGFloat scrollSpeed = 80.f;
             percentComplete = 100.0f;
             [GameData sharedGameData].gameActivePlayer.completedDeath = true;
             [[GameData sharedGameData] save];
+            _deathAchievement.visible = true;
         } else {
             // just update the percent
             percentComplete = [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths * 10;

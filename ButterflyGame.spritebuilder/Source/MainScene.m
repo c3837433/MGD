@@ -14,7 +14,7 @@
 #import "GameData.h"
 #import "GameScore.h"
 #import "LocalLeaderboard.h"
-
+#import "Utility.h"
 
 @implementation MainScene {
 
@@ -43,7 +43,10 @@
 #pragma mark - LOAD AND UNLOAD
 //Once the game file loads, allow user interaction so the player can view the game scene
 - (void)didLoadFromCCB {
+    // To reset all Game Center achievements
+    //[[ABGameKitHelper sharedHelper] resetAchievements];
     
+    // Set up the buttons
     mainButtons = [[NSArray alloc] initWithObjects:_loadGameCenterButton, _tutorialButton, _creditsButton, _playersButton, _leaderBoardButton, _achievementButton, nil];
     // search for the matching player name in the local players
     self.playerArray = [[NSMutableArray alloc] initWithArray:[GameData sharedGameData].gamePlayers];
@@ -65,9 +68,8 @@
        // self.connectedToGameCenter = NO;
         NSLog(@"User is not connected to game center");
     }
-    self.usersAchievements = [[NSMutableDictionary alloc] init];
     // Preload the music
-    //[[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
+    [[OALSimpleAudio sharedInstance] preloadBg:@"background_music.mp3"];
 }
 
 // ON NSUSER DEFAULT CHANGE, CHECK IF WE ARE NOT CONNECTED TO GAME CENTER
@@ -105,6 +107,7 @@
             NSLog(@"Game player name: %@", gameCenterPlayerName);
             // Set the active player as the current game center player
             [GameData sharedGameData].gameActivePlayer = [GameData sharedGameData].gameCenterPlayer;
+            [GameData sharedGameData].activePlayerConnectedToGameCenter = true;
             NSLog(@"User is connected to game center");
             [[GameData sharedGameData] save];
         } else {
@@ -115,6 +118,8 @@
         _gameCenterButton.visible = true;
         self.usingGameCenterPlayer = true;
         self.currentPlayerSelected = true;
+        // Finally, update this players data with game center data
+       // [Utility updateGameCenterPlayerWithGameCenterData];
     }
 }
 
@@ -395,89 +400,6 @@
 -(void) shouldOpenGameCenter {
     [[ABGameKitHelper sharedHelper] showLeaderboard:@"com.Smith.Angela.ButterflyGame.Scores"];
 }
-/*
--(void) pullCurrentGameCenterData {
-    [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
-         if (error == nil) {
-             for (GKAchievement* achievement in achievements)
-                 [self.usersAchievements setObject: achievement forKey: achievement.identifier];
-         }
-     }];
-}
 
--(void)updateLocalGameCenterUserWithAchievementData:(NSMutableDictionary*)achievements {
-    // update the unlock achievement
-    GKAchievement* unlock = [self.usersAchievements objectForKey:@"Butterfly.Unlock"];
-    if (unlock != nil) {
-        [GameData sharedGameData].gameActivePlayer.completedUnlock = (unlock.percentComplete == 100.0) ? true : false;
-        [[GameData sharedGameData] save];
-    }
-    
-    GKAchievement* completeA = [self.usersAchievements objectForKey:@"Butterfly.Completion.A"];
-    if (completeA != nil) {
-        [GameData sharedGameData].gameActivePlayer.completedJourney1 = (unlock.percentComplete == 100.0) ? true : false;
-        [[GameData sharedGameData] save];
-    }
-    
-    // Gather nectar
-    NSInteger nectar1 = 0;
-    GKAchievement* nectarA = [self.usersAchievements objectForKey:@"Butterfly.Gather.A"];
-    if (nectarA != nil) {
-        nectar1 = nectarA.percentComplete / 10;
-        if (nectarA.percentComplete == 100.0) {
-            [GameData sharedGameData].gameActivePlayer.completedNectar10 = true;
-            [[GameData sharedGameData] save];
-        } else {
-            [GameData sharedGameData].gameActivePlayer.completedNectar10 = false;
-            [[GameData sharedGameData] save];
-        }
-    }
-    
-    NSInteger nectar2 = 0;
-    GKAchievement* nectarB = [self.usersAchievements objectForKey:@"Butterfly.Gather.B"];
-    if (nectarB != nil) {
-          nectar2 = nectarB.percentComplete / 2;
-        if (nectarB.percentComplete == 100.0) {
-            [GameData sharedGameData].gameActivePlayer.completedNectar50 = true;
-            [[GameData sharedGameData] save];
-        } else {
-            [GameData sharedGameData].gameActivePlayer.completedNectar50 = false;
-            [[GameData sharedGameData] save];
-        }
-    }
-    
-    NSInteger nectar3 = 0;
-    GKAchievement* nectarC = [self.usersAchievements objectForKey:@"Butterfly.Gather.C"];
-    if (nectarC != nil) {
-        nectar3 = nectarC.percentComplete;
-        if (nectarC.percentComplete == 100.0) {
-            [GameData sharedGameData].gameActivePlayer.completedNectar100 = true;
-            [[GameData sharedGameData] save];
-        } else {
-            [GameData sharedGameData].gameActivePlayer.completedNectar100 = false;
-            [[GameData sharedGameData] save];
-        }
-    }
-    NSArray* nectarNumbers = [[NSArray alloc] initWithObjects:[NSNumber numberWithInteger:nectar1], [NSNumber numberWithInteger:nectar2], [NSNumber numberWithInteger:nectar3], nil];
-    // get the top number
-    nectarNumbers = [nectarNumbers sortedArrayUsingSelector:@selector(compare:)];
-    NSLog(@"Setting %ld for number of nectar drops for player", (long)[[nectarNumbers lastObject] integerValue]);
-    [GameData sharedGameData].gameActivePlayer.numberOfNectarGathered = [[nectarNumbers lastObject] integerValue];
-    [[GameData sharedGameData] save];
-    
-    GKAchievement* spider = [self.usersAchievements objectForKey:@"Butterfly.Death"];
-    if (spider != nil) {
-        if (spider.percentComplete == 100.0) {
-            [GameData sharedGameData].gameActivePlayer.completedDeath = true;
-            [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths = 10;
-            [[GameData sharedGameData] save];
-        } else {
-            [GameData sharedGameData].gameActivePlayer.completedUnlock = false;
-            [GameData sharedGameData].gameActivePlayer.numberOfSpiderDeaths = unlock.percentComplete/ 10;
-            [[GameData sharedGameData] save];
-        }
-    }
- 
-}*/
 
 @end

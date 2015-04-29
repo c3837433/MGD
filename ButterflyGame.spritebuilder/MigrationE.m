@@ -24,12 +24,15 @@
     CCLabelTTF* _scoreLabel;
     NSInteger selectedStop;
     NSArray* journeyStops;
+    
+    CCSprite* _journeyEAchievement;
 }
 
 
 -(void) onEnter {
     NSLog(@"Migration E Loaded");
     [super onEnter];
+    _journeyEAchievement.visible = false;
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
@@ -50,13 +53,19 @@
                 self.highestPlayableStop ++;
                 [GameData sharedGameData].gameActivePlayer.highestEStop ++;
                 [[GameData sharedGameData] save];
+                if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                    [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.E" percentComplete:percentComplete];
+                }
                 
-            } else if (self.highestPlayableStop == 5) {
+            } else if ((self.highestPlayableStop == 5) && (![GameData sharedGameData].gameActivePlayer.completedJourney5)) {
                 NSLog(@"finished journey");
                 percentComplete = 100.0f;
-            }
-            if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
-                [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.E" percentComplete:percentComplete];
+                _journeyEAchievement.visible = true;
+                [GameData sharedGameData].gameActivePlayer.completedJourney5 = true;
+                [[GameData sharedGameData] save];
+                if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                    [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.E" percentComplete:percentComplete];
+                }
             }
 
             self.unlockJourney = false;

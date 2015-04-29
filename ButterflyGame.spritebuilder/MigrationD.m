@@ -22,12 +22,15 @@
     
     CCLabelTTF* _scoreLabel;
     NSInteger selectedStop;
-    NSArray* journeyStops;    
+    NSArray* journeyStops;
+    
+    CCSprite* _journeyDAchievement;
 }
 
 -(void) onEnter {
     NSLog(@"Migration D Loaded");
     [super onEnter];
+    _journeyDAchievement.visible = false;
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
@@ -46,16 +49,22 @@
             self.highestPlayableStop ++;
             [GameData sharedGameData].gameActivePlayer.highestDStop ++;
             [[GameData sharedGameData] save];
+            if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.D" percentComplete:percentComplete];
+            }
             
-        } else if (self.highestPlayableStop == 4) {
+        } else if ((self.highestPlayableStop == 4) && (![GameData sharedGameData].gameActivePlayer.completedJOurney4)) {
             NSLog(@"increasing game center player available journeys");
             // unlock the next journey
             [GameData sharedGameData].gameActivePlayer.highestJourney = 5;
             [[GameData sharedGameData] save];
             percentComplete = 100.0f;
-        }
-        if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
-            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.D" percentComplete:percentComplete];
+            _journeyDAchievement.visible = true;
+            [GameData sharedGameData].gameActivePlayer.completedJOurney4 = true;
+            [[GameData sharedGameData] save];
+            if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.D" percentComplete:percentComplete];
+            }
         }
         
         self.unlockJourney = false;

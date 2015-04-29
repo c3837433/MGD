@@ -24,12 +24,17 @@
     NSInteger selectedStop;
     NSArray* journeyStops;
     
+    CCSprite* _unlockAchievement;
+    CCSprite* _journeyAchievement;
+    
 }
 
 
 -(void) onEnter {
     NSLog(@"Migration A Loaded");
     [super onEnter];
+    _journeyAchievement.visible = false;
+    _unlockAchievement.visible = false;
     self.levelsArray = [[NSMutableArray alloc] init];
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
@@ -44,6 +49,9 @@
         if (([GameData sharedGameData].activePlayerConnectedToGameCenter) && (![GameData sharedGameData].gameActivePlayer.completedUnlock)) {
             // the user has achieved the first unlock
             [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Unlock.First.Level" percentComplete:100.0f];
+            _unlockAchievement.visible = true;
+            [GameData sharedGameData].gameActivePlayer.completedUnlock = true;
+            [[GameData sharedGameData] save];
         }
         CGFloat percentComplete = 0.0f;
         // need to unlock another stop on the map
@@ -53,15 +61,20 @@
             self.highestPlayableStop ++;
             [GameData sharedGameData].gameActivePlayer.highestAStop ++;
             [[GameData sharedGameData] save];
-        } else if (self.highestPlayableStop == 3) {
+            if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.A" percentComplete:percentComplete];
+            }
+        } else if ((self.highestPlayableStop == 3) && (![GameData sharedGameData].gameActivePlayer.completedJourney1)) {
             NSLog(@"increasing game center player available journeys");
             // unlock the next journey
             [GameData sharedGameData].gameActivePlayer.highestJourney = 2;
+            [GameData sharedGameData].gameActivePlayer.completedJourney1 = true;
             [[GameData sharedGameData] save];
             percentComplete = 100.0f;
-        }
-        if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
-            [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.A" percentComplete:percentComplete];
+            _journeyAchievement.visible = true;
+            if ([GameData sharedGameData].activePlayerConnectedToGameCenter) {
+                [[ABGameKitHelper sharedHelper] reportAchievement:@"Butterfly.Completion.A" percentComplete:percentComplete];
+            }
         }
         self.unlockJourney = false;
     }

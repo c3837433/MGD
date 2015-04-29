@@ -113,39 +113,30 @@
         CCLOG(@"User tapped first journey");
         activePoint.x = 1.0 - _journey1.position.x + 0.45;
         activePoint.y = 1.0 - _journey1.position.y - 0.35;
-        //_playButton.visible = YES;
         [self shouldPlaySelectedJourney];
-        //[self getTopScoresForFriendsForMigration:@"A"];
     } else if ((CGRectContainsPoint([_journey2 boundingBox], nodePostion)) && (_journey2.visible)) {
         CCLOG(@"User tapped second journey");
         journeyToLoad = @"B";
         activePoint.x = 1.0 - _journey2.position.x + 0.45;
         activePoint.y = 1.0 - _journey2.position.y - 0.25;
-        //_playButton.visible = YES;
         [self shouldPlaySelectedJourney];
-        //[self getTopScoresForFriendsForMigration:@"B"];
     } else if ((CGRectContainsPoint([_journey3 boundingBox], nodePostion)) && (_journey3.visible)) {
         CCLOG(@"User tapped third journey");
         journeyToLoad = @"C";
         activePoint.x = 1.0 - _journey3.position.x + 0.3;
         activePoint.y = 1.0 - _journey3.position.y - 0.45;
-        //_playButton.visible = YES;
         [self shouldPlaySelectedJourney];
-       // [self getTopScoresForFriendsForMigration:@"C"];
     } else if ((CGRectContainsPoint([_journey4 boundingBox], nodePostion)) && (_journey4.visible)) {
         CCLOG(@"User tapped fourth journey");
         journeyToLoad = @"D";
         activePoint.x = 1.0 - _journey4.position.x - 0.2;
         activePoint.y = 1.0 - _journey4.position.y - 0.2;
-        //_playButton.visible = YES;
         [self shouldPlaySelectedJourney];
     } else if ((CGRectContainsPoint([_journey5 boundingBox], nodePostion)) && (_journey5.visible)) {
         CCLOG(@"User tapped fifth journey");
         journeyToLoad = @"E";
         activePoint.x = 1.0 - _journey5.position.x - 0.4;
         activePoint.y = 1.0 - _journey5.position.y - 0.45;
-        //_playButton.visible = YES;
-       // [self getTopScoresForFriendsForMigration:@"E"];
         [self shouldPlaySelectedJourney];
     }
 
@@ -164,34 +155,6 @@
 - (void)shouldStartJourney {
     // See which journey to load
     CCScene* scene = [CCBReader loadAsScene:[NSString stringWithFormat:@"Journeys/Migration%@", journeyToLoad]];
-    /*
-    // set the player and session info
-    if ([journeyToLoad isEqualToString:@"A"]) {
-        MigrationA* migration = [[scene children] firstObject];
-       // migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        //migration.player = self.currentPlayer;
-        //migration.player = self.player;
-    } else if ([journeyToLoad isEqualToString:@"B"]) {
-        MigrationB* migration = [[scene children] firstObject];
-        migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        // migration.player = self.currentPlayer;
-       // migration.player = self.player;
-    } else if ([journeyToLoad isEqualToString:@"C"]) {
-        MigrationC* migration = [[scene children] firstObject];
-        migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        // migration.player = self.currentPlayer;
-       // migration.player = self.player;
-    } else if ([journeyToLoad isEqualToString:@"D"]) {
-        MigrationD* migration = [[scene children] firstObject];
-        migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        // migration.player = self.currentPlayer;
-       // migration.player = self.player;
-    } else if ([journeyToLoad isEqualToString:@"E"]) {
-        MigrationD* migration = [[scene children] firstObject];
-        migration.sessionThroughGameCenter = self.connectedToGameCenter;
-        // migration.player = self.currentPlayer;
-       // migration.player = self.player;
-    }*/
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
 }
@@ -204,16 +167,6 @@
 -(void) shouldReturnToMain {
     // return to the main menu
     CCScene* scene = [CCBReader loadAsScene:@"MainScene"];
-   // MainScene* mainScene = [[scene children] firstObject];
-    // send the connection property back
-    //mainScene.connectedToGameCenter = self.connectedToGameCenter;
-    // stop it from needing to get a selected player
-  /*  mainScene.currentPlayerSelected = true;
-    if (self.connectedToGameCenter) {
-     //   mainScene.player = [GameData sharedGameData].gameCenterPlayer;
-    } else {
-      //  mainScene.player = [GameData sharedGameData].gameLocalPlayer;
-    }*/
    // mainScene.returnFromMap = true;
     CCTransition* transition = [CCTransition transitionFadeWithDuration:0.8];
     [[CCDirector sharedDirector] presentScene:scene withTransition:transition];
